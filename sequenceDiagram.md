@@ -122,6 +122,7 @@ participant A0 as Auth0
             DC->>DA: Sends user leave request
             DA->>DC: Removes user from session
             break Game has ended
+                Note right of U: Since the game has ended, the flow would start over
                 DC->>U: Redirect to landing page
             end
         end
