@@ -1,0 +1,23 @@
+{
+	"name": "domanda",
+	"version": "1.0.0",
+	"workspaces": [
+		"packages/*",
+		"apps/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"test": "turbo run test",
+		"lint": "turbo run lint",
+		"dev": "turbo run dev"
+	},
+	"devDependencies": {
+		"turbo": "^1.6.3"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/svantejonssonITHS/svante-jonsson-testing-typescript-quiz-app.git"
+	},
+	"author": "Svante Jonsson",
+	"license": "MIT"
+}
