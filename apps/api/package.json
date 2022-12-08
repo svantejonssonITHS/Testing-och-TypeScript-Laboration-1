@@ -2,7 +2,6 @@
   "name": "api",
   "version": "1.0.0",
   "author": "Svante Jonsson",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
