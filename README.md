@@ -4,7 +4,7 @@ Domanda is a simple quiz site created for my course in `TypeScript` and `Test dr
 
 ## Table of contents 📖
 
-- ![Usage](./#usage)
+- ![Usage](.#usage)
 - Documentation
 - License
 
