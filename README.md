@@ -1,3 +1,15 @@
-# Testning-och-TypeScript
+# Domanda 🎨
 
-Projektet i kursen `Testning-och-TypeScript`.
+Domanda is a simple quiz site created for my course in `TypeScript` and `Test driven development`.
+
+## Table of contents 📖
+
+- ![Usage](#usage)
+- Documentation
+- License
+
+## Usage
+
+## Documentation
+
+## License
