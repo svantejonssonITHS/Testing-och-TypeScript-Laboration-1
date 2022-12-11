@@ -8,24 +8,33 @@ participant A0 as Auth0
     %% Login section
     U->>DC: Visits site
     loop
-        DC->>DA: Request authentication
-        DA->>A0: Send user token
-        alt User is authenticated
-            A0->>DA: Token is valid
-            DA->>DC: Send access approved
-        else User is unauthenticated
-            A0->>DA: Token is invalid
-            DA->>DC: Send access denied
+        DC->>A0: Send user token
+        alt Token is valid
+            A0->>DC: Return access token
+        else Token is not valid
+            A0->>DC: Send access denied
             DC->>U: Redirect to Auth0 login page
             U->>A0: Provides login details to Auth0
-            A0->>DC: Sends access token
+            A0->>DC: Return access token
         end
     end
     DC->>U: Redirect to Domanda landing page
+    DC->>DA: Check Domanda API health
+    DA->>TA: Check Trivia API health
+    alt Trivia API is online
+        TA->>DA: Sends healthy response
+        break API health OK
+            DA->>DC: Sends healthy response
+        end
+    else Trivia API is offline
+        TA->>DA: Does not respond properly
+        DA->>DC: Sends error response
+        DC->>U: Display error
+    end
 
     %% Join/Create game
     loop
-        alt User creates new game
+        alt User joins a existing game
             U->>DC: Enters game pin
             DC->>DA: Validate game pin
             alt Game pin is valid
@@ -39,16 +48,8 @@ participant A0 as Auth0
         else User creates new game
             U->>DC: Press create game button
             DC->>DA: Request a new game
-            DA->>TA: Check Trivia API health
-            alt Trivia API is online
-                TA->>DA: Sends healthy response
-                break Game is created
-                    DA->>DC: Sends game details
-                end
-            else Trivia API is offline
-                TA->>DA: Does not respond properly
-                DA->>DC: Send game could not be created
-                DC->>U: Display error
+            break Game is created
+                DA->>DC: Sends game details
             end
         end
     end
