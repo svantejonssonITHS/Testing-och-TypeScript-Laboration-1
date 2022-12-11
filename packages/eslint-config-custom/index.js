@@ -2,15 +2,6 @@ module.exports = {
 	parser: '@typescript-eslint/parser',
 	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'turbo', 'prettier'],
 	plugins: ['@typescript-eslint'],
-	ignorePatterns: ['*.cjs'],
-	overrides: [
-		{
-			files: ['*.js'],
-			rules: {
-				'@typescript-eslint/typedef': 'off'
-			}
-		}
-	],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2020
@@ -30,6 +21,7 @@ module.exports = {
 				variableDeclaration: true,
 				variableDeclarationIgnoreFunction: true
 			}
-		]
+		],
+		'@typescript-eslint/explicit-function-return-type': 'error'
 	}
 };
