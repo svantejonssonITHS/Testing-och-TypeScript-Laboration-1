@@ -15,7 +15,7 @@ class Main {
     class HealthModule
     class HealthController {
         constructor(HealthService healthService)
-        +getHealth() Promise~HealthCheckResult~
+        +checkHealth() Promise~HealthCheckResult~
     }
     class HealthService {
         -MicroserviceHealthIndicatorOptions options
