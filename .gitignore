@@ -1,5 +1,6 @@
 .turbo
 .env*
+!.env.example
 
 # Editor directories and files
 .vscode/*

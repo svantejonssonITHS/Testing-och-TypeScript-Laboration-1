@@ -7,16 +7,22 @@
 		"prebuild": "rimraf dist",
 		"build": "nest build",
 		"start": "nest start",
-		"dev": "nest start --watch",
+		"dev": "npm run prebuild && nest start --watch",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-		"test": "jest && jest --config ./test/jest-e2e.ts"
+		"test": "jest --setupFiles dotenv/config && jest --setupFiles dotenv/config --config ./test/jest-e2e.ts"
 	},
 	"dependencies": {
+		"@golevelup/ts-jest": "^0.3.4",
+		"@nestjs/axios": "^1.0.0",
 		"@nestjs/common": "^9.0.0",
+		"@nestjs/config": "^2.2.0",
 		"@nestjs/core": "^9.0.0",
 		"@nestjs/mapped-types": "*",
-		"@nestjs/platform-express": "^9.0.0"
+		"@nestjs/platform-express": "^9.0.0",
+		"@nestjs/terminus": "^9.1.4",
+		"jsonwebtoken": "^8.5.1",
+		"jwks-rsa": "^3.0.0"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^9.0.0",

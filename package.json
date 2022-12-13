@@ -10,7 +10,7 @@
 		"test": "turbo run test",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
-		"dev": "turbo run dev"
+		"dev": "turbo run dev --parallel"
 	},
 	"devDependencies": {
 		"axios": "^1.2.1",
