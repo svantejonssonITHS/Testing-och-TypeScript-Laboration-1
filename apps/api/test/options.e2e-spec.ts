@@ -5,7 +5,7 @@ import * as request from 'supertest';
 
 // Internal dependencies
 import { OptionsModule } from '$src/options/options.module';
-import checkOptionsProperty from '$src/utils/test/checkOptionsProperty';
+import checkOptions from '$src/utils/test/checkOptions';
 
 describe('OptionsController (e2e)', () => {
 	let app: INestApplication;
@@ -25,12 +25,7 @@ describe('OptionsController (e2e)', () => {
 			.expect(200)
 			.expect('Content-Type', /json/)
 			.expect((res: request.Response) => {
-				expect(res.body).toBeDefined();
-				expect(res.body).toBeInstanceOf(Object);
-
-				for (const property of ['categories', 'tags', 'regions', 'difficulties']) {
-					checkOptionsProperty(res.body, property);
-				}
+				checkOptions(res.body);
 			});
 	});
 });

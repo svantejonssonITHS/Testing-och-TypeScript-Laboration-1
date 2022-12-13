@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Options } from '_packages/shared-types';
 import { OptionsController } from './options.controller';
 import { OptionsService } from './options.service';
-import checkOptionsProperty from '$src/utils/test/checkOptionsProperty';
+import checkOptions from '$src/utils/test/checkOptions';
 
 describe('OptionsController', () => {
 	let controller: OptionsController;
@@ -26,11 +26,6 @@ describe('OptionsController', () => {
 	it('should respond with Options object', async () => {
 		const result: Options = await controller.getOptions();
 
-		expect(result).toBeDefined();
-		expect(result).toBeInstanceOf(Object);
-
-		for (const property of ['categories', 'tags', 'regions', 'difficulties']) {
-			checkOptionsProperty(result, property);
-		}
+		checkOptions(result);
 	});
 });

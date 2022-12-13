@@ -1,7 +1,6 @@
 import { HealthResult } from '_packages/shared-types/src';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function checkHealthResult(result: HealthResult) {
+export default function checkHealthResult(result: HealthResult): void {
 	expect(result).toBeDefined();
 	expect(result).toBeInstanceOf(Object);
 	expect(result).toHaveProperty('status');
