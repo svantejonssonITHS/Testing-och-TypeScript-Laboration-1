@@ -15,20 +15,20 @@ class Main {
     class HealthModule
     class HealthController {
         constructor(HealthService healthService)
-        +checkHealth() Promise~HealthCheckResult~
+        +checkHealth() Promise~HealthResult~
     }
     class HealthService {
         -MicroserviceHealthIndicatorOptions options
-        +checkHealth() Promise~HealthCheckResult~
+        +checkHealth() Promise~HealthResult~
     }
 
     class OptionModule
     class OptionController {
         constructor(OptionService optionService)
-        +getOptions() Promise~GameOptions~
+        +getOptions() Promise~Options~
     }
     class OptionService {
-        +getOptions() Promise~GameOptions~
+        +getOptions() Promise~Options~
     }
 
     %% Game routes
@@ -52,6 +52,7 @@ class Main {
 
     %% Relations
     Main <|-- AppModule
+    AuthGuard --|> Main
 
     AppModule <|-- HealthModule
     AppModule <|-- OptionModule
@@ -60,21 +61,16 @@ class Main {
     HealthModule <|-- HealthController
     HealthModule <|-- HealthService
 
-    HealthController <|-- AuthGuard
     HealthService --|> HealthController
 
     OptionModule <|-- OptionController
     OptionModule <|-- OptionService
 
-    OptionController <|-- AuthGuard
     OptionService --|> OptionController
 
     GameModule <|-- GameGateway
     GameModule <|-- GameService
     GameModule <|-- GameController
-
-    GameGateway <|-- AuthGuard
-    GameController <|-- AuthGuard
 
     GameService --|> GameGateway
     GameService --|> GameController
