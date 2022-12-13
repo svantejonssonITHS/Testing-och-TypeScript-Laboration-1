@@ -1,4 +1,4 @@
-import Auth0M2M from './Auth0M2M';
+import Auth0OathResponse from './Auth0OathResponse';
 import HealthResult from './HealthResult';
 
-export { Auth0M2M, HealthResult };
+export { Auth0OathResponse, HealthResult };

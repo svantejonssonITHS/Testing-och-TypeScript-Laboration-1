@@ -7,8 +7,8 @@ import { Observable, map, lastValueFrom } from 'rxjs';
 
 // Internal dependencies
 import { AuthGuard } from './auth.guard';
-import { AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN } from '$src/utils/env';
-import { Auth0M2M } from '$src/types';
+import { AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_USERNAME, AUTH0_PASSWORD } from '$src/utils/env';
+import { Auth0OathResponse } from '$src/types';
 
 describe('AuthGuard', () => {
 	let authGuard: AuthGuard;
@@ -39,16 +39,18 @@ describe('AuthGuard', () => {
 	it('should be able to activate', async () => {
 		const httpService: HttpService = new HttpService();
 
-		const observable: Observable<Auth0M2M> = await httpService
+		const observable: Observable<Auth0OathResponse> = await httpService
 			.post(`https://${AUTH0_DOMAIN}/oauth/token`, {
 				client_id: AUTH0_CLIENT_ID,
 				client_secret: AUTH0_CLIENT_SECRET,
 				audience: `https://${AUTH0_DOMAIN}/api/v2/`,
-				grant_type: 'client_credentials'
+				grant_type: 'password',
+				username: AUTH0_USERNAME,
+				password: AUTH0_PASSWORD
 			})
 			.pipe(map((response: AxiosResponse) => response.data));
 
-		const data: Auth0M2M = await lastValueFrom(observable);
+		const data: Auth0OathResponse = await lastValueFrom(observable);
 
 		mockContext.switchToHttp().getRequest.mockReturnValue({
 			headers: {
