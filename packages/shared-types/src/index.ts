@@ -1,3 +1,3 @@
-import { Options, Category, Tag, Region, Difficulty } from './types/Options';
+import { Options, Item } from './types/Options';
 
-export { Options, Category, Tag, Region, Difficulty };
+export { Options, Item };

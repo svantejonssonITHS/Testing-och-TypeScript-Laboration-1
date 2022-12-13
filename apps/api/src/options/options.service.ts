@@ -5,14 +5,14 @@ import { AxiosResponse } from 'axios';
 // Internal dependencies
 import axios from '$src/utils/axios';
 import { TRIVIA_API_URL } from '$src/utils/constants';
-import { Options, Category, Tag, Region, Difficulty } from '_packages/shared-types';
+import { Options, Item } from '_packages/shared-types';
 
 @Injectable()
 export class OptionsService {
 	async getOptions(): Promise<Options> {
 		const triviaCategories: AxiosResponse = await axios.get(`${TRIVIA_API_URL}/categories`);
 
-		const categories: Category[] = [];
+		const categories: Item[] = [];
 
 		if (triviaCategories.data) {
 			for (const category in triviaCategories.data) {
@@ -25,7 +25,7 @@ export class OptionsService {
 
 		const triviaTags: AxiosResponse = await axios.get(`${TRIVIA_API_URL}/tags`);
 
-		const tags: Tag[] = [];
+		const tags: Item[] = [];
 
 		if (triviaTags.data) {
 			triviaTags.data.forEach((tag: string) => {
@@ -43,7 +43,7 @@ export class OptionsService {
 			});
 		}
 
-		const regions: Region[] = [
+		const regions: Item[] = [
 			{
 				label: 'Sweden',
 				value: 'SE'
@@ -54,7 +54,7 @@ export class OptionsService {
 			}
 		];
 
-		const difficulties: Difficulty[] = [
+		const difficulties: Item[] = [
 			{
 				label: 'Easy',
 				value: 'easy'

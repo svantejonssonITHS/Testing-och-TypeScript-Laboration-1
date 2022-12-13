@@ -1,28 +1,13 @@
 type Options = {
-	categories: Category[];
-	tags: Tag[];
-	regions: Region[];
-	difficulties: Difficulty[];
+	categories: Item[];
+	tags: Item[];
+	regions: Item[];
+	difficulties: Item[];
 };
 
-type Category = {
+type Item = {
 	label: string;
 	value: string;
 };
 
-type Tag = {
-	label: string;
-	value: string;
-};
-
-type Region = {
-	label: string;
-	value: string;
-};
-
-type Difficulty = {
-	label: string;
-	value: string;
-};
-
-export { Options, Category, Tag, Region, Difficulty };
+export { Options, Item };

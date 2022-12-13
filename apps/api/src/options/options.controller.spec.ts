@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Options } from '_packages/shared-types';
 import { OptionsController } from './options.controller';
 import { OptionsService } from './options.service';
+import checkOptionsProperty from '$src/utils/checkOptionsProperty';
 
 describe('OptionsController', () => {
 	let controller: OptionsController;
@@ -28,32 +29,8 @@ describe('OptionsController', () => {
 		expect(result).toBeDefined();
 		expect(result).toBeInstanceOf(Object);
 
-		expect(result).toHaveProperty('categories');
-		expect(result.categories).toBeInstanceOf(Array);
-		expect(result.categories.length).toBeGreaterThan(0);
-		expect(result.categories[0]).toBeInstanceOf(Object);
-		expect(result.categories[0]).toHaveProperty('label');
-		expect(result.categories[0]).toHaveProperty('value');
-
-		expect(result).toHaveProperty('tags');
-		expect(result.tags).toBeInstanceOf(Array);
-		expect(result.tags.length).toBeGreaterThan(0);
-		expect(result.tags[0]).toBeInstanceOf(Object);
-		expect(result.tags[0]).toHaveProperty('label');
-		expect(result.tags[0]).toHaveProperty('value');
-
-		expect(result).toHaveProperty('regions');
-		expect(result.regions).toBeInstanceOf(Array);
-		expect(result.regions.length).toBeGreaterThan(0);
-		expect(result.regions[0]).toBeInstanceOf(Object);
-		expect(result.regions[0]).toHaveProperty('label');
-		expect(result.regions[0]).toHaveProperty('value');
-
-		expect(result).toHaveProperty('difficulties');
-		expect(result.difficulties).toBeInstanceOf(Array);
-		expect(result.difficulties.length).toBeGreaterThan(0);
-		expect(result.difficulties[0]).toBeInstanceOf(Object);
-		expect(result.difficulties[0]).toHaveProperty('label');
-		expect(result.difficulties[0]).toHaveProperty('value');
+		for (const property of ['categories', 'tags', 'regions', 'difficulties']) {
+			checkOptionsProperty(result, property);
+		}
 	});
 });
