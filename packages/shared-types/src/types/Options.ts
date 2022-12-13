@@ -1,3 +1,5 @@
+import { Item } from '../';
+
 type Options = {
 	categories: Item[];
 	tags: Item[];
@@ -5,9 +7,4 @@ type Options = {
 	difficulties: Item[];
 };
 
-type Item = {
-	label: string;
-	value: string;
-};
-
-export { Options, Item };
+export default Options;
