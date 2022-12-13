@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Options } from '_packages/shared-types';
 import { OptionsController } from './options.controller';
 import { OptionsService } from './options.service';
-import checkOptionsProperty from '$src/utils/checkOptionsProperty';
+import checkOptionsProperty from '$src/utils/test/checkOptionsProperty';
 
 describe('OptionsController', () => {
 	let controller: OptionsController;

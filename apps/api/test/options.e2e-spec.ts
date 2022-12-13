@@ -5,7 +5,7 @@ import * as request from 'supertest';
 
 // Internal dependencies
 import { OptionsModule } from '$src/options/options.module';
-import checkOptionsProperty from '$src/utils/checkOptionsProperty';
+import checkOptionsProperty from '$src/utils/test/checkOptionsProperty';
 
 describe('OptionsController (e2e)', () => {
 	let app: INestApplication;

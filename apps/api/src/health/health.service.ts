@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 
 // Internal dependencies
-import type { HealthResult } from '$src/types';
+import type { HealthResult } from '_packages/shared-types';
 import { TRIVIA_API_URL } from '$src/utils/constants';
 import axios from '$src/utils/axios';
 

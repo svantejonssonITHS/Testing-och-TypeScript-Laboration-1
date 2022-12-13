@@ -5,6 +5,7 @@ import * as request from 'supertest';
 
 // Internal dependencies
 import { HealthModule } from '$src/health/health.module';
+import checkHealthResult from '$src/utils/test/checkHealthResult';
 
 describe('HealthController (e2e)', () => {
 	let app: INestApplication;
@@ -24,16 +25,7 @@ describe('HealthController (e2e)', () => {
 			.expect(200)
 			.expect('Content-Type', /json/)
 			.expect((res: request.Response) => {
-				expect(res.body).toBeDefined();
-				expect(res.body).toBeInstanceOf(Object);
-				expect(res.body).toHaveProperty('status');
-				expect(res.body).toHaveProperty('message');
-				expect(res.body).toHaveProperty('uptime');
-				expect(res.body).toHaveProperty('timestamp');
-				expect(res.body).toHaveProperty('triviaApi');
-				expect(res.body.triviaApi).toBeInstanceOf(Object);
-				expect(res.body.triviaApi).toHaveProperty('status');
-				expect(res.body.triviaApi).toHaveProperty('message');
+				checkHealthResult(res.body);
 			});
 	});
 });

@@ -1,3 +1,4 @@
+import HealthResult from './types/HealthResult';
 import { Options, Item } from './types/Options';
 
-export { Options, Item };
+export { HealthResult, Options, Item };
