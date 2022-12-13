@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/typedef */
 // External dependencies
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Jwt, decode, JwtPayload, verify } from 'jsonwebtoken';

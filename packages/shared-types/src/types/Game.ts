@@ -11,8 +11,10 @@ type Game = {
 type GameOptions = {
 	categories: Item;
 	tags: Item;
-	regions: Item;
-	difficulties: Item;
+	region: Item;
+	difficulty: Item;
+	questionCount: number;
+	questionTime: number;
 };
 
 type Question = {
@@ -24,8 +26,9 @@ type Question = {
 type Player = {
 	id: string;
 	name: string;
-	score: number;
+	email: string;
 	profilePicture: string;
+	score?: number;
 };
 
 export { Game, GameOptions, Question, Player };

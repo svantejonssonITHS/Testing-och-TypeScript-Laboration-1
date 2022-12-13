@@ -1,12 +1,12 @@
 // External dependencies
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 // Internal dependencies
 import { HealthModule } from './health/health.module';
 import { OptionsModule } from './options/options.module';
+import { GameModule } from './game/game.module';
 
 @Module({
-	imports: [ConfigModule.forRoot(), HealthModule, OptionsModule]
+	imports: [HealthModule, OptionsModule, GameModule]
 })
 export class AppModule {}
