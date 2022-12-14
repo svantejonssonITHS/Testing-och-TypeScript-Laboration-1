@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 // Internal dependencies
 import { GameController } from './game.controller';
 import { GameService } from './game.service';
-import { Game } from '_packages/shared-types/src';
+import { Game } from '_packages/shared/types/src';
 import checkGame from '$src/utils/test/checkGame';
 import getAuth0AccessToken from '$src/utils/test/getAuth0AccessToken';
 

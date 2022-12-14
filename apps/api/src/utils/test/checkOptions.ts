@@ -1,4 +1,4 @@
-import { Options } from '_packages/shared-types/src';
+import { Options } from '_packages/shared/types/src';
 
 export default function checkOptionsProperty(result: Options): void {
 	expect(result).toBeDefined();

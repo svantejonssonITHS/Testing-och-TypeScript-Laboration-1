@@ -1,4 +1,4 @@
-import { Game } from '_packages/shared-types/src';
+import { Game } from '_packages/shared/types/src';
 
 export default function checkGame(game: Game): void {
 	expect(game).toBeDefined();

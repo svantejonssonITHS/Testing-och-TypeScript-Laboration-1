@@ -1,4 +1,4 @@
-import { HealthResult } from '_packages/shared-types/src';
+import { HealthResult } from '_packages/shared/types/src';
 
 export default function checkHealthResult(result: HealthResult): void {
 	expect(result).toBeDefined();

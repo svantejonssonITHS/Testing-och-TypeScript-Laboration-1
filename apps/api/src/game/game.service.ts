@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 
 // Internal dependencies
-import { Game, GameOptions, Player } from '_packages/shared-types/src';
+import { Game, GameOptions, Player } from '_packages/shared/types/src';
 import getAuth0User from '$src/utils/getAuth0User';
 import createGameId from '$src/utils/createGameId';
 import { QUESTION_COUNT_DEFAULT, QUESTION_TIME_DEFAULT } from '$src/utils/env';

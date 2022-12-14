@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 // Internal dependencies
 import axios from '$src/utils/axios';
 import { TRIVIA_API_URL } from '$src/utils/constants';
-import { Options, Item } from '_packages/shared-types';
+import { Options, Item } from '_packages/shared/types';
 
 @Injectable()
 export class OptionsService {

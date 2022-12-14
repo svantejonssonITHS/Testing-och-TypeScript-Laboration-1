@@ -2,7 +2,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal dependencies
-import type { HealthResult } from '_packages/shared-types';
+import type { HealthResult } from '_packages/shared/types';
 import { HealthController } from './health.controller';
 import { HealthService } from './health.service';
 import checkHealthResult from '$src/utils/test/checkHealthResult';
