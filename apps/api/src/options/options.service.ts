@@ -66,6 +66,10 @@ export class OptionsService {
 			{
 				label: 'Hard',
 				value: 'hard'
+			},
+			{
+				label: 'Random',
+				value: ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)]
 			}
 		];
 
