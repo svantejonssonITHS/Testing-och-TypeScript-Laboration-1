@@ -10,9 +10,15 @@ import { AUTH0_DOMAIN } from '$src/utils/env';
 export class AuthGuard implements CanActivate {
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		try {
-			const request: Request = context.switchToHttp().getRequest();
+			let token: string;
 
-			const token: string = request.headers['authorization']?.split(' ')[1];
+			if (context.getType() === 'ws') {
+				const handshake: Request = context.switchToWs().getData().handshake;
+				token = handshake.headers['authorization']?.split(' ')[1];
+			} else {
+				const request: Request = context.switchToHttp().getRequest();
+				token = request.headers['authorization']?.split(' ')[1];
+			}
 
 			if (!token) return false;
 
