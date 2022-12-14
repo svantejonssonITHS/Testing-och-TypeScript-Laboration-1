@@ -9,10 +9,10 @@ type Game = {
 };
 
 type GameOptions = {
-	categories: Item;
-	tags: Item;
-	region: Item;
-	difficulty: Item;
+	category: string;
+	tag: string;
+	region: string;
+	difficulty: string;
 	questionCount: number;
 	questionTime: number;
 };

@@ -18,4 +18,7 @@ export default function checkGame(game: Game): void {
 	expect(game.options).toBeInstanceOf(Object);
 	expect(game.options).toHaveProperty('questionCount');
 	expect(game.options).toHaveProperty('questionTime');
+	expect(game.options).toHaveProperty('category');
+	expect(game.options).toHaveProperty('region');
+	expect(game.options).toHaveProperty('difficulty');
 }
