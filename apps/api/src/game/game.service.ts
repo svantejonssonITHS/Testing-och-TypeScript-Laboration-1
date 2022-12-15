@@ -65,7 +65,41 @@ export class GameService {
 
 			if (game.players.length >= 10) throw new Error('Game is full');
 
+			const isHost: boolean = player.id === game.host.id;
+
+			if (isHost) player.isReady = true;
+
 			game.players.push(player);
+
+			client.emit(game.id, game);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	async handleChangePlayerStatus(client: Socket, payload: Event): Promise<void> {
+		try {
+			const player: Player = await getAuth0User(client.handshake.headers.authorization);
+
+			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
+
+			if (!game) throw new Error('Game not found');
+
+			const playerExists: boolean = game.players.some((gamePlayer: Player) => gamePlayer.id === player.id);
+
+			if (!playerExists) throw new Error('Player is not in game');
+
+			const isHost: boolean = player.id === game.host.id;
+
+			if (isHost) throw new Error('Host cannot change status');
+
+			game.players = game.players.map((gamePlayer: Player) => {
+				if (gamePlayer.id === player.id) {
+					gamePlayer.isReady = payload.data.isReady;
+				}
+
+				return gamePlayer;
+			});
 
 			client.emit(game.id, game);
 		} catch (error) {
@@ -137,29 +171,21 @@ export class GameService {
 
 			if (response.status !== 200) throw new Error('Failed to get questions');
 
-			for (const triviaQuestion of response.data) {
-				const question: Question = {
-					id: triviaQuestion.id,
-					question: triviaQuestion.question,
-					answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(
-						() => Math.random() - 0.5
-					),
-					correctAnswer: triviaQuestion.correctAnswer
-				};
+			game.questions = response.data.map((triviaQuestion: any) => ({
+				id: triviaQuestion.id,
+				question: triviaQuestion.question,
+				answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(
+					() => Math.random() - 0.5
+				),
+				correctAnswer: triviaQuestion.correctAnswer
+			}));
 
-				game.questions.push(question);
-			}
-
-			// update game
-			_games[_games.indexOf(game)] = game;
-
-			// Remove the correct answer from each Question object
-			// We do not want to send the correct answer to the client
-			for (const question of game.questions) {
-				delete question.correctAnswer;
-			}
-
-			client.emit(game.id, game);
+			client.emit(game.id, {
+				...game,
+				// Remove the correct answer from each Question object
+				// We do not want to send the correct answer to the client
+				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+			});
 		} catch (error) {
 			console.log(error);
 		}

@@ -13,6 +13,7 @@ export class GameGateway {
 	private readonly eventHandlers = {
 		join: this.gameService.handleJoin,
 		leave: this.gameService.handleLeave,
+		changePlayerStatus: this.gameService.handleChangePlayerStatus,
 		changeOptions: this.gameService.handleChangeOptions
 	};
 
