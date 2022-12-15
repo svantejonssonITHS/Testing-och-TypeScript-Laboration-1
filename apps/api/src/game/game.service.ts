@@ -234,8 +234,10 @@ export class GameService {
 
 			client.emit(game.id, {
 				...game,
+				// Set sentAt to the current time + the duration of the question intro
+				sentAt: Date.now() + QUESTION_INTRO_DURATION,
 				// Remove the correct answer from the Question object
-				// We do not want to send the correct answer to the client
+				// We do not want to send the correct answer for unanswered questions to the client
 				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
 				activeQuestion: { ...game.activeQuestion, correctAnswer: undefined }
 			});
@@ -247,7 +249,7 @@ export class GameService {
 				client.emit(game.id, {
 					...game,
 					// Remove the correct answer from the Question object
-					// We do not want to send the correct answer to the client
+					// We do not want to send the correct answer for unanswered questions to the client
 					questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
 				});
 			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);

@@ -27,7 +27,7 @@ type Question = {
 	correctAnswer?: string;
 	answers: string[];
 	playerAnswers?: PlayerAnswer[];
-	timestamp?: number;
+	sentAt?: number;
 };
 
 type Player = {
@@ -43,7 +43,7 @@ type PlayerAnswer = {
 	playerId: string;
 	answer: string;
 	isCorrect: boolean;
-	timestamp: number;
+	sentAt: number;
 };
 
 export { Game, GameOptions, Question, Player };
