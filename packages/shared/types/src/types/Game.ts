@@ -1,8 +1,5 @@
-import { Item } from '../';
-
 type Game = {
 	id: string;
-	isPrivate: boolean;
 	options: GameOptions;
 	questions: Question[];
 	players: Player[];
@@ -10,6 +7,7 @@ type Game = {
 };
 
 type GameOptions = {
+	isPrivate: boolean;
 	category: string;
 	tag: string;
 	region: string;

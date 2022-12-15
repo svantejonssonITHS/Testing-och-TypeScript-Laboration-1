@@ -12,20 +12,19 @@ export class GameGateway {
 
 	private readonly eventHandlers = {
 		join: this.gameService.handleJoin,
-		leave: this.gameService.handleLeave
+		leave: this.gameService.handleLeave,
+		changeOptions: this.gameService.handleChangeOptions
 	};
 
 	@UseGuards(new AuthGuard())
 	@SubscribeMessage('event')
-	async handleEvent(client: Socket, payload: string): Promise<void> {
+	async handleEvent(client: Socket, payload: Event): Promise<void> {
 		try {
-			const event: Event = JSON.parse(payload);
-
-			if (!checkWsEvent(event)) {
-				throw new Error('Invalid event');
+			if (!checkWsEvent(payload)) {
+				throw new Error('Invalid payload');
 			}
 
-			await this.eventHandlers[event.type](client, event.gameId, event.data);
+			await this.eventHandlers[payload.type](client, payload);
 		} catch (error) {
 			console.log(error);
 		}
