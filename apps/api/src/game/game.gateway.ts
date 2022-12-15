@@ -1,7 +1,7 @@
 import checkWsEvent from '$src/utils/checkWsEvent';
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { Event, Game } from '_packages/shared/types';
+import { Event } from '_packages/shared/types';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '$src/auth/auth.guard';
 import { GameService } from './game.service';
@@ -11,7 +11,8 @@ export class GameGateway {
 	constructor(private readonly gameService: GameService) {}
 
 	private readonly eventHandlers = {
-		join: this.gameService.handleJoin
+		join: this.gameService.handleJoin,
+		leave: this.gameService.handleLeave
 	};
 
 	@UseGuards(new AuthGuard())

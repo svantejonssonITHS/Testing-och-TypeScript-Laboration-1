@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 			let token: string;
 
 			if (context.getType() === 'ws') {
-				const handshake: Request = context.switchToWs().getData().handshake;
+				const handshake: Request = context.switchToWs().getClient().handshake;
 				token = handshake.headers['authorization']?.split(' ')[1];
 			} else {
 				const request: Request = context.switchToHttp().getRequest();
