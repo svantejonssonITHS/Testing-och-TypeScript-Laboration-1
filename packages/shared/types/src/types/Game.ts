@@ -17,9 +17,12 @@ type GameOptions = {
 };
 
 type Question = {
+	id: string;
 	question: string;
 	correctAnswer?: string;
 	answers: string[];
+	playerAnswers?: PlayerAnswer[];
+	timestamp?: number;
 };
 
 type Player = {
@@ -28,6 +31,12 @@ type Player = {
 	email: string;
 	profilePicture: string;
 	score?: number;
+};
+
+type PlayerAnswer = {
+	playerId: string;
+	answer: string;
+	timestamp: number;
 };
 
 export { Game, GameOptions, Question, Player };

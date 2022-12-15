@@ -1,9 +1,10 @@
 // External dependencies
 import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
+import { AxiosResponse } from 'axios';
 
 // Internal dependencies
-import { Game, GameOptions, Player, Event } from '_packages/shared/types/src';
+import { Game, GameOptions, Player, Event, Question } from '_packages/shared/types/src';
 import getAuth0User from '$src/utils/getAuth0User';
 import createGameId from '$src/utils/createGameId';
 import {
@@ -13,6 +14,8 @@ import {
 	QUESTION_REGION_DEFAULT,
 	QUESTION_TIME_DEFAULT
 } from '$src/utils/env';
+import axios from '$src/utils/axios';
+import { TRIVIA_API_URL } from '$src/utils/constants';
 
 const _games: Game[] = [];
 
@@ -48,8 +51,6 @@ export class GameService {
 
 	async handleJoin(client: Socket, payload: Event): Promise<void> {
 		try {
-			console.log(client.handshake.headers.authorization);
-
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
 			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
@@ -120,6 +121,42 @@ export class GameService {
 				if (payload.data.options[key] !== undefined) {
 					game.options[key] = payload.data.options[key];
 				}
+			}
+
+			if (Object.keys(payload.data.options).length === 0) throw new Error('No options changed');
+
+			// Get questions from the trivia api
+			let queryString: string = '?';
+			if (game.options.questionCount) queryString += `limit=${game.options.questionCount}`;
+			if (game.options.category) queryString += `&categories=${game.options.category}`;
+			if (game.options.tag) queryString += `&tags=${game.options.tag}`;
+			if (game.options.region) queryString += `&region=${game.options.region}`;
+			if (game.options.difficulty) queryString += `&difficulty=${game.options.difficulty}`;
+
+			const response: AxiosResponse = await axios.get(TRIVIA_API_URL + '/questions' + queryString);
+
+			if (response.status !== 200) throw new Error('Failed to get questions');
+
+			for (const triviaQuestion of response.data) {
+				const question: Question = {
+					id: triviaQuestion.id,
+					question: triviaQuestion.question,
+					answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(
+						() => Math.random() - 0.5
+					),
+					correctAnswer: triviaQuestion.correctAnswer
+				};
+
+				game.questions.push(question);
+			}
+
+			// update game
+			_games[_games.indexOf(game)] = game;
+
+			// Remove the correct answer from each Question object
+			// We do not want to send the correct answer to the client
+			for (const question of game.questions) {
+				delete question.correctAnswer;
 			}
 
 			client.emit(game.id, game);
