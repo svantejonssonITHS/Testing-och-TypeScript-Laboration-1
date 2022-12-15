@@ -1,12 +1,11 @@
 // External dependencies
 import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { AxiosResponse } from 'axios';
 
 // Internal dependencies
-import { Game, GameOptions, Player, Event, Question } from '_packages/shared/types/src';
-import getAuth0User from '$src/utils/getAuth0User';
-import createGameId from '$src/utils/createGameId';
+import { Game, GameOptions, Player, Event, Question } from '_packages/shared/types';
+import { GameStage } from '_packages/shared/enums/src';
+import { QUESTION_INTRO_DURATION } from '_packages/shared/constants/src';
 import {
 	QUESTION_CATEGORY_DEFAULT,
 	QUESTION_COUNT_DEFAULT,
@@ -14,8 +13,8 @@ import {
 	QUESTION_REGION_DEFAULT,
 	QUESTION_TIME_DEFAULT
 } from '$src/utils/env';
-import axios from '$src/utils/axios';
-import { TRIVIA_API_URL } from '$src/utils/constants';
+import getAuth0User from '$src/utils/getAuth0User';
+import createGameId from '$src/utils/createGameId';
 import getTriviaQuestions from '$src/utils/getTriviaQuestions';
 
 const _games: Game[] = [];
@@ -41,8 +40,10 @@ export class GameService {
 
 		const game: Game = {
 			id,
+			stage: GameStage.LOBBY,
 			options,
 			questions: questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
+			previousQuestions: [],
 			host,
 			players: []
 		};
@@ -58,15 +59,27 @@ export class GameService {
 
 			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
 
-			if (!game) throw new Error('Game not found');
+			if (!game) {
+				throw new Error('Game not found');
+			}
+
+			if (game.options.isPrivate && player.id !== game.host.id) {
+				throw new Error('Game is private');
+			}
+
+			if (game.stage !== GameStage.LOBBY) {
+				throw new Error('Game is in progress');
+			}
 
 			const playerExists: boolean = game.players.some((player: Player) => player.id === player.id);
 
-			if (game.options.isPrivate && player.id !== game.host.id) throw new Error('Game is private');
+			if (playerExists) {
+				throw new Error('Player is already in game');
+			}
 
-			if (playerExists) throw new Error('Player is already in game');
-
-			if (game.players.length >= 10) throw new Error('Game is full');
+			if (game.players.length >= 10) {
+				throw new Error('Game is full');
+			}
 
 			const isHost: boolean = player.id === game.host.id;
 
@@ -86,15 +99,19 @@ export class GameService {
 
 			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
 
-			if (!game) throw new Error('Game not found');
+			if (!game) {
+				throw new Error('Game not found');
+			}
 
 			const playerExists: boolean = game.players.some((gamePlayer: Player) => gamePlayer.id === player.id);
 
-			if (!playerExists) throw new Error('Player is not in game');
+			if (!playerExists) {
+				throw new Error('Player is not in game');
+			}
 
-			const isHost: boolean = player.id === game.host.id;
-
-			if (isHost) throw new Error('Host cannot change status');
+			if (player.id !== game.host.id) {
+				throw new Error('Host cannot change status');
+			}
 
 			game.players = game.players.map((gamePlayer: Player) => {
 				if (gamePlayer.id === player.id) {
@@ -170,6 +187,70 @@ export class GameService {
 				// We do not want to send the correct answer to the client
 				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
 			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	async handleStartRound(client: Socket, payload: Event): Promise<void> {
+		try {
+			const player: Player = await getAuth0User(client.handshake.headers.authorization);
+
+			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
+
+			if (!game) {
+				throw new Error('Game not found');
+			}
+
+			if (!game.players.some((gamePlayer: Player) => gamePlayer.id === player.id)) {
+				throw new Error('Player is not in game');
+			}
+
+			if (player.id !== game.host.id) {
+				throw new Error('Player is not host');
+			}
+
+			if (!game.players.every((gamePlayer: Player) => gamePlayer.isReady)) {
+				throw new Error('Not all players are ready');
+			}
+
+			if (game.stage === GameStage.QUESTION) {
+				throw new Error('Round already started, wait for the leaderboard stage to start a new round');
+			}
+
+			if (game.questions.length === 0) {
+				throw new Error('No questions left, game is over');
+			}
+
+			if (game.activeQuestion) {
+				game.previousQuestions.push({ ...game.activeQuestion });
+				game.activeQuestion = undefined;
+			}
+
+			game.activeQuestion = game.questions.shift();
+
+			// Update game stage
+			game.stage = GameStage.QUESTION;
+
+			client.emit(game.id, {
+				...game,
+				// Remove the correct answer from the Question object
+				// We do not want to send the correct answer to the client
+				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
+				activeQuestion: { ...game.activeQuestion, correctAnswer: undefined }
+			});
+
+			setTimeout(() => {
+				// Update game stage
+				game.stage = GameStage.LEADERBOARD;
+
+				client.emit(game.id, {
+					...game,
+					// Remove the correct answer from the Question object
+					// We do not want to send the correct answer to the client
+					questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+				});
+			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);
 		} catch (error) {
 			console.log(error);
 		}

@@ -14,7 +14,8 @@ export class GameGateway {
 		join: this.gameService.handleJoin,
 		leave: this.gameService.handleLeave,
 		changePlayerStatus: this.gameService.handleChangePlayerStatus,
-		changeOptions: this.gameService.handleChangeOptions
+		changeOptions: this.gameService.handleChangeOptions,
+		startRound: this.gameService.handleStartRound
 	};
 
 	@UseGuards(new AuthGuard())

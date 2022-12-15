@@ -1,7 +1,12 @@
+import { GameStage } from '../../../enums/src';
+
 type Game = {
 	id: string;
+	stage: GameStage;
 	options: GameOptions;
 	questions: Question[];
+	activeQuestion?: Question;
+	previousQuestions: Question[];
 	players: Player[];
 	host: Player;
 };
@@ -37,6 +42,7 @@ type Player = {
 type PlayerAnswer = {
 	playerId: string;
 	answer: string;
+	isCorrect: boolean;
 	timestamp: number;
 };
 
