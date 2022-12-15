@@ -1,8 +1,7 @@
 type Event = {
 	gameId: string;
 	type: string;
-	data: any;
-	timestamp: number;
+	data?: any;
 };
 
 export default Event;

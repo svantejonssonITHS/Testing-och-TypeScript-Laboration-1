@@ -2,6 +2,7 @@ import { Item } from '../';
 
 type Game = {
 	id: string;
+	isPrivate: boolean;
 	options: GameOptions;
 	questions: Question[];
 	players: Player[];
