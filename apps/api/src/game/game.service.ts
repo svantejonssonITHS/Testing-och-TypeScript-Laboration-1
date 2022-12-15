@@ -16,6 +16,7 @@ import {
 } from '$src/utils/env';
 import axios from '$src/utils/axios';
 import { TRIVIA_API_URL } from '$src/utils/constants';
+import getTriviaQuestions from '$src/utils/getTriviaQuestions';
 
 const _games: Game[] = [];
 
@@ -36,12 +37,14 @@ export class GameService {
 			isPrivate: true
 		};
 
+		const questions: Question[] = await getTriviaQuestions(options);
+
 		const game: Game = {
 			id,
 			options,
-			questions: [],
-			players: [],
-			host
+			questions: questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
+			host,
+			players: []
 		};
 
 		_games.push(game);
@@ -159,26 +162,7 @@ export class GameService {
 
 			if (Object.keys(payload.data.options).length === 0) throw new Error('No options changed');
 
-			// Get questions from the trivia api
-			let queryString: string = '?';
-			if (game.options.questionCount) queryString += `limit=${game.options.questionCount}`;
-			if (game.options.category) queryString += `&categories=${game.options.category}`;
-			if (game.options.tag) queryString += `&tags=${game.options.tag}`;
-			if (game.options.region) queryString += `&region=${game.options.region}`;
-			if (game.options.difficulty) queryString += `&difficulty=${game.options.difficulty}`;
-
-			const response: AxiosResponse = await axios.get(TRIVIA_API_URL + '/questions' + queryString);
-
-			if (response.status !== 200) throw new Error('Failed to get questions');
-
-			game.questions = response.data.map((triviaQuestion: any) => ({
-				id: triviaQuestion.id,
-				question: triviaQuestion.question,
-				answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(
-					() => Math.random() - 0.5
-				),
-				correctAnswer: triviaQuestion.correctAnswer
-			}));
+			game.questions = await getTriviaQuestions(game.options);
 
 			client.emit(game.id, {
 				...game,
