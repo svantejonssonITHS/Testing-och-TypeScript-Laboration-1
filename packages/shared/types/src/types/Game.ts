@@ -26,7 +26,7 @@ type Question = {
 	question: string;
 	correctAnswer?: string;
 	answers: string[];
-	playerAnswers?: PlayerAnswer[];
+	playerAnswers: PlayerAnswer[];
 	sentAt?: number;
 };
 
@@ -46,4 +46,4 @@ type PlayerAnswer = {
 	sentAt: number;
 };
 
-export { Game, GameOptions, Question, Player };
+export { Game, GameOptions, Question, Player, PlayerAnswer };

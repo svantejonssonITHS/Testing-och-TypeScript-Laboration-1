@@ -15,10 +15,16 @@ export default async function getTriviaQuestions(options: GameOptions): Promise<
 
 	if (response.status !== 200) throw new Error('Failed to get questions');
 
-	return response.data.map((triviaQuestion: any) => ({
-		id: triviaQuestion.id,
-		question: triviaQuestion.question,
-		answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(() => Math.random() - 0.5),
-		correctAnswer: triviaQuestion.correctAnswer
-	}));
+	return response.data.map(
+		(triviaQuestion: any) =>
+			({
+				id: triviaQuestion.id,
+				question: triviaQuestion.question,
+				answers: [triviaQuestion.correctAnswer, ...triviaQuestion.incorrectAnswers].sort(
+					() => Math.random() - 0.5
+				),
+				correctAnswer: triviaQuestion.correctAnswer,
+				playerAnswers: []
+			} as Question)
+	);
 }

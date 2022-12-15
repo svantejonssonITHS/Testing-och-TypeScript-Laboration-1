@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
 // Internal dependencies
-import { Game, GameOptions, Player, Event, Question } from '_packages/shared/types';
+import { Game, GameOptions, Player, Event, Question, PlayerAnswer } from '_packages/shared/types';
 import { GameStage } from '_packages/shared/enums/src';
 import { QUESTION_INTRO_DURATION } from '_packages/shared/constants/src';
 import {
@@ -16,6 +16,7 @@ import {
 import getAuth0User from '$src/utils/getAuth0User';
 import createGameId from '$src/utils/createGameId';
 import getTriviaQuestions from '$src/utils/getTriviaQuestions';
+import calculateScore from '$src/utils/calculateScore';
 
 const _games: Game[] = [];
 
@@ -23,6 +24,8 @@ const _games: Game[] = [];
 export class GameService {
 	async createGame(authorization: string): Promise<Game> {
 		const host: Player = await getAuth0User(authorization);
+		// Score is not needed for the host object
+		delete host.score;
 
 		const id: string = createGameId(_games.map((game: Game) => game.id));
 
@@ -42,7 +45,7 @@ export class GameService {
 			id,
 			stage: GameStage.LOBBY,
 			options,
-			questions: questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
+			questions,
 			previousQuestions: [],
 			host,
 			players: []
@@ -50,7 +53,10 @@ export class GameService {
 
 		_games.push(game);
 
-		return game;
+		return {
+			...game,
+			questions: questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+		};
 	}
 
 	async handleJoin(client: Socket, payload: Event): Promise<void> {
@@ -228,6 +234,7 @@ export class GameService {
 			}
 
 			game.activeQuestion = game.questions.shift();
+			game.activeQuestion.sentAt = Date.now() + QUESTION_INTRO_DURATION * 1000;
 
 			// Update game stage
 			game.stage = GameStage.QUESTION;
@@ -235,24 +242,79 @@ export class GameService {
 			client.emit(game.id, {
 				...game,
 				// Set sentAt to the current time + the duration of the question intro
-				sentAt: Date.now() + QUESTION_INTRO_DURATION,
 				// Remove the correct answer from the Question object
 				// We do not want to send the correct answer for unanswered questions to the client
 				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
-				activeQuestion: { ...game.activeQuestion, correctAnswer: undefined }
+				activeQuestion: {
+					...game.activeQuestion,
+					correctAnswer: undefined
+				}
 			});
 
 			setTimeout(() => {
+				const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
 				// Update game stage
-				game.stage = GameStage.LEADERBOARD;
+				gameAfterRound.stage = GameStage.LEADERBOARD;
 
-				client.emit(game.id, {
-					...game,
+				client.emit(gameAfterRound.id, {
+					...gameAfterRound,
 					// Remove the correct answer from the Question object
 					// We do not want to send the correct answer for unanswered questions to the client
-					questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+					questions: gameAfterRound.questions.map((question: Question) => ({
+						...question,
+						correctAnswer: undefined
+					}))
 				});
 			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	async handlePlayerAnswer(client: Socket, payload: Event): Promise<void> {
+		try {
+			const player: Player = await getAuth0User(client.handshake.headers.authorization);
+
+			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
+
+			if (!game) {
+				throw new Error('Game not found');
+			}
+
+			if (!game.players.some((gamePlayer: Player) => gamePlayer.id === player.id)) {
+				throw new Error('Player is not in game');
+			}
+
+			if (game.stage !== GameStage.QUESTION) {
+				throw new Error('Round is not active');
+			}
+
+			const alreadyAnswered: boolean = game.activeQuestion.playerAnswers.some(
+				(playerAnswer: PlayerAnswer) => playerAnswer.playerId === player.id
+			);
+
+			if (alreadyAnswered) {
+				throw new Error('Player has already answered');
+			}
+
+			const playerAnswer: PlayerAnswer = {
+				playerId: player.id,
+				answer: payload.data.answer,
+				isCorrect: payload.data.answer === game.activeQuestion.correctAnswer,
+				sentAt: Date.now()
+			};
+
+			game.activeQuestion.playerAnswers.push(playerAnswer);
+
+			if (!playerAnswer.isCorrect) {
+				throw new Error('Player answered incorrectly');
+			}
+
+			const timeTillAnswer: number = (playerAnswer.sentAt - game.activeQuestion.sentAt) / 1000;
+
+			const playerIndex: number = game.players.findIndex((gamePlayer: Player) => gamePlayer.id === player.id);
+
+			game.players[playerIndex].score += calculateScore(game.options.questionTime, timeTillAnswer);
 		} catch (error) {
 			console.log(error);
 		}
