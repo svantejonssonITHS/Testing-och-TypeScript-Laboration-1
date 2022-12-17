@@ -62,7 +62,7 @@ export class GameService {
 		};
 	}
 
-	async handleJoin(client: Socket, payload: Event): Promise<void> {
+	async handleJoin(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
@@ -96,17 +96,21 @@ export class GameService {
 
 			game.players.push(player);
 
-			client.emit(game.id, {
+			const returnGame: Game = {
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: []
-			});
+			};
+
+			client.emit(game.id, returnGame);
+
+			return returnGame;
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	async handleChangePlayerStatus(client: Socket, payload: Event): Promise<void> {
+	async handleChangePlayerStatus(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
@@ -122,7 +126,7 @@ export class GameService {
 				throw new Error('Player is not in game');
 			}
 
-			if (player.id !== game.host.id) {
+			if (player.id === game.host.id) {
 				throw new Error('Host cannot change status');
 			}
 
@@ -134,17 +138,21 @@ export class GameService {
 				return gamePlayer;
 			});
 
-			client.emit(game.id, {
+			const returnGame: Game = {
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: []
-			});
+			};
+
+			client.emit(game.id, returnGame);
+
+			return returnGame;
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	async handleLeave(client: Socket, payload: Event): Promise<void> {
+	async handleLeave(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
@@ -164,17 +172,21 @@ export class GameService {
 				_games.splice(_games.indexOf(game), 1);
 			}
 
-			client.emit(game.id, {
+			const returnGame: Game = {
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: []
-			});
+			};
+
+			client.emit(game.id, returnGame);
+
+			return returnGame;
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	async handleChangeOptions(client: Socket, payload: Event): Promise<void> {
+	async handleChangeOptions(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
@@ -192,6 +204,10 @@ export class GameService {
 				throw new Error('Player is not host');
 			}
 
+			if (game.stage !== GameStage.LOBBY) {
+				throw new Error('Game is in progress');
+			}
+
 			for (const key in payload.data.options) {
 				if (payload.data.options[key] !== undefined) {
 					game.options[key] = payload.data.options[key];
@@ -205,11 +221,15 @@ export class GameService {
 			game.questions = questions;
 			game.numberOfQuestions = questions.length;
 
-			client.emit(game.id, {
+			const returnGame: Game = {
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: []
-			});
+			};
+
+			client.emit(game.id, returnGame);
+
+			return returnGame;
 		} catch (error) {
 			console.log(error);
 		}

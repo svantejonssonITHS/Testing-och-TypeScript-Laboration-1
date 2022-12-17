@@ -1,18 +1,110 @@
+import getAuth0AccessToken from '$src/utils/test/getAuth0AccessToken';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameGateway } from './game.gateway';
+import { GameService } from './game.service';
+import { Socket } from 'socket.io';
+import { Game } from '_packages/shared/types/src';
 
 describe('GameGateway', () => {
 	let gateway: GameGateway;
+	let token: string;
+	let gameId: string;
+	let client: Socket;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [GameGateway]
+			providers: [GameGateway, GameService]
 		}).compile();
 
 		gateway = module.get<GameGateway>(GameGateway);
+
+		// Create a game
+		token = await getAuth0AccessToken();
+
+		gameId = (await module.get<GameService>(GameService).createGame(`Bearer ${token}`)).id;
+
+		// Create a client
+		client = {
+			handshake: { headers: { authorization: `Bearer ${token}` } },
+			emit: () => true
+		} as unknown as Socket;
 	});
 
 	it('should be defined', () => {
 		expect(gateway).toBeDefined();
+	});
+
+	it('host should be able to join their game', async () => {
+		const game: Game | void = await gateway.handleEvent(client, { gameId, type: 'join' });
+
+		expect(game).toBeDefined();
+		// In case the game is undefined, the test will fail but typescript doesn't know that
+		if (!game) return;
+
+		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('players');
+		expect(game.players).toHaveLength(1);
+		expect(game.players[0]).toHaveProperty('id');
+		expect(game.players[0]).toHaveProperty('name');
+		expect(game.players[0]).toHaveProperty('email');
+		expect(game.players[0]).toHaveProperty('profilePicture');
+		expect(game.players[0]).toHaveProperty('score');
+		expect(game.players[0]).toHaveProperty('streak');
+		expect(game.players[0]).toHaveProperty('isReady');
+	});
+
+	it('host should not be able to change their status', async () => {
+		const game: Game | void = await gateway.handleEvent(client, {
+			gameId,
+			type: 'changePlayerStatus',
+			data: { isReady: false }
+		});
+
+		expect(game).toBeUndefined();
+	});
+
+	it('host should be able to change their game options', async () => {
+		const game: Game | void = await gateway.handleEvent(client, {
+			gameId,
+			type: 'changeOptions',
+			data: {
+				options: {
+					isPrivate: false,
+					category: 'film',
+					tag: 'james_bond',
+					region: 'SE',
+					difficulty: 'hard',
+					questionCount: 2,
+					questionTime: 10
+				}
+			}
+		});
+
+		expect(game).toBeDefined();
+		// In case the game is undefined, the test will fail but typescript doesn't know that
+		if (!game) return;
+
+		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('options');
+		expect(game.options).toHaveProperty('isPrivate', false);
+		expect(game.options).toHaveProperty('category', 'film');
+		expect(game.options).toHaveProperty('tag', 'james_bond');
+		expect(game.options).toHaveProperty('region', 'SE');
+		expect(game.options).toHaveProperty('difficulty', 'hard');
+		expect(game.options).toHaveProperty('questionCount', 2);
+		expect(game.options).toHaveProperty('questionTime', 10);
+	});
+
+	it('host should be able to leave their game', async () => {
+		const game: Game | void = await gateway.handleEvent(client, { gameId, type: 'leave' });
+
+		expect(game).toBeDefined();
+		// In case the game is undefined, the test will fail but typescript doesn't know that
+		if (!game) return;
+
+		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('players');
+		// Since the host left, there should be no players
+		expect(game.players).toHaveLength(0);
 	});
 });
