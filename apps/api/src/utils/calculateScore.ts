@@ -8,15 +8,23 @@ import { QUESTION_POINTS_POSSIBLE } from './env';
  * @returns Score for question
  */
 export default function calculateScore(questionTimer: number, responseTime: number, streak?: number): number {
+	// Also check streak for invalid values
+	const isInvalid: boolean =
+		isNaN(questionTimer) ||
+		isNaN(responseTime) ||
+		questionTimer <= 0 ||
+		responseTime < 0 ||
+		typeof questionTimer !== 'number' ||
+		typeof responseTime !== 'number';
+	if (isInvalid) return 0;
+
 	let score: number = responseTime / questionTimer;
 	score /= 2;
 	score = 1 - score;
 	score *= QUESTION_POINTS_POSSIBLE;
-	if (streak) {
+	if (streak && streak > 0 && typeof streak === 'number') {
 		score *= 1 + streak * 0.1;
 	}
-
-	console.log(score);
 
 	return Math.round(score);
 }

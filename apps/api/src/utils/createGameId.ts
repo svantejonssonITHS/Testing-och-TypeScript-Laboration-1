@@ -1,4 +1,4 @@
-export default function createGameId(gameIds: string[]): string {
+export default function createGameId(gameIds?: string[]): string {
 	let gameId: string = '';
 
 	for (let i: number = 0; i < 3; i++) {
@@ -9,7 +9,9 @@ export default function createGameId(gameIds: string[]): string {
 		gameId += Math.floor(Math.random() * 10);
 	}
 
-	if (gameIds.includes(gameId)) {
+	const gameIdsIsValid: boolean = gameIds && Array.isArray(gameIds);
+
+	if (gameIdsIsValid && gameIds.includes(gameId)) {
 		return createGameId(gameIds);
 	}
 
