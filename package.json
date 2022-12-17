@@ -25,5 +25,8 @@
 		"url": "git+https://github.com/svantejonssonITHS/svante-jonsson-testing-typescript-quiz-app.git"
 	},
 	"author": "Svante Jonsson",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+		"socket.io-client": "^4.5.4"
+	}
 }

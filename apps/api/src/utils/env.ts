@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
-config();
+config({
+	path: '../../.env'
+});
 
 const AUTH0_DOMAIN: string = process.env.AUTH0_DOMAIN;
 const AUTH0_CLIENT_ID: string = process.env.AUTH0_CLIENT_ID;
@@ -12,6 +14,7 @@ const QUESTION_CATEGORY_DEFAULT: string = process.env.QUESTION_CATEGORY_DEFAULT 
 const QUESTION_REGION_DEFAULT: string = process.env.QUESTION_REGION_DEFAULT || 'US';
 const QUESTION_DIFFICULTY_DEFAULT: string = process.env.QUESTION_DIFFICULTY_DEFAULT || 'medium';
 const QUESTION_POINTS_POSSIBLE: number = Number(process.env.QUESTION_POINTS_POSSIBLE) || 1000;
+const JEST_TEST_PORT: number = Number(process.env.JEST_TEST_PORT) || 2048;
 
 export {
 	AUTH0_DOMAIN,
@@ -24,5 +27,6 @@ export {
 	QUESTION_CATEGORY_DEFAULT,
 	QUESTION_REGION_DEFAULT,
 	QUESTION_DIFFICULTY_DEFAULT,
-	QUESTION_POINTS_POSSIBLE
+	QUESTION_POINTS_POSSIBLE,
+	JEST_TEST_PORT
 };

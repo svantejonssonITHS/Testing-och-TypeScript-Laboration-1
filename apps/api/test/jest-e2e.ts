@@ -14,7 +14,8 @@ const config: Config = {
 		'^.+\\.(t|j)s$': 'ts-jest'
 	},
 	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/../' }),
-	globalSetup: '<rootDir>/helpers/setupTests.helper.ts'
+	globalSetup: '<rootDir>/helpers/setupTests.helper.ts',
+	globalTeardown: '<rootDir>/helpers/teardownTests.helper.ts'
 };
 
 export default config;
