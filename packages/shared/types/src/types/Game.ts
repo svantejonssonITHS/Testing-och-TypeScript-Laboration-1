@@ -4,6 +4,7 @@ type Game = {
 	id: string;
 	stage: GameStage;
 	options: GameOptions;
+	numberOfQuestions: number;
 	questions: Question[];
 	activeQuestion?: Question;
 	previousQuestions: Question[];

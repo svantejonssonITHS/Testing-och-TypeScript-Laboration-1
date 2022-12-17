@@ -46,6 +46,7 @@ export class GameService {
 			id,
 			stage: GameStage.LOBBY,
 			options,
+			numberOfQuestions: questions.length,
 			questions,
 			previousQuestions: [],
 			host,
@@ -56,7 +57,8 @@ export class GameService {
 
 		return {
 			...game,
-			questions: questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+			// Remove the questions from the game object, as we do not want to send them to the client
+			questions: []
 		};
 	}
 
@@ -94,7 +96,11 @@ export class GameService {
 
 			game.players.push(player);
 
-			client.emit(game.id, game);
+			client.emit(game.id, {
+				...game,
+				// Remove the questions from the game object, as we do not want to send them to the client
+				questions: []
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -128,7 +134,11 @@ export class GameService {
 				return gamePlayer;
 			});
 
-			client.emit(game.id, game);
+			client.emit(game.id, {
+				...game,
+				// Remove the questions from the game object, as we do not want to send them to the client
+				questions: []
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -154,7 +164,11 @@ export class GameService {
 				_games.splice(_games.indexOf(game), 1);
 			}
 
-			client.emit(game.id, game);
+			client.emit(game.id, {
+				...game,
+				// Remove the questions from the game object, as we do not want to send them to the client
+				questions: []
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -186,13 +200,15 @@ export class GameService {
 
 			if (Object.keys(payload.data.options).length === 0) throw new Error('No options changed');
 
-			game.questions = await getTriviaQuestions(game.options);
+			const questions: Question[] = await getTriviaQuestions(game.options);
+
+			game.questions = questions;
+			game.numberOfQuestions = questions.length;
 
 			client.emit(game.id, {
 				...game,
-				// Remove the correct answer from each Question object
-				// We do not want to send the correct answer to the client
-				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined }))
+				// Remove the questions from the game object, as we do not want to send them to the client
+				questions: []
 			});
 		} catch (error) {
 			console.log(error);
@@ -242,10 +258,9 @@ export class GameService {
 
 			client.emit(game.id, {
 				...game,
-				// Set sentAt to the current time + the duration of the question intro
-				// Remove the correct answer from the Question object
+				// Remove the questions from the game object, as we do not want to send them to the client
+				questions: [],
 				// We do not want to send the correct answer for unanswered questions to the client
-				questions: game.questions.map((question: Question) => ({ ...question, correctAnswer: undefined })),
 				activeQuestion: {
 					...game.activeQuestion,
 					correctAnswer: undefined
@@ -259,12 +274,8 @@ export class GameService {
 
 				client.emit(gameAfterRound.id, {
 					...gameAfterRound,
-					// Remove the correct answer from the Question object
-					// We do not want to send the correct answer for unanswered questions to the client
-					questions: gameAfterRound.questions.map((question: Question) => ({
-						...question,
-						correctAnswer: undefined
-					}))
+					// Remove the questions from the game object, as we do not want to send them to the client
+					questions: []
 				});
 			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);
 		} catch (error) {
@@ -323,6 +334,7 @@ export class GameService {
 				timeTillAnswer,
 				game.players[playerIndex].streak >= 3 ? game.players[playerIndex].streak : undefined
 			);
+			// TODO: dont allow player to answer during intro stage
 		} catch (error) {
 			console.log(error);
 		}
