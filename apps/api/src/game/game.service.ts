@@ -297,7 +297,7 @@ export class GameService {
 				throw new Error('Player is not in game');
 			}
 
-			if (game.stage !== GameStage.QUESTION) {
+			if (game.stage !== GameStage.QUESTION || game.activeQuestion.sentAt > Date.now()) {
 				throw new Error('Round is not active');
 			}
 
@@ -334,7 +334,6 @@ export class GameService {
 				timeTillAnswer,
 				game.players[playerIndex].streak >= 3 ? game.players[playerIndex].streak : undefined
 			);
-			// TODO: dont allow player to answer during intro stage
 		} catch (error) {
 			console.log(error);
 		}
