@@ -4,8 +4,13 @@ import { GameGateway } from './game.gateway';
 import { GameService } from './game.service';
 import { Socket } from 'socket.io';
 import { Game } from '_packages/shared/types/src';
+import { GameStage } from '_packages/shared/enums/src';
+import { QUESTION_INTRO_DURATION } from '_packages/shared/constants/src';
 
 describe('GameGateway', () => {
+	// Increase the timeout to 20 seconds
+	jest.setTimeout(20 * 1000);
+
 	let gateway: GameGateway;
 	let token: string;
 	let gameId: string;
@@ -42,6 +47,8 @@ describe('GameGateway', () => {
 		if (!game) return;
 
 		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('stage');
+		expect(game.stage).toBe(GameStage.LOBBY);
 		expect(game).toHaveProperty('players');
 		expect(game.players).toHaveLength(1);
 		expect(game.players[0]).toHaveProperty('id');
@@ -85,6 +92,8 @@ describe('GameGateway', () => {
 		if (!game) return;
 
 		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('stage');
+		expect(game.stage).toBe(GameStage.LOBBY);
 		expect(game).toHaveProperty('options');
 		expect(game.options).toHaveProperty('isPrivate', false);
 		expect(game.options).toHaveProperty('category', 'film');
@@ -93,6 +102,34 @@ describe('GameGateway', () => {
 		expect(game.options).toHaveProperty('difficulty', 'hard');
 		expect(game.options).toHaveProperty('questionCount', 2);
 		expect(game.options).toHaveProperty('questionTime', 10);
+	});
+
+	it('host should be able to start their game', async () => {
+		// increase timeout to 10 seconds
+
+		const game: Game | void = await gateway.handleEvent(client, { gameId, type: 'startRound' });
+
+		expect(game).toBeDefined();
+		// In case the game is undefined, the test will fail but typescript doesn't know that
+		if (!game) return;
+
+		expect(game).toHaveProperty('id', gameId);
+		expect(game).toHaveProperty('stage');
+		expect(game.stage).toBe(GameStage.QUESTION);
+		expect(game).toHaveProperty('activeQuestion');
+		expect(game.activeQuestion).toHaveProperty('id');
+		expect(game.activeQuestion).toHaveProperty('question');
+		expect(game.activeQuestion).toHaveProperty('answers');
+		expect(game.activeQuestion).toHaveProperty('correctAnswer', undefined);
+		expect(game.activeQuestion).toHaveProperty('sentAt');
+
+		// Wait for the question to end
+		expect(game).toHaveProperty('options');
+		expect(game.options).toHaveProperty('questionTime');
+
+		await new Promise((resolve: any) =>
+			setTimeout(resolve, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000)
+		);
 	});
 
 	it('host should be able to leave their game', async () => {

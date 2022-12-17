@@ -235,7 +235,7 @@ export class GameService {
 		}
 	}
 
-	async handleStartRound(client: Socket, payload: Event): Promise<void> {
+	async handleStartRound(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
@@ -276,7 +276,7 @@ export class GameService {
 			// Update game stage
 			game.stage = GameStage.QUESTION;
 
-			client.emit(game.id, {
+			const gameAtRoundStart: Game = {
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: [],
@@ -285,7 +285,9 @@ export class GameService {
 					...game.activeQuestion,
 					correctAnswer: undefined
 				}
-			});
+			};
+
+			client.emit(game.id, gameAtRoundStart);
 
 			setTimeout(() => {
 				const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
@@ -298,6 +300,8 @@ export class GameService {
 					questions: []
 				});
 			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);
+
+			return gameAtRoundStart;
 		} catch (error) {
 			console.log(error);
 		}
