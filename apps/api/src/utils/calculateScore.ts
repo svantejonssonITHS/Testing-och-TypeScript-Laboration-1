@@ -1,4 +1,4 @@
-import { POINTS_POSSIBLE } from './env';
+import { QUESTION_POINTS_POSSIBLE } from './env';
 
 /**
  * @description Calculates score for question. Source of formula: https://support.kahoot.com/hc/en-us/articles/115002303908-How-points-work
@@ -11,7 +11,7 @@ export default function calculateScore(questionTimer: number, responseTime: numb
 	let score: number = responseTime / questionTimer;
 	score /= 2;
 	score = 1 - score;
-	score *= POINTS_POSSIBLE;
+	score *= QUESTION_POINTS_POSSIBLE;
 	if (streak) {
 		score *= 1 + streak * 0.1;
 	}
