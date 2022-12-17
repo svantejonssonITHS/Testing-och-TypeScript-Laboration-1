@@ -24,8 +24,9 @@ const _games: Game[] = [];
 export class GameService {
 	async createGame(authorization: string): Promise<Game> {
 		const host: Player = await getAuth0User(authorization);
-		// Score is not needed for the host object
+		// Score and Streak is not needed for the host object
 		delete host.score;
+		delete host.streak;
 
 		const id: string = createGameId(_games.map((game: Game) => game.id));
 
@@ -306,15 +307,22 @@ export class GameService {
 
 			game.activeQuestion.playerAnswers.push(playerAnswer);
 
+			const playerIndex: number = game.players.findIndex((gamePlayer: Player) => gamePlayer.id === player.id);
+
 			if (!playerAnswer.isCorrect) {
+				game.players[playerIndex].streak = 0;
 				throw new Error('Player answered incorrectly');
 			}
 
+			game.players[playerIndex].streak++;
+
 			const timeTillAnswer: number = (playerAnswer.sentAt - game.activeQuestion.sentAt) / 1000;
 
-			const playerIndex: number = game.players.findIndex((gamePlayer: Player) => gamePlayer.id === player.id);
-
-			game.players[playerIndex].score += calculateScore(game.options.questionTime, timeTillAnswer);
+			game.players[playerIndex].score += calculateScore(
+				game.options.questionTime,
+				timeTillAnswer,
+				game.players[playerIndex].streak >= 3 ? game.players[playerIndex].streak : undefined
+			);
 		} catch (error) {
 			console.log(error);
 		}

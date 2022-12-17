@@ -16,7 +16,8 @@ export default async function getAuth0User(authorization: string): Promise<Playe
 		name: response.data.name,
 		email: response.data.email,
 		profilePicture: response.data.picture,
-		score: 0
+		score: 0,
+		streak: 0
 	};
 
 	return player;

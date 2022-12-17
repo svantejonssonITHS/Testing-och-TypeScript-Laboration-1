@@ -36,6 +36,7 @@ type Player = {
 	email: string;
 	profilePicture: string;
 	score?: number;
+	streak?: number;
 	isReady?: boolean;
 };
 
