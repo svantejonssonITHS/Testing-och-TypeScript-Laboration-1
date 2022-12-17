@@ -4,7 +4,6 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 
 // Internal dependencies
 import { AppModule } from './app.module';
-import { AuthGuard } from './auth/auth.guard';
 
 // Add global auth guard
 async function bootstrap(): Promise<void> {
@@ -13,8 +12,6 @@ async function bootstrap(): Promise<void> {
 		new FastifyAdapter(),
 		{ cors: true }
 	);
-
-	app.useGlobalGuards(new AuthGuard());
 
 	await app.listen(3000);
 }

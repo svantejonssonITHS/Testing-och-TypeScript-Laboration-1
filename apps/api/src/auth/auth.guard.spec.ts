@@ -1,6 +1,6 @@
 // External dependencies
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, HttpException } from '@nestjs/common';
 
 // Internal dependencies
 import { AuthGuard } from './auth.guard';
@@ -20,19 +20,17 @@ describe('AuthGuard', () => {
 		expect(authGuard).toBeDefined();
 	});
 
-	it('should not be able to activate', async () => {
+	it('Auth header is invalid | should not be able to activate', async () => {
 		mockContext.switchToHttp().getRequest.mockReturnValue({
 			headers: {
 				authorization: 'Bearer invalid-token'
 			}
 		});
 
-		const canActivate: boolean = await authGuard.canActivate(mockContext);
-
-		expect(canActivate).toBe(false);
+		await expect(authGuard.canActivate(mockContext)).rejects.toThrow(HttpException);
 	});
 
-	it('should be able to activate', async () => {
+	it('Auth header is valid | should be able to activate', async () => {
 		const token: string = await getAuth0AccessToken();
 
 		mockContext.switchToHttp().getRequest.mockReturnValue({
@@ -41,8 +39,6 @@ describe('AuthGuard', () => {
 			}
 		});
 
-		const canActivate: boolean = await authGuard.canActivate(mockContext);
-
-		expect(canActivate).toBe(true);
+		expect(await authGuard.canActivate(mockContext)).toBe(true);
 	});
 });

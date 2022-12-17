@@ -1,8 +1,11 @@
-import getAuth0AccessToken from '$src/utils/test/getAuth0AccessToken';
+// External dependencies
 import { Test, TestingModule } from '@nestjs/testing';
+import { Socket } from 'socket.io';
+
+// Internal dependencies
+import getAuth0AccessToken from '$src/utils/test/getAuth0AccessToken';
 import { GameGateway } from './game.gateway';
 import { GameService } from './game.service';
-import { Socket } from 'socket.io';
 import { Game } from '_packages/shared/types/src';
 import { GameStage } from '_packages/shared/enums/src';
 import { QUESTION_INTRO_DURATION } from '_packages/shared/constants/src';

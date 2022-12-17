@@ -1,27 +1,21 @@
 // External dependencies
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
 // Internal dependencies
-import { HealthModule } from '$src/health/health.module';
 import checkHealthResult from '$src/utils/test/checkHealthResult';
+import getAuth0AccessToken from '$src/utils/test/getAuth0AccessToken';
 
 describe('HealthController (e2e)', () => {
-	let app: INestApplication;
-
-	beforeEach(async () => {
-		const moduleFixture: TestingModule = await Test.createTestingModule({
-			imports: [HealthModule]
-		}).compile();
-
-		app = moduleFixture.createNestApplication();
-		await app.init();
+	it('/health (GET) Invalid token', async () => {
+		return request(global.SERVER).get('/health').set('Authorization', `Bearer invalid_token`).expect(401);
 	});
 
-	it('/health (GET)', () => {
-		return request(app.getHttpServer())
+	it('/health (GET) Valid token', async () => {
+		const token: string = await getAuth0AccessToken();
+
+		return request(global.SERVER)
 			.get('/health')
+			.set('Authorization', `Bearer ${token}`)
 			.expect(200)
 			.expect('Content-Type', /json/)
 			.expect((res: request.Response) => {

@@ -1,5 +1,5 @@
 // External dependencies
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
 // Internal dependencies
@@ -24,6 +24,9 @@ const _games: Game[] = [];
 export class GameService {
 	async createGame(authorization: string): Promise<Game> {
 		const host: Player = await getAuth0User(authorization);
+
+		if (!host?.id) throw new HttpException('Invalid token', 401);
+
 		// Score and Streak is not needed for the host object
 		delete host.score;
 		delete host.streak;

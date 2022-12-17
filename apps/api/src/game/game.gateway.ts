@@ -1,9 +1,10 @@
-import checkWsEvent from '$src/utils/checkWsEvent';
+// External dependencies
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
+
+// Internal dependencies
+import checkWsEvent from '$src/utils/checkWsEvent';
 import { Event, Game } from '_packages/shared/types';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '$src/auth/auth.guard';
 import { GameService } from './game.service';
 
 @WebSocketGateway()
@@ -19,7 +20,6 @@ export class GameGateway {
 		playerAnswer: this.gameService.handlePlayerAnswer
 	};
 
-	@UseGuards(new AuthGuard())
 	@SubscribeMessage('event')
 	async handleEvent(client: Socket, payload: Event): Promise<Game | void> {
 		try {

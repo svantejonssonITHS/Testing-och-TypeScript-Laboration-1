@@ -13,7 +13,8 @@ const config: Config = {
 	transform: {
 		'^.+\\.(t|j)s$': 'ts-jest'
 	},
-	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/../' })
+	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/../' }),
+	globalSetup: '<rootDir>/helpers/setupTests.helper.ts'
 };
 
 export default config;
