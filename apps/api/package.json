@@ -22,7 +22,6 @@
 		"@nestjs/platform-socket.io": "^9.2.1",
 		"@nestjs/terminus": "^9.1.4",
 		"@nestjs/websockets": "^9.2.1",
-		"dotenv": "^16.0.3",
 		"jsonwebtoken": "^8.5.1",
 		"jwks-rsa": "^3.0.0",
 		"rimraf": "^3.0.2",

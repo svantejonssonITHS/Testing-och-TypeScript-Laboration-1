@@ -30,6 +30,7 @@
 		"vite": "^3.2.3"
 	},
 	"dependencies": {
+		"@auth0/auth0-react": "^1.12.0",
 		"@types/react-router-dom": "^5.3.3",
 		"react-router-dom": "^6.5.0"
 	}

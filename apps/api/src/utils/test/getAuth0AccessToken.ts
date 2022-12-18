@@ -5,7 +5,7 @@ import { lastValueFrom, map, Observable } from 'rxjs';
 
 // Internal dependencies
 import { Auth0OathResponse } from '$src/types';
-import { AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_PASSWORD, AUTH0_USERNAME } from '../env';
+import { AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_TEST_PASSWORD, AUTH0_TEST_USERNAME } from '../env';
 
 export default async function getAuth0AccessToken(): Promise<string> {
 	const httpService: HttpService = new HttpService();
@@ -16,8 +16,8 @@ export default async function getAuth0AccessToken(): Promise<string> {
 			client_secret: AUTH0_CLIENT_SECRET,
 			audience: `https://${AUTH0_DOMAIN}/api/v2/`,
 			grant_type: 'password',
-			username: AUTH0_USERNAME,
-			password: AUTH0_PASSWORD,
+			username: AUTH0_TEST_USERNAME,
+			password: AUTH0_TEST_PASSWORD,
 			scope: 'openid'
 		})
 		.pipe(map((response: AxiosResponse) => response.data));
