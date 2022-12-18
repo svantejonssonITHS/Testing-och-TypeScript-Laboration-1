@@ -1,10 +1,15 @@
 import style from './Toast.module.css';
 
-export default function Toast(): JSX.Element {
+interface ToastProps {
+	title: string;
+	message: string;
+}
+
+export default function Toast({ title, message }: ToastProps): JSX.Element {
 	return (
 		<div className={style['toast']}>
-			<h1>Trivia API is down</h1>
-			<p>The Trivia API is not working at the moment. Please try again later!</p>
+			<h1>{title}</h1>
+			<p>{message}</p>
 		</div>
 	);
 }

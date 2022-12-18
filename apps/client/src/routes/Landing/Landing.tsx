@@ -23,8 +23,6 @@ export default function Landing(): JSX.Element {
 				setTriviaApiHealthy(response.triviaApi.status === 'OK' ? true : false);
 				setTriviaApiCheckComplete(true);
 			} catch (error) {
-				console.log('tjo');
-
 				setTriviaApiHealthy(false);
 				setTriviaApiCheckComplete(true);
 			}
@@ -55,7 +53,12 @@ export default function Landing(): JSX.Element {
 					</div>
 				</div>
 				{/* Display error message if the Trivia API is down */}
-				{triviaApiCheckComplete && !triviaApiHealthy && <Toast />}
+				{triviaApiCheckComplete && !triviaApiHealthy && (
+					<Toast
+						title='Trivia API is down'
+						message='The Trivia API is not working at the moment. Please try again later!'
+					/>
+				)}
 			</>
 		</Background>
 	);

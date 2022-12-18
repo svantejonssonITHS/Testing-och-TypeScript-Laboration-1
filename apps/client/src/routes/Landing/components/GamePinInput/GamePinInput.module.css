@@ -51,7 +51,7 @@
 	background-color: transparent;
 }
 
-.button.valid {
+.button.show {
 	animation: button-intro 500ms ease-in-out forwards;
 }
 
