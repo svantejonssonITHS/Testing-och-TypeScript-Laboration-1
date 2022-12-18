@@ -33,10 +33,10 @@ describe('GameController (e2e)', () => {
 });
 
 describe('GameGateway (e2e)', () => {
-	jest.setTimeout(25 * 1000);
+	jest.setTimeout(30 * 1000);
 	let socket: Socket;
 
-	beforeAll(async () => {
+	beforeEach(async () => {
 		socket = io(`http://localhost:${JEST_TEST_PORT}`, {
 			extraHeaders: {
 				authorization: `Bearer ${await getAuth0AccessToken()}`
@@ -44,7 +44,7 @@ describe('GameGateway (e2e)', () => {
 		});
 	});
 
-	afterAll(() => {
+	afterEach(() => {
 		socket.disconnect();
 	});
 
@@ -139,8 +139,6 @@ describe('GameGateway (e2e)', () => {
 				expect(data).toHaveProperty('previousQuestions');
 				expect(data).toHaveProperty('numberOfQuestions');
 
-				console.log(data.previousQuestions.length, data.numberOfQuestions);
-
 				if (data.previousQuestions.length + 1 === data.numberOfQuestions) {
 					done();
 				} else {
@@ -150,6 +148,21 @@ describe('GameGateway (e2e)', () => {
 					});
 				}
 			}
+		});
+	});
+
+	it('should be able to leave the game', (done: jest.DoneCallback) => {
+		socket.emit('event', {
+			gameId: _gameId,
+			type: 'leave'
+		});
+
+		socket.on(_gameId, (data: Game) => {
+			expect(data).toBeDefined();
+			expect(data.id).toBe(_gameId);
+			expect(data.players).toHaveLength(0);
+
+			done();
 		});
 	});
 });
