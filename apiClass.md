@@ -35,19 +35,22 @@ class Main {
     class GameModule
     class GameGateway {
         constructor(GameService gameService)
-        +handleGame(GameInformation gameInformation)
+        -ServiceObject eventHandlers
+        +handleEvent(Socket client, Event payload) Promise~Game | void~
     }
     class GameController {
         constructor(GameService gameService)
-        +createGame(String hostId) Promise~GameInformation~
+        +createGame(String authorization) Promise~Game~
     }
     class GameService {
-        -GameInformation[] games
-        +startGame() Promise~StartGame~
-        +nextQuestion() Promise~NewQuestion~
-        +showLeaderbord() Promise~Leaderboard~
-        +answerQuestion() Promise~QuestionAnswer~
-        +endGame() Promise~EndGame~
+        -Game[] _games
+        +createGame(string authorization) Promise~Game~
+        +handleJoin(Socket client, Event payload) Promise~Game | void~
+        +handleChangePlayerStatus(Socket client, Event payload) Promise~Game | void~
+        +handleLeave(Socket client, Event payload) Promise~Game | void~
+        +handleChangeOptions(Socket client, Event payload) Promise~Game | void~
+        +handleStartRound(Socket client, Event payload) Promise~Game | void~
+        +handlePlayerAnswer(Socket client, Event payload) Promise~Game | void~
     }
 
     %% Relations
