@@ -13,5 +13,11 @@ export default defineConfig({
 		strictPort: true
 	},
 	envDir: '../../',
-	envPrefix: 'PUBLIC_'
+	envPrefix: 'PUBLIC_',
+	resolve: {
+		alias: {
+			$src: './src',
+			_packages: '../../packages'
+		}
+	}
 });
