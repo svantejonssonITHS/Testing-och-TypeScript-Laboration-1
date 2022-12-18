@@ -28,5 +28,9 @@
 		"react-test-renderer": "^18.2.0",
 		"typescript": "^4.6.4",
 		"vite": "^3.2.3"
+	},
+	"dependencies": {
+		"@types/react-router-dom": "^5.3.3",
+		"react-router-dom": "^6.5.0"
 	}
 }
