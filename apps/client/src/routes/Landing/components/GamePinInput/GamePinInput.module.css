@@ -1,0 +1,65 @@
+.form {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 1fr;
+
+	--border-width: 2px;
+	--button-padding: 0.25rem;
+}
+
+.input {
+	grid-row: 1;
+	z-index: 1;
+	text-align: center;
+	font-size: 1.5rem;
+	border: none;
+	border-bottom: var(--border-width) solid var(--color-primary);
+	outline: none !important;
+	padding: 0.25rem 0;
+	background-color: transparent;
+}
+
+.input:disabled {
+	color: var(--color-primary-light);
+	border-color: var(--color-primary-light);
+}
+
+.input.invalid {
+	border-color: var(--color-error) !important;
+}
+
+.button {
+	grid-row: 2;
+	position: absolute;
+	cursor: pointer;
+	background-color: var(--color-primary);
+	color: var(--color-background);
+	font-size: 0.8rem;
+	font-weight: 700;
+	padding-top: calc(var(--button-padding) - var(--border-width));
+	padding-bottom: var(--button-padding);
+	border: none;
+	border-radius: var(--border-radius-small);
+	border-start-start-radius: 0;
+	border-start-end-radius: 0;
+	width: 100%;
+	opacity: 0;
+}
+
+.button:disabled {
+	background-color: transparent;
+}
+
+.button.valid {
+	animation: button-intro 500ms ease-in-out forwards;
+}
+
+@keyframes button-intro {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

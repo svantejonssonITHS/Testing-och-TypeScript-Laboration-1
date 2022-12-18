@@ -1,0 +1,23 @@
+.layout {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 3rem;
+	height: 100vh;
+	width: 100vw;
+}
+
+.alternative {
+	text-align: center;
+}
+
+.alternative,
+.alternative > * {
+	font-size: 0.8rem;
+}
+
+.link-disabled {
+	pointer-events: none;
+	color: var(--color-primary-light);
+}

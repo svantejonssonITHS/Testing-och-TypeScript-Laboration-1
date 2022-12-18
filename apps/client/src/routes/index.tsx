@@ -4,8 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import { IdToken, useAuth0 } from '@auth0/auth0-react';
 
 // Internal dependencies
-import Lobby from './Lobby';
-import Test from './Test';
+import api from '$src/utils/api';
+import Landing from './Landing/Landing';
 
 export default function index(): JSX.Element {
 	const { getIdTokenClaims, loginWithPopup } = useAuth0();
@@ -18,6 +18,7 @@ export default function index(): JSX.Element {
 
 		if (idToken) {
 			setToken(idToken);
+			api.defaults.headers.common.Authorization = `Bearer ${idToken}`;
 		} else {
 			setToken('');
 		}
@@ -37,11 +38,7 @@ export default function index(): JSX.Element {
 				<Routes>
 					<Route
 						path='/'
-						element={<Lobby />}
-					/>
-					<Route
-						path='/test'
-						element={<Test />}
+						element={<Landing />}
 					/>
 				</Routes>
 			</>

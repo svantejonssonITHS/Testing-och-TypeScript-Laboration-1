@@ -1,6 +1,9 @@
+// External dependencies
+import { AxiosResponse } from 'axios';
+
+// Internal dependencies
 import api from './';
 import { HealthResult } from '_packages/shared/types';
-import { AxiosResponse } from 'axios';
 
 export default async function getHealth(): Promise<HealthResult> {
 	const response: AxiosResponse = await api.get('/health');

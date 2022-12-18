@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -8,7 +9,12 @@ dotenv.config({
 });
 
 export default defineConfig({
-	plugins: [react()],
+	plugins: [
+		react(),
+		svgr({
+			exportAsDefault: true
+		})
+	],
 	server: {
 		port: Number(process.env.CLIENT_PORT),
 		strictPort: true
