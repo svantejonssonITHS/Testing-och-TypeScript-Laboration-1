@@ -11,7 +11,7 @@ export default function index(): JSX.Element {
 	const { getIdTokenClaims, loginWithPopup } = useAuth0();
 	const [token, setToken]: [string, React.Dispatch<React.SetStateAction<string>>] = useState('');
 
-	const checkAuth: () => void = async () => {
+	const checkAuth: () => Promise<void> = async () => {
 		const tokenClaims: IdToken | undefined = await getIdTokenClaims();
 
 		const idToken: string | undefined = tokenClaims?.__raw;
