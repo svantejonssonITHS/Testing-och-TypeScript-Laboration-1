@@ -1,0 +1,18 @@
+.button {
+	text-align: center;
+	padding: 0.5rem 1rem;
+	border-radius: var(--border-radius-small);
+	font-weight: 700;
+}
+
+.fill {
+	background-color: var(--color-primary);
+	color: var(--color-text-light);
+	border: var(--input-border-width) solid var(--color-primary);
+}
+
+.outline {
+	background-color: var(--color-background);
+	color: var(--color-primary);
+	border: var(--input-border-width) solid var(--color-primary);
+}

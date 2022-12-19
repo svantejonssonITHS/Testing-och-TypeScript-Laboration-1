@@ -20,7 +20,7 @@ export default function Background({ children }: BackgroundProps): JSX.Element {
 			<YellowBlob />
 			<BlueBlob />
 			<GreenBlob />
-			{children}
+			<div className={style['content-container']}>{children}</div>
 		</div>
 	);
 }

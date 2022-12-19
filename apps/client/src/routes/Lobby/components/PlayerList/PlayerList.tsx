@@ -7,7 +7,7 @@ export default function PlayerList(): JSX.Element {
 	return (
 		<div className={style['player-list']}>
 			<Title>Participants</Title>
-			<ul>
+			<ul className={style['list']}>
 				<li>
 					<Player
 						player={{
@@ -20,9 +20,43 @@ export default function PlayerList(): JSX.Element {
 						}}
 						status='host'
 						position={1}
-						gameStage={GameStage.LEADERBOARD}
-						leaderboardMovement={LeaderboardMovement.DOWN}
+						gameStage={GameStage.LOBBY}
+						leaderboardMovement={LeaderboardMovement.NONE}
 					/>
+				</li>
+				<li>
+					<Player
+						player={{
+							id: '1',
+							name: 'John Doe',
+							email: 'john.doe@email.com',
+							profilePicture: 'https://thispersondoesnotexist.com/image',
+							score: 0,
+							isReady: true
+						}}
+						status='host'
+						position={1}
+						gameStage={GameStage.LOBBY}
+						leaderboardMovement={LeaderboardMovement.NONE}
+					/>
+				</li>
+				<li>
+					<Player
+						player={{
+							id: '1',
+							name: 'John Doe',
+							email: 'john.doe@email.com',
+							profilePicture: 'https://thispersondoesnotexist.com/image',
+							score: 0,
+							isReady: true
+						}}
+						status='host'
+						position={1}
+						gameStage={GameStage.LOBBY}
+						leaderboardMovement={LeaderboardMovement.NONE}
+					/>
+				</li>
+				<li>
 					<Player
 						player={{
 							id: '1',
