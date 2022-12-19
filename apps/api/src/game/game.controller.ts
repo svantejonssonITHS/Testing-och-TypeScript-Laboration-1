@@ -1,5 +1,5 @@
 // External dependencies
-import { Controller, Post, Headers } from '@nestjs/common';
+import { Controller, Post, Headers, Query, Get } from '@nestjs/common';
 
 // Internal dependencies
 import { Game } from '_packages/shared/types/src';
@@ -12,5 +12,13 @@ export class GameController {
 	@Post()
 	async createGame(@Headers('Authorization') authorization: string): Promise<Game> {
 		return await this.gameService.createGame(authorization);
+	}
+
+	@Get()
+	async checkGameId(
+		@Headers('Authorization') authorization: string,
+		@Query('gameId') gameId: string
+	): Promise<boolean> {
+		return await this.gameService.checkGameId(authorization, gameId);
 	}
 }

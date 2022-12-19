@@ -65,6 +65,19 @@ export class GameService {
 		};
 	}
 
+	async checkGameId(authorization: string, gameId: string): Promise<boolean> {
+		try {
+			const player: Player = await getAuth0User(authorization);
+
+			// Check if the game exists and if it is private, check if the player is the host
+			return _games.some(
+				(game: Game) => game.id === gameId && (game.options.isPrivate ? game.host.id === player.id : true)
+			);
+		} catch (error) {
+			return false;
+		}
+	}
+
 	async handleJoin(client: Socket, payload: Event): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
