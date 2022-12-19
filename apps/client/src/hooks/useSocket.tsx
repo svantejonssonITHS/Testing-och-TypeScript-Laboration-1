@@ -6,7 +6,7 @@ import { io, Socket } from 'socket.io-client';
 import { API_URL } from '$src/utils/env';
 import { Event, Game } from '_packages/shared/types/src';
 
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext: React.Context<Socket | undefined> = createContext(undefined as Socket | undefined);
 
 interface SocketProviderProps {
 	token: string;
@@ -14,40 +14,34 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider = ({ token, children }: SocketProviderProps): JSX.Element => {
-	const [socket, setSocket] = useState<Socket | null>(null);
-
 	if (!token) throw new Error('Token not found');
 
-	useEffect(() => {
-		const newSocket = io(API_URL, {
-			extraHeaders: {
-				authorization: `Bearer ${token}`
-			}
-		});
-
-		setSocket(newSocket);
-
-		return () => {
-			if (socket) socket.disconnect();
-		};
-	}, []);
+	const socket: Socket = io(API_URL, {
+		extraHeaders: {
+			Authorization: `Bearer ${token}`
+		}
+	});
 
 	return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };
 
-export const useSocket = () => {
-	const socket = useContext(SocketContext);
-	const [game, setGame]: [Game | undefined, Dispatch<React.SetStateAction<Game | undefined>>] = useState();
+interface UseSocket {
+	emit: (event: string, data: Event) => void;
+	on: (event: string) => void;
+	game: Game | undefined;
+}
 
-	if (!socket) {
-		throw new Error('Socket not found');
-	}
+export const useSocket = (): UseSocket => {
+	const socket: Socket | undefined = useContext(SocketContext);
+	const [game, setGame] = useState(undefined as Game | undefined);
 
-	const emit = (event: string, data: Event) => {
+	if (!socket) throw new Error('Socket context not found');
+
+	const emit = (event: string, data: Event): void => {
 		socket.emit(event, data);
 	};
 
-	const on = (event: string) => {
+	const on = (event: string): void => {
 		socket.on(event, (data: Game) => {
 			setGame(data);
 		});
