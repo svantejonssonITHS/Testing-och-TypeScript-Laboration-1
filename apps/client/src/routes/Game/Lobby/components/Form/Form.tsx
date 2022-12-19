@@ -1,82 +1,76 @@
 import Select from './Select/Select';
-import Text from './Text/Text';
+import Number from './Text/Number';
 import Check from './Check/Check';
 import Title from '../Title/Title';
-import { useState } from 'react';
-import { Item, Options } from '_packages/shared/types/src';
+import { useEffect, useState } from 'react';
+import { GameOptions, Item, Options } from '_packages/shared/types/src';
 import style from './Form.module.css';
-
 interface FormProps {
 	options: Options | undefined;
+	values: GameOptions | undefined;
 }
+export default function Form({ options, values }: FormProps): JSX.Element {
+	const [test, setTest] = useState(0);
 
-export default function Form({ options }: FormProps): JSX.Element {
-	const [regions]: [Item[] | undefined, React.Dispatch<React.SetStateAction<Item[] | undefined>>] = useState(
-		options?.regions
-	);
-	const [region, setRegion]: [Item | undefined, React.Dispatch<React.SetStateAction<Item | undefined>>] = useState();
-
-	const [categories]: [Item[] | undefined, React.Dispatch<React.SetStateAction<Item[] | undefined>>] = useState(
-		options?.categories
-	);
-	const [category, setCategory]: [Item | undefined, React.Dispatch<React.SetStateAction<Item | undefined>>] =
-		useState();
-	const [tags]: [Item[] | undefined, React.Dispatch<React.SetStateAction<Item[] | undefined>>] = useState(
-		options?.tags
-	);
-	const [tag, setTag]: [Item | undefined, React.Dispatch<React.SetStateAction<Item | undefined>>] = useState();
-
-	const [difficulties]: [Item[] | undefined, React.Dispatch<React.SetStateAction<Item[] | undefined>>] = useState(
-		options?.difficulties
-	);
-	const [difficulty, setDifficulty]: [Item | undefined, React.Dispatch<React.SetStateAction<Item | undefined>>] =
-		useState();
-
-	const [questionAmount, setQuestionAmount]: [string, React.Dispatch<React.SetStateAction<string>>] = useState('');
-	const [questionTime, setQuestionTime]: [string, React.Dispatch<React.SetStateAction<string>>] = useState('');
-	const [isPrivate, setIsPrivate]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
+	useEffect(() => {
+		console.log(test);
+	}, [test]);
 
 	return (
 		<form className={style['form']}>
 			<Title>Game Settings</Title>
 			<Select
 				label='Region'
-				options={regions ?? []}
-				selectedItem={region}
-				onChange={(value: Item | undefined): void => setRegion(value)}
+				options={options?.regions ?? []}
+				selectedValue={values?.region}
+				onChange={(value: string | undefined): void => {
+					if (values) values.region = value ?? '';
+				}}
 			/>
 			<Select
 				label='Category'
-				options={categories ?? []}
-				selectedItem={category}
-				onChange={(value: Item | undefined): void => setCategory(value)}
+				options={options?.categories ?? []}
+				selectedValue={values?.category}
+				onChange={(value: string | undefined): void => {
+					if (values) values.category = value ?? '';
+				}}
 			/>
 			<Select
 				label='Tag'
-				options={tags ?? []}
-				selectedItem={tag}
-				onChange={(value: Item | undefined): void => setTag(value)}
+				options={options?.tags ?? []}
+				selectedValue={values?.tag}
+				onChange={(value: string | undefined): void => {
+					if (values) values.tag = value ?? '';
+				}}
 			/>
 			<Select
 				label='Difficulty'
-				options={difficulties ?? []}
-				selectedItem={difficulty}
-				onChange={(value: Item | undefined): void => setDifficulty(value)}
+				options={options?.difficulties ?? []}
+				selectedValue={values?.difficulty}
+				onChange={(value: string | undefined): void => {
+					if (values) values.difficulty = value ?? '';
+				}}
 			/>
-			<Text
+			<Number
 				label='Number of questions'
-				value={questionAmount}
-				onChange={(value: string): void => setQuestionAmount(value)}
+				value={values?.questionCount}
+				onChange={(value: number | undefined): void => {
+					if (values) values.questionCount = value ?? 0;
+				}}
 			/>
-			<Text
+			<Number
 				label='Time per question'
-				value={questionTime}
-				onChange={(value: string): void => setQuestionTime(value)}
+				value={values?.questionTime}
+				onChange={(value: number | undefined): void => {
+					if (values) values.questionTime = value ?? 0;
+				}}
 			/>
 			<Check
 				label='Allow other players to join'
-				checked={isPrivate}
-				onClick={(value: boolean): void => setIsPrivate(value)}
+				checked={values?.isPrivate ?? true}
+				onClick={(value: boolean): void => {
+					if (values) values.isPrivate = value;
+				}}
 			/>
 		</form>
 	);

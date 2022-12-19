@@ -2,23 +2,19 @@ import { Item } from '_packages/shared/types/src';
 import { useState, useRef } from 'react';
 import style from './Select.module.css';
 import { useOnClickOutside } from 'usehooks-ts';
-
 interface SelectProps {
 	label: string;
 	options: Item[];
-	selectedItem: Item | undefined;
-	onChange: (value: Item | undefined) => void;
+	selectedValue: string | undefined;
+	onChange: (value: string | undefined) => void;
 }
-
-export default function Select({ label, options, selectedItem, onChange }: SelectProps): JSX.Element {
+export default function Select({ label, options, selectedValue, onChange }: SelectProps): JSX.Element {
 	const selectRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 	const selectId: string = Math.random().toString(36).substring(2, 9);
 	const [showOptions, setShowOptions]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
-
 	useOnClickOutside(selectRef, () => {
 		setShowOptions(false);
 	});
-
 	return (
 		<div
 			className={style['container']}
@@ -27,18 +23,18 @@ export default function Select({ label, options, selectedItem, onChange }: Selec
 			<div className={style['select-container']}>
 				<label
 					htmlFor={selectId}
-					className={style[selectedItem?.label ? 'selected' : '']}
+					className={style[selectedValue ? 'selected' : '']}
 				>
 					{label}
 				</label>
 				<input
-					className={[style['value-input'], style[selectedItem?.label ? 'selected' : '']].join(' ')}
+					className={[style['value-input'], style[selectedValue ? 'selected' : '']].join(' ')}
 					id={selectId}
 					type='button'
-					value={selectedItem?.label ?? ''}
+					value={options.find((option: Item): boolean => option.value === selectedValue)?.label || ''}
 					onClick={(): void => setShowOptions(!showOptions)}
 				/>
-				{selectedItem && (
+				{selectedValue && (
 					<button
 						className={style['clear-button']}
 						type='button'
@@ -62,7 +58,7 @@ export default function Select({ label, options, selectedItem, onChange }: Selec
 									className={style['option']}
 									key={option.value}
 									onClick={(): void => {
-										onChange(option);
+										onChange(option.value);
 										setShowOptions(false);
 									}}
 								>
