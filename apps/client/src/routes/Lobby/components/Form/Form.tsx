@@ -1,11 +1,13 @@
 import Select from './Select/Select';
 import Text from './Text/Text';
+import Check from './Check/Check';
 import { useState, useEffect } from 'react';
 import { Item } from '_packages/shared/types/src';
 import style from './Form.module.css';
 
 export default function Form(): JSX.Element {
 	const [name, setName]: [Item | undefined, React.Dispatch<React.SetStateAction<Item | undefined>>] = useState();
+	const [checked, setChecked]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
 
 	useEffect(() => {
 		console.log(name);
@@ -27,6 +29,11 @@ export default function Form(): JSX.Element {
 				label='Name'
 				value={name?.label ?? ''}
 				onChange={(value: string): void => setName({ value, label: value })}
+			/>
+			<Check
+				label='Name'
+				checked={checked}
+				onClick={(value: boolean): void => setChecked(value)}
 			/>
 		</form>
 	);

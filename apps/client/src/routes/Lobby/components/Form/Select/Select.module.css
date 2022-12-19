@@ -22,6 +22,7 @@
 }
 
 .select-container > label {
+	user-select: none;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
@@ -89,6 +90,7 @@
 }
 
 .option {
+	user-select: none;
 	padding: var(--padding);
 	font-size: var(--font-size);
 	cursor: pointer;
