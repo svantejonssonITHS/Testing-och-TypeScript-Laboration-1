@@ -16,6 +16,7 @@ import { getOptions } from '$src/utils/api/options';
 export default function Lobby(): JSX.Element {
 	const { gameId } = useParams();
 	const navigate: NavigateFunction = useNavigate();
+	const [gameExists, setGameExists] = useState(false);
 	const [options, setOptions] = useState({} as Options);
 
 	useEffect(() => {
@@ -24,9 +25,9 @@ export default function Lobby(): JSX.Element {
 
 			console.log('gameId', gameId);
 
-			const gameExists: boolean = await getGameExists(gameId);
+			const exists: boolean = await getGameExists(gameId);
 
-			if (!gameExists) {
+			if (!exists) {
 				toast.error(`Game with pin ${gameId} does not exist`);
 				return navigate('/');
 			}
@@ -38,6 +39,7 @@ export default function Lobby(): JSX.Element {
 				return navigate('/');
 			}
 
+			setGameExists(exists);
 			setOptions(gameOptions);
 		})();
 	}, [gameId]);
