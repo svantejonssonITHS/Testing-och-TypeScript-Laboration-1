@@ -87,6 +87,8 @@
 	width: 100%;
 	background-color: var(--color-background);
 	box-shadow: var(--box-shadow);
+	max-height: 20rem;
+	overflow-y: auto;
 }
 
 .option {

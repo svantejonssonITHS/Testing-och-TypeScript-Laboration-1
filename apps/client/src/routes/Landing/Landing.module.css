@@ -27,6 +27,14 @@
 	font-size: 0.8rem;
 }
 
+.link {
+	background: none;
+	border: none;
+	color: var(--color-primary);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 .link-disabled {
 	pointer-events: none;
 	color: var(--color-primary-light);

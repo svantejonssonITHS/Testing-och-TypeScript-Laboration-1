@@ -6,7 +6,7 @@ import { IdToken, useAuth0 } from '@auth0/auth0-react';
 // Internal dependencies
 import api from '$src/utils/api';
 import Landing from './Landing/Landing';
-import Lobby from './Lobby/Lobby';
+import Game from './Game/Game';
 
 export default function index(): JSX.Element {
 	const { getIdTokenClaims, loginWithPopup } = useAuth0();
@@ -40,14 +40,12 @@ export default function index(): JSX.Element {
 					path='/'
 					element={<Landing />}
 				/>
-
 				<Route
-					path='/lobby/:gameId'
-					element={<Lobby />}
+					path='/game/:gameId/*'
+					element={<Game />}
 				/>
-
 				<Route
-					path='/*'
+					path='*'
 					element={<Navigate to='/' />}
 				/>
 			</Routes>
