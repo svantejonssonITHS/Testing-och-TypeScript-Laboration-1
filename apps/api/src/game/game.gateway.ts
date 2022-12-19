@@ -7,7 +7,7 @@ import checkWsEvent from '$src/utils/checkWsEvent';
 import { Event, Game } from '_packages/shared/types';
 import { GameService } from './game.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class GameGateway {
 	constructor(private readonly gameService: GameService) {}
 

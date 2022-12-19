@@ -7,6 +7,7 @@ import { IdToken, useAuth0 } from '@auth0/auth0-react';
 import api from '$src/utils/api';
 import Landing from './Landing/Landing';
 import Game from './Game/Game';
+import { SocketProvider } from '$src/hooks/useSocket';
 
 export default function index(): JSX.Element {
 	const { getIdTokenClaims, loginWithPopup } = useAuth0();
@@ -35,20 +36,22 @@ export default function index(): JSX.Element {
 
 	if (token.length) {
 		return (
-			<Routes>
-				<Route
-					path='/'
-					element={<Landing />}
-				/>
-				<Route
-					path='/game/:gameId/*'
-					element={<Game />}
-				/>
-				<Route
-					path='*'
-					element={<Navigate to='/' />}
-				/>
-			</Routes>
+			<SocketProvider token={token}>
+				<Routes>
+					<Route
+						path='/'
+						element={<Landing />}
+					/>
+					<Route
+						path='/game/:gameId/*'
+						element={<Game />}
+					/>
+					<Route
+						path='*'
+						element={<Navigate to='/' />}
+					/>
+				</Routes>
+			</SocketProvider>
 		);
 	} else {
 		return <></>;
