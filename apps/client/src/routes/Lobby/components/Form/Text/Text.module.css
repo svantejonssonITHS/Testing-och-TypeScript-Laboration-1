@@ -16,25 +16,24 @@
 }
 
 .select-container > label,
-.select-container > input,
-.select-container > button {
+.select-container > input {
 	font-size: var(--font-size);
 }
 
 .select-container > label {
+	pointer-events: none;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 	transition: all 0.2s ease-in-out;
 }
 
-.select-container > label.selected {
+.select-container > label.has-value {
 	font-size: calc(var(--font-size) * 0.75);
 	top: calc((var(--font-size) * 0.55) * -1);
 }
 
-.select-container > input,
-.select-container > button {
+.select-container > input {
 	appearance: none;
 	border: none;
 	background: none;
@@ -56,44 +55,10 @@
 	font-size: calc(var(--font-size) * 1.5);
 }
 
-.select-container > input.selected {
+.select-container > input.has-value {
 	opacity: 1;
 }
 
-.select-container > button.clear-button {
-	padding-inline: calc(var(--padding) * 2);
-	display: grid;
-	place-items: center;
-}
-
-.expand-icon-container {
-	display: grid;
-	place-items: center;
-}
-
-.expand-icon-container > span {
-	transition: all 0.2s ease-in-out;
-}
-
-.expand-icon-container > span.expanded {
-	transform: rotate(-180deg);
-}
-
-.options {
-	z-index: 1;
-	position: absolute;
-	top: 100%;
-	width: 100%;
-	background-color: var(--color-background);
-	box-shadow: var(--box-shadow);
-}
-
-.option {
-	padding: var(--padding);
-	font-size: var(--font-size);
-	cursor: pointer;
-}
-
-.option:hover {
-	background-color: var(--color-primary-light);
+.select-container > input:focus {
+	opacity: 1;
 }

@@ -1,7 +1,7 @@
 import { Item } from '_packages/shared/types/src';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import style from './Select.module.css';
-import Close from '$src/assets/icons/close.svg';
+import { useOnClickOutside } from 'usehooks-ts';
 
 interface SelectProps {
 	label: string;
@@ -11,11 +11,19 @@ interface SelectProps {
 }
 
 export default function Select({ label, options, selectedItem, onChange }: SelectProps): JSX.Element {
+	const selectRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 	const selectId: string = Math.random().toString(36).substring(2, 9);
 	const [showOptions, setShowOptions]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
 
+	useOnClickOutside(selectRef, () => {
+		setShowOptions(false);
+	});
+
 	return (
-		<div className={style['container']}>
+		<div
+			className={style['container']}
+			ref={selectRef}
+		>
 			<div className={style['select-container']}>
 				<label
 					htmlFor={selectId}
