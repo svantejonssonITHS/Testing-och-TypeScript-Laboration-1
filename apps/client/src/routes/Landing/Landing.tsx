@@ -9,57 +9,52 @@ import HeroText from './components/HeroText/HeroText';
 import GamePinInput from '$src/routes/Landing/components/GamePinInput/GamePinInput';
 import getHealth from '$src/utils/api/health';
 import { HealthResult } from '_packages/shared/types/src';
-import Toast from './components/Toast/Toast';
+import { toast } from 'react-toastify';
 
 export default function Landing(): JSX.Element {
 	const [gamePin, setGamePin] = useState('');
-	const [triviaApiHealthy, setTriviaApiHealthy] = useState(false);
-	const [triviaApiCheckComplete, setTriviaApiCheckComplete] = useState(false);
+	const [apiHealthy, setApiHealthy] = useState(false);
+	const [apiCheckComplete, setApiCheckComplete] = useState(false);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
 			try {
 				const response: HealthResult = await getHealth();
-				setTriviaApiHealthy(response.triviaApi.status === 'OK' ? true : false);
-				setTriviaApiCheckComplete(true);
+				if (response.triviaApi.status === 'OK') {
+					setApiHealthy(true);
+				} else {
+					toast.error('Trivia API is down!');
+				}
+				setApiCheckComplete(true);
 			} catch (error) {
-				setTriviaApiHealthy(false);
-				setTriviaApiCheckComplete(true);
+				toast.error('Trivia API is down!');
+				setApiCheckComplete(true);
 			}
 		})();
 	}, []);
 
 	return (
 		<Background>
-			<>
-				<div className={style['layout']}>
-					<HeroText text='Domanda!' />
-					<div>
-						<GamePinInput
-							value={gamePin}
-							setValue={setGamePin}
-							onSubmit={(): void => console.log('submit')}
-							disabled={!triviaApiHealthy && triviaApiCheckComplete}
-						/>
-						<p className={style['alternative']}>
-							or{' '}
-							<Link
-								to='/question/1'
-								className={!triviaApiHealthy && triviaApiCheckComplete ? style['link-disabled'] : ''}
-							>
-								create your own game
-							</Link>
-						</p>
-					</div>
-				</div>
-				{/* Display error message if the Trivia API is down */}
-				{triviaApiCheckComplete && !triviaApiHealthy && (
-					<Toast
-						title='Trivia API is down'
-						message='The Trivia API is not working at the moment. Please try again later!'
+			<div className={style['layout']}>
+				<HeroText text='Domanda!' />
+				<div>
+					<GamePinInput
+						value={gamePin}
+						setValue={setGamePin}
+						onSubmit={(): void => console.log('submit')}
+						disabled={!apiHealthy && apiCheckComplete}
 					/>
-				)}
-			</>
+					<p className={style['alternative']}>
+						or{' '}
+						<Link
+							to='/question/1'
+							className={!apiHealthy && apiCheckComplete ? style['link-disabled'] : ''}
+						>
+							create your own game
+						</Link>
+					</p>
+				</div>
+			</div>
 		</Background>
 	);
 }
