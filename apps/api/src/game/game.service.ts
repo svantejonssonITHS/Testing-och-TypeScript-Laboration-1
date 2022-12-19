@@ -168,35 +168,21 @@ export class GameService {
 		}
 	}
 
-	async handleLeave(client: Socket, payload: Event): Promise<Game | void> {
+	async handleDisconnect(client: Socket): Promise<Game | void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
-			const game: Game = _games.find((game: Game) => game.id === payload.gameId);
-
-			if (!game) throw new Error('Game not found');
-
-			const playerExists: boolean = game.players.some((gamePlayer: Player) => gamePlayer.id === player.id);
-
-			if (!playerExists) throw new Error('Player is not in game');
-
-			game.players = game.players.filter((gamePlayer: Player) => gamePlayer.id !== player.id);
-
-			// Delete game if no players are left
-			// Since the game is private as default, this will only happen if at least the host has joined previously
-			if (game.players.length === 0) {
-				_games.splice(_games.indexOf(game), 1);
+			// Remove the player from all games they are in
+			for (const game of _games) {
+				game.players = game.players.filter((gamePlayer: Player) => gamePlayer.id !== player.id);
 			}
 
-			const returnGame: Game = {
-				...game,
-				// Remove the questions from the game object, as we do not want to send them to the client
-				questions: []
-			};
-
-			client.emit(game.id, returnGame);
-
-			return returnGame;
+			// Remove all games that have no players
+			for (const game of _games) {
+				if (game.players.length === 0) {
+					_games.splice(_games.indexOf(game), 1);
+				}
+			}
 		} catch (error) {
 			console.log(error);
 		}

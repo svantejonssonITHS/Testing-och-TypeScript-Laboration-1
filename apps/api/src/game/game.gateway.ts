@@ -13,7 +13,6 @@ export class GameGateway {
 
 	private readonly eventHandlers = {
 		join: this.gameService.handleJoin,
-		leave: this.gameService.handleLeave,
 		changePlayerStatus: this.gameService.handleChangePlayerStatus,
 		changeOptions: this.gameService.handleChangeOptions,
 		startRound: this.gameService.handleStartRound,
@@ -31,5 +30,10 @@ export class GameGateway {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+
+	@SubscribeMessage('disconnect')
+	async handleDisconnect(client: Socket): Promise<void> {
+		await this.gameService.handleDisconnect(client);
 	}
 }
