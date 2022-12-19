@@ -36,23 +36,25 @@ export default function Landing(): JSX.Element {
 	return (
 		<Background>
 			<div className={style['layout']}>
-				<HeroText text='Domanda!' />
-				<div>
-					<GamePinInput
-						value={gamePin}
-						setValue={setGamePin}
-						onSubmit={(): void => console.log('submit')}
-						disabled={!apiHealthy && apiCheckComplete}
-					/>
-					<p className={style['alternative']}>
-						or{' '}
-						<Link
-							to='/question/1'
-							className={!apiHealthy && apiCheckComplete ? style['link-disabled'] : ''}
-						>
-							create your own game
-						</Link>
-					</p>
+				<div className={style['container']}>
+					<HeroText text='Domanda!' />
+					<div>
+						<GamePinInput
+							value={gamePin}
+							setValue={setGamePin}
+							onSubmit={(): void => console.log('submit')}
+							disabled={!apiHealthy && apiCheckComplete}
+						/>
+						<p className={style['alternative']}>
+							or{' '}
+							<Link
+								to='/question/1'
+								className={!apiHealthy && apiCheckComplete ? style['link-disabled'] : ''}
+							>
+								create your own game
+							</Link>
+						</p>
+					</div>
 				</div>
 			</div>
 		</Background>

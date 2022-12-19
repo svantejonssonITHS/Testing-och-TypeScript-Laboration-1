@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import RedBlob from '$src/assets/blobs/red.svg';
 import OrangeBlob from '$src/assets/blobs/orange.svg';
 import YellowBlob from '$src/assets/blobs/yellow.svg';
@@ -12,8 +14,35 @@ interface BackgroundProps {
 }
 
 export default function Background({ children }: BackgroundProps): JSX.Element {
+	const backgroundRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+	useEffect(() => {
+		// Each blob should have thier size and position randomized
+		const blobs: NodeListOf<SVGSVGElement> | undefined = backgroundRef.current?.querySelectorAll('svg');
+
+		blobs?.forEach((blob: SVGElement) => {
+			const size: number = Math.random() * 100 + 100;
+			const positionX: number = Math.random() * 100;
+			const positionY: number = Math.random() * 100;
+
+			blob.setAttribute('width', `${size}px`);
+			blob.setAttribute('height', `${size}px`);
+			blob.style.left = `${positionX}%`;
+			blob.style.top = `${positionY}%`;
+		});
+	}, [backgroundRef]);
+
 	return (
-		<div className={style['background']}>
+		<div
+			className={style['background']}
+			ref={backgroundRef}
+		>
+			<RedBlob />
+			<OrangeBlob />
+			<PinkBlob />
+			<YellowBlob />
+			<BlueBlob />
+			<GreenBlob />
 			<RedBlob />
 			<OrangeBlob />
 			<PinkBlob />

@@ -1,6 +1,8 @@
 .background {
 	width: 100vw;
 	height: 100vh;
+	position: relative;
+	overflow: hidden;
 }
 
 .content-container {
@@ -11,155 +13,31 @@
 
 .background > svg {
 	position: absolute;
-	width: 12rem;
-	height: 12rem;
-	animation: rotate 60s linear infinite;
 	z-index: -1;
+	animation: rotate 60s linear;
 }
 
 @keyframes rotate {
-	from {
+	0% {
 		rotate: 0deg;
 	}
-	to {
+	50% {
 		rotate: 360deg;
+	}
+	100% {
+		rotate: 0deg;
 	}
 }
 
-/* Top Row */
-.background > svg:nth-child(1) {
-	top: 5%;
-	left: 25%;
-}
-
+/* Alternate the svg animation direction */
 .background > svg:nth-child(2) {
-	top: 5%;
-	right: 25%;
+	animation-direction: reverse;
 }
 
-/* Middle row */
 .background > svg:nth-child(3) {
-	top: 42%;
-	left: 15%;
+	animation-direction: reverse;
 }
 
 .background > svg:nth-child(4) {
-	top: 42%;
-	right: 15%;
-}
-
-/* Bottom row */
-.background > svg:nth-child(5) {
-	bottom: 5%;
-	left: 25%;
-}
-
-.background > svg:nth-child(6) {
-	bottom: 5%;
-	right: 25%;
-}
-
-@media (max-width: 1100px) {
-	/* Top Row */
-	.background > svg:nth-child(1) {
-		top: 5%;
-		left: 15%;
-	}
-
-	.background > svg:nth-child(2) {
-		top: 5%;
-		right: 15%;
-	}
-
-	/* Middle row */
-	.background > svg:nth-child(3) {
-		top: 42%;
-		left: 5%;
-	}
-
-	.background > svg:nth-child(4) {
-		top: 42%;
-		right: 5%;
-	}
-
-	/* Bottom row */
-	.background > svg:nth-child(5) {
-		bottom: 5%;
-		left: 15%;
-	}
-
-	.background > svg:nth-child(6) {
-		bottom: 5%;
-		right: 15%;
-	}
-}
-
-@media (max-width: 800px) {
-	/* Top Row */
-	.background > svg:nth-child(1) {
-		top: -5vh;
-		left: -5vw;
-	}
-
-	.background > svg:nth-child(2) {
-		top: -5vh;
-		right: -5vw;
-	}
-
-	/* Middle row */
-	.background > svg:nth-child(3) {
-		top: 42%;
-		left: -5vw;
-	}
-
-	.background > svg:nth-child(4) {
-		top: 42%;
-		right: -5vw;
-	}
-
-	/* Bottom row */
-	.background > svg:nth-child(5) {
-		bottom: -5vh;
-		left: -5vw;
-	}
-
-	.background > svg:nth-child(6) {
-		bottom: -5vh;
-		right: -5vw;
-	}
-}
-
-@media (max-width: 500px) {
-	/* Top Row */
-	.background > svg:nth-child(1) {
-		top: -10vh;
-		left: -10vw;
-	}
-
-	.background > svg:nth-child(2) {
-		top: -5vh;
-		right: -10vw;
-	}
-
-	/* Middle row */
-	.background > svg:nth-child(3) {
-		top: 30%;
-		left: -10vw;
-	}
-
-	.background > svg:nth-child(4) {
-		top: 45%;
-		right: -10vw;
-	}
-
-	/* Bottom row */
-	.background > svg:nth-child(5) {
-		bottom: -5vh;
-		left: -10vw;
-	}
-
-	.background > svg:nth-child(6) {
-		bottom: -15vh;
-		right: -10vw;
-	}
+	animation-direction: reverse;
 }
