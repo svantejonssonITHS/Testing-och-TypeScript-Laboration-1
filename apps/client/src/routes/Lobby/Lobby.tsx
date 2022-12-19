@@ -4,6 +4,7 @@ import Form from './components/Form/Form';
 import PlayerList from './components/PlayerList/PlayerList';
 import Button from '$src/components/Button/Button';
 import { ButtonVariant } from '$src/enums';
+import Sharecard from './components/ShareCard/ShareCard';
 
 export default function Lobby(): JSX.Element {
 	return (
@@ -31,6 +32,10 @@ export default function Lobby(): JSX.Element {
 						</Button>
 					</div>
 				</div>
+				<Sharecard
+					gamePin='tjo'
+					show
+				/>
 			</div>
 		</Background>
 	);

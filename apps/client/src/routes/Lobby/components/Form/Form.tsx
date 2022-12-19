@@ -60,7 +60,7 @@ export default function Form(): JSX.Element {
 				onChange={(value: string): void => setQuestionTime(value)}
 			/>
 			<Check
-				label='Private'
+				label='Allow other players to join'
 				checked={isPrivate}
 				onClick={(value: boolean): void => setIsPrivate(value)}
 			/>
