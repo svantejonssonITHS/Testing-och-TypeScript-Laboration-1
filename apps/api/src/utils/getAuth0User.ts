@@ -1,24 +1,26 @@
 // External dependencies
-import { AxiosResponse } from 'axios';
+import { Jwt, decode } from 'jsonwebtoken';
 
 // Internal dependencies
-import axios from '$src/utils/axios';
-import { AUTH0_DOMAIN } from './env';
 import type { Player } from '_packages/shared/types/src';
 
 export default async function getAuth0User(authorization: string): Promise<Player> {
-	const response: AxiosResponse = await axios.get(`https://${AUTH0_DOMAIN}/userinfo`, {
-		headers: { authorization }
-	});
+	try {
+		const decoded: Jwt = decode(authorization.split(' ')[1], { complete: true });
 
-	const player: Player = {
-		id: response.data.sub,
-		name: response.data.name,
-		email: response.data.email,
-		profilePicture: response.data.picture,
-		score: 0,
-		streak: 0
-	};
+		if (!decoded) throw new Error();
 
-	return player;
+		const player: Player = {
+			id: decoded.payload['sub'] as string,
+			name: decoded.payload['name'],
+			email: decoded.payload['email'],
+			profilePicture: decoded.payload['picture'],
+			score: 0,
+			streak: 0
+		};
+
+		return player;
+	} catch (error) {
+		throw new Error('Unauthorized');
+	}
 }

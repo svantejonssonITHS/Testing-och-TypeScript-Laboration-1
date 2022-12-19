@@ -18,11 +18,11 @@ export default async function getAuth0AccessToken(): Promise<string> {
 			grant_type: 'password',
 			username: AUTH0_TEST_USERNAME,
 			password: AUTH0_TEST_PASSWORD,
-			scope: 'openid'
+			scope: 'openid profile email'
 		})
 		.pipe(map((response: AxiosResponse) => response.data));
 
-	const token: string = (await lastValueFrom(observable)).access_token;
+	const token: string = (await lastValueFrom(observable)).id_token;
 
 	return token;
 }
