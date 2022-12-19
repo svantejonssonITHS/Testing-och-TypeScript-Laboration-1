@@ -35,7 +35,7 @@ export default function GamePinInput({ value, setValue, disabled, onSubmit }: Ga
 			}}
 		>
 			<input
-				className={[style['input'], style[!validPin && value.length > 5 ? 'invalid' : 'valid']].join(' ')}
+				className={[style['input'], style[validPin ? 'valid' : value.length > 5 ? 'invalid' : '']].join(' ')}
 				type='text'
 				placeholder='Enter game pin'
 				value={value}
