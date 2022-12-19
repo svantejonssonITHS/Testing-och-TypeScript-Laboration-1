@@ -40,11 +40,13 @@ class Main {
     }
     class GameController {
         constructor(GameService gameService)
-        +createGame(String authorization) Promise~Game~
+        +createGame(string authorization) Promise~Game~
+        +checkGameExists(string authorization, string gameId) Promise~boolean~
     }
     class GameService {
         -Game[] _games
         +createGame(string authorization) Promise~Game~
+        +checkGameExists(string authorization, string gameId) Promise~boolean~
         +handleJoin(Socket client, Event payload) Promise~Game | void~
         +handleChangePlayerStatus(Socket client, Event payload) Promise~Game | void~
         +handleLeave(Socket client, Event payload) Promise~Game | void~
