@@ -15,10 +15,10 @@ export class GameController {
 	}
 
 	@Get()
-	async checkGameId(
+	async checkGameExists(
 		@Headers('Authorization') authorization: string,
 		@Query('gameId') gameId: string
 	): Promise<boolean> {
-		return await this.gameService.checkGameId(authorization, gameId);
+		return await this.gameService.checkGameExists(authorization, gameId);
 	}
 }

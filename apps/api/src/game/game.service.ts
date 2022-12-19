@@ -65,7 +65,7 @@ export class GameService {
 		};
 	}
 
-	async checkGameId(authorization: string, gameId: string): Promise<boolean> {
+	async checkGameExists(authorization: string, gameId: string): Promise<boolean> {
 		try {
 			const player: Player = await getAuth0User(authorization);
 
