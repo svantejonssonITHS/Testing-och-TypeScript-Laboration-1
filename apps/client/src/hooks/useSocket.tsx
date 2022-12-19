@@ -1,8 +1,9 @@
-// Create a react context and provider for socket.io-client
-
-import { API_URL } from '$src/utils/env';
+// External dependencies
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+
+// Internal dependencies
+import { API_URL } from '$src/utils/env';
 import { Event, Game } from '_packages/shared/types/src';
 
 const SocketContext = createContext<Socket | null>(null);
@@ -24,8 +25,6 @@ export const SocketProvider = ({ token, children }: SocketProviderProps): JSX.El
 			}
 		});
 
-		newSocket.emit('event', { event: 'join', data: { gameId: '123' } });
-
 		setSocket(newSocket);
 
 		return () => {
@@ -43,10 +42,6 @@ export const useSocket = () => {
 	if (!socket) {
 		throw new Error('Socket not found');
 	}
-
-	socket.on('connect_error', (err) => {
-		console.log(`connect_error due to ${err.message}`);
-	});
 
 	const emit = (event: string, data: Event) => {
 		socket.emit(event, data);
