@@ -1,11 +1,12 @@
 // External dependencies
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { IdToken, useAuth0 } from '@auth0/auth0-react';
 
 // Internal dependencies
 import api from '$src/utils/api';
 import Landing from './Landing/Landing';
+import Lobby from './Lobby/Lobby';
 
 export default function index(): JSX.Element {
 	const { getIdTokenClaims, loginWithPopup } = useAuth0();
@@ -34,14 +35,22 @@ export default function index(): JSX.Element {
 
 	if (token.length) {
 		return (
-			<>
-				<Routes>
-					<Route
-						path='/'
-						element={<Landing />}
-					/>
-				</Routes>
-			</>
+			<Routes>
+				<Route
+					path='/'
+					element={<Landing />}
+				/>
+
+				<Route
+					path='/lobby/:gameId'
+					element={<Lobby />}
+				/>
+
+				<Route
+					path='/*'
+					element={<Navigate to='/' />}
+				/>
+			</Routes>
 		);
 	} else {
 		return <></>;

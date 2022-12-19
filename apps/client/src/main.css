@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0');
 
 :root {
 	--font-sans-serif: 'Open Sans', sans-serif;
@@ -12,7 +13,10 @@
 	--color-text-light: #fff;
 	--color-text-dark: #000;
 
+	--input-border-width: 2px;
+
 	--border-radius-small: 0.5rem;
+	--border-radius-medium: 0.75rem;
 
 	--box-shadow: 0.1rem 0.1rem 0.35rem rgba(0, 0, 0, 0.25);
 }

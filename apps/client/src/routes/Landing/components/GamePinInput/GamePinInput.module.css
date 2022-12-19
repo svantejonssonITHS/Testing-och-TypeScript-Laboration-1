@@ -4,7 +4,6 @@
 	grid-template-columns: 1fr;
 	grid-template-rows: 1fr 1fr;
 
-	--border-width: 2px;
 	--button-padding: 0.25rem;
 }
 
@@ -14,7 +13,7 @@
 	text-align: center;
 	font-size: 1.5rem;
 	border: none;
-	border-bottom: var(--border-width) solid var(--color-primary);
+	border-bottom: var(--input-border-width) solid var(--color-primary);
 	outline: none !important;
 	padding: 0.25rem 0;
 	background-color: transparent;
@@ -37,7 +36,7 @@
 	color: var(--color-background);
 	font-size: 0.8rem;
 	font-weight: 700;
-	padding-top: calc(var(--button-padding) - var(--border-width));
+	padding-top: calc(var(--button-padding) - var(--input-border-width));
 	padding-bottom: var(--button-padding);
 	border: none;
 	border-radius: var(--border-radius-small);

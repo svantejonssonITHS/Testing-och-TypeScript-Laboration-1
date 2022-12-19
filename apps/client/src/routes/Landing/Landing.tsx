@@ -1,6 +1,7 @@
 // External dependencies
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // Internal dependencies
 import style from './Landing.module.css';
@@ -9,7 +10,6 @@ import HeroText from './components/HeroText/HeroText';
 import GamePinInput from '$src/routes/Landing/components/GamePinInput/GamePinInput';
 import getHealth from '$src/utils/api/health';
 import { HealthResult } from '_packages/shared/types/src';
-import { toast } from 'react-toastify';
 
 export default function Landing(): JSX.Element {
 	const [gamePin, setGamePin] = useState('');

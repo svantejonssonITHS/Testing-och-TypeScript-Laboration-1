@@ -1,0 +1,30 @@
+.lobby {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.contianer {
+	background-color: var(--color-background);
+	padding: 2rem;
+	width: 95vw;
+	height: 95vh;
+	max-width: 1400px;
+	max-height: 500px;
+	border-radius: var(--border-radius-medium);
+	box-shadow: var(--box-shadow);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.column {
+	width: 50%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
