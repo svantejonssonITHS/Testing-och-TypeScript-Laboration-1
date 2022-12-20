@@ -119,7 +119,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				checked={!values?.isPrivate ?? true}
 				disabled={!isHost}
 				onClick={(value: boolean): void => {
-					if (values && values.isPrivate !== value) setValues({ ...values, isPrivate: !value });
+					if (values && values.isPrivate === value) setValues({ ...values, isPrivate: !value });
 				}}
 			/>
 		</form>
