@@ -22,6 +22,7 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 	const [correctAnswer, setCorrectAnswer]: [string, React.Dispatch<React.SetStateAction<string>>] = useState('');
 	const [showCorrectAnswer, setShowCorrectAnswer]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
 		useState(false);
+	const [hasAnswered, setHasAnswered]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
 	const { emit } = useSocket();
 
 	useEffect(() => {
@@ -84,7 +85,11 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 						<button
 							key={index}
 							className={style['answer']}
-							disabled={!showAnswers || (showCorrectAnswer && answer !== correctAnswer)}
+							disabled={
+								!showAnswers ||
+								(showCorrectAnswer && answer !== correctAnswer) ||
+								(!showCorrectAnswer && hasAnswered)
+							}
 							onClick={(): void => {
 								console.log(correctAnswer);
 
@@ -94,6 +99,7 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 									type: 'playerAnswer',
 									data: { answer }
 								});
+								setHasAnswered(true);
 							}}
 						>
 							{showAnswers ? answer : '???'}

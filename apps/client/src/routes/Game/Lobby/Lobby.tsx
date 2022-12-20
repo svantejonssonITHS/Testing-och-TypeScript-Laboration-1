@@ -14,6 +14,7 @@ import Sharecard from './components/ShareCard/ShareCard';
 import { Event, Game, Options, Player } from '_packages/shared/types/src';
 import { getOptions } from '$src/utils/api/options';
 import { useSocket } from '$src/hooks/useSocket';
+import { GameStage } from '_packages/shared/enums/src';
 
 interface LobbyProps {
 	game: Game | undefined;
@@ -64,6 +65,12 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 		}
 	}, [game, user]);
 
+	useEffect(() => {
+		// Navigate when game stage changes
+		if (!game || game.stage !== GameStage.QUESTION) return;
+		navigate(`./question`);
+	}, [game]);
+
 	return (
 		<div className={style['lobby']}>
 			<div className={style['contianer']}>
@@ -91,10 +98,7 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 									gameId: gameId,
 									type: 'startRound'
 								} as Event);
-								navigate(`./question`);
 							} else {
-								console.log('ready');
-
 								setIsReady(!isReady);
 								emit('event', {
 									gameId: gameId,
