@@ -72,7 +72,7 @@ export default function Lobby(): JSX.Element {
 						/>
 					</div>
 					<div className={style['column']}>
-						<PlayerList />
+						<PlayerList game={game} />
 					</div>
 					<div className={style['row']}>
 						<Button

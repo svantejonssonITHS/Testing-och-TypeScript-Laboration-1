@@ -29,7 +29,7 @@ export default function Player({ player, gameStage, status, position, leaderboar
 			)}
 			<img
 				className={style['image']}
-				src='https://thispersondoesnotexist.com/image'
+				src={player.profilePicture}
 				alt={`Profile picture of ${player.name}`}
 			/>
 			<div className={style['name']}>{player.name}</div>

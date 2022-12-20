@@ -40,7 +40,7 @@ export default function Number({ label, value, min, max, disabled, onChange }: N
 					className={[style['value-input'], style[value !== undefined ? 'has-value' : '']].join(' ')}
 					id={selectId}
 					type='number'
-					value={value}
+					value={value !== undefined ? value : min}
 					min={min}
 					max={max}
 					disabled={disabled}
