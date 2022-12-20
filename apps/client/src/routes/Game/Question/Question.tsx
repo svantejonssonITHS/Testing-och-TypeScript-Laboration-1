@@ -42,6 +42,7 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 		const timeout: NodeJS.Timeout = setInterval(() => {
 			if (Date.now() > (activeQuestion?.sentAt || Date.now()) + QUESTION_INTRO_DURATION * 1000) {
 				setShowAnswers(true);
+				setShowCorrectAnswer(false);
 				clearInterval(timeout);
 			}
 		}, 1000);
@@ -51,14 +52,21 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 
 	useEffect(() => {
 		if (!game) return;
+		if (correctAnswer === activeQuestion?.correctAnswer) {
+			setCorrectAnswer('');
+			setShowCorrectAnswer(false);
+			return;
+		}
 		if (game.stage !== GameStage.LEADERBOARD) return;
 
 		setCorrectAnswer(activeQuestion?.correctAnswer || '');
 		setShowCorrectAnswer(true);
 
-		setTimeout(() => {
+		const interval: NodeJS.Timeout = setTimeout(() => {
 			navigate('../leaderboard');
 		}, 5000);
+
+		return () => clearTimeout(interval);
 	}, [activeQuestion]);
 
 	return (
@@ -78,6 +86,8 @@ export default function Question({ game }: QuestionProps): JSX.Element {
 							className={style['answer']}
 							disabled={!showAnswers || (showCorrectAnswer && answer !== correctAnswer)}
 							onClick={(): void => {
+								console.log(correctAnswer);
+
 								if (correctAnswer) return;
 								emit('event', {
 									gameId: game?.id,

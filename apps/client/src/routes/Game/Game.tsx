@@ -1,9 +1,10 @@
 import { useSocket } from '$src/hooks/useSocket';
 import { getGameExists } from '$src/utils/api/game';
 import { useEffect } from 'react';
-import { NavigateFunction, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, NavigateFunction, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Lobby from './Lobby/Lobby';
+import Leaderboard from './Leaderboard/Leaderboard';
 import Question from './Question/Question';
 
 export default function Game(): JSX.Element {
@@ -33,6 +34,14 @@ export default function Game(): JSX.Element {
 			<Route
 				path='question'
 				element={<Question game={game} />}
+			/>
+			<Route
+				path='leaderboard'
+				element={<Leaderboard game={game} />}
+			/>
+			<Route
+				path='*'
+				element={<Navigate to='/' />}
 			/>
 		</Routes>
 	);

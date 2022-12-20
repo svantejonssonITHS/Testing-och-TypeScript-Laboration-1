@@ -370,7 +370,6 @@ export class GameService {
 			if (game.activeQuestion.playerAnswers.length === game.players.length) {
 				console.log('All players answered, emitting leaderboard');
 
-				clearTimeout(game.questionTimeout);
 				emitLeaderboard(client, payload);
 			}
 		} catch (error) {
@@ -381,6 +380,10 @@ export class GameService {
 
 const emitLeaderboard = (client: Socket, payload: Event): void => {
 	const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
+
+	if (!gameAfterRound) throw new Error('Game not found');
+
+	clearTimeout(gameAfterRound.questionTimeout);
 
 	// Update game stage
 	gameAfterRound.stage = GameStage.LEADERBOARD;

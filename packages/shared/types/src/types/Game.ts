@@ -49,4 +49,4 @@ type PlayerAnswer = {
 	sentAt: number;
 };
 
-export { Game, GameOptions, Question, Player, PlayerAnswer };
+export type { Game, GameOptions, Question, Player, PlayerAnswer };
