@@ -55,6 +55,12 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 		// Check if the numberOfQuestions is the same as questionCount
 		const questionsReady: boolean = game.numberOfQuestions === game.options.questionCount;
 
+		if (!questionsReady) {
+			toast.info(
+				'Not enough questions could be found for the selected options. Please change the options and try again.'
+			);
+		}
+
 		// Check if all players are ready
 		const playersReady: boolean = game.players.every((player: Player) => player.isReady);
 
@@ -64,6 +70,12 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 			setIsGameReady(false);
 		}
 	}, [game, user]);
+
+	useEffect(() => {
+		if (!isGameReady) false;
+
+		toast.info('All players and questions are ready. Press start game to begin!');
+	}, [isGameReady]);
 
 	useEffect(() => {
 		// Navigate when game stage changes
