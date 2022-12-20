@@ -377,8 +377,6 @@ export class GameService {
 
 			// If all players have answered, emit the leaderboard
 			if (game.activeQuestion.playerAnswers.length === game.players.length) {
-				console.log('All players answered, emitting leaderboard');
-
 				emitLeaderboard(client, payload);
 			}
 		} catch (error) {

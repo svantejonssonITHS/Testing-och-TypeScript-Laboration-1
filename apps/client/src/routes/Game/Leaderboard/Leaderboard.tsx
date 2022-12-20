@@ -28,8 +28,6 @@ export default function Leaderboard({ game }: LeaderboardProps): JSX.Element {
 
 		// If previousQuestions + 1 === numberOfQuestions, then we're on the final leaderboard
 		if (game.previousQuestions.length + 1 === game.numberOfQuestions) {
-			console.log('Final leaderboard');
-
 			setFinalLeaderboard(true);
 		}
 	}, [game]);
@@ -83,13 +81,9 @@ export default function Leaderboard({ game }: LeaderboardProps): JSX.Element {
 				<Button
 					disabled={!finalLeaderboard && !isHost}
 					onClick={(): void => {
-						console.log(finalLeaderboard);
-
 						if (finalLeaderboard) {
 							navigate('/');
 						} else {
-							console.log('Next round');
-
 							emit('event', {
 								gameId: gameId as string,
 								type: 'startRound'
