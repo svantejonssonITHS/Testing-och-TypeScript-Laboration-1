@@ -27,6 +27,19 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 	useEffect(() => {
 		if (!values || !isHost) return;
 
+		// Check if the options have changed
+		let hasChanged: boolean = false;
+
+		if (values.region !== gameValues?.region) hasChanged = true;
+		if (values.category !== gameValues?.category) hasChanged = true;
+		if (values.tag !== gameValues?.tag) hasChanged = true;
+		if (values.difficulty !== gameValues?.difficulty) hasChanged = true;
+		if (values.questionCount !== gameValues?.questionCount) hasChanged = true;
+		if (values.questionTime !== gameValues?.questionTime) hasChanged = true;
+		if (values.isPrivate !== gameValues?.isPrivate) hasChanged = true;
+
+		if (!hasChanged) return;
+
 		const optionDebounce: NodeJS.Timeout = setTimeout(() => {
 			emit('event', {
 				gameId: gameId as string,
@@ -51,7 +64,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				selectedValue={values?.region}
 				disabled={!isHost}
 				onChange={(value: string | undefined): void => {
-					if (values) setValues({ ...values, region: value ?? '' });
+					if (values && values.region !== value) setValues({ ...values, region: value ?? '' });
 				}}
 			/>
 			<Select
@@ -60,7 +73,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				selectedValue={values?.category}
 				disabled={!isHost}
 				onChange={(value: string | undefined): void => {
-					if (values) setValues({ ...values, category: value ?? '' });
+					if (values && values.category !== value) setValues({ ...values, category: value ?? '' });
 				}}
 			/>
 			<Select
@@ -69,7 +82,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				selectedValue={values?.tag}
 				disabled={!isHost}
 				onChange={(value: string | undefined): void => {
-					if (values) setValues({ ...values, tag: value ?? '' });
+					if (values && values.tag !== value) setValues({ ...values, tag: value ?? '' });
 				}}
 			/>
 			<Select
@@ -78,7 +91,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				selectedValue={values?.difficulty}
 				disabled={!isHost}
 				onChange={(value: string | undefined): void => {
-					if (values) setValues({ ...values, difficulty: value ?? '' });
+					if (values && values.difficulty !== value) setValues({ ...values, difficulty: value ?? '' });
 				}}
 			/>
 			<Number
@@ -88,7 +101,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				max={15}
 				disabled={!isHost}
 				onChange={(value: number | undefined): void => {
-					if (values) setValues({ ...values, questionCount: value ?? 0 });
+					if (values && values.questionCount !== value) setValues({ ...values, questionCount: value ?? 0 });
 				}}
 			/>
 			<Number
@@ -98,7 +111,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				max={60}
 				disabled={!isHost}
 				onChange={(value: number | undefined): void => {
-					if (values) setValues({ ...values, questionTime: value ?? 0 });
+					if (values && values.questionTime !== value) setValues({ ...values, questionTime: value ?? 0 });
 				}}
 			/>
 			<Check
@@ -106,7 +119,7 @@ export default function Form({ options, gameValues, isHost }: FormProps): JSX.El
 				checked={!values?.isPrivate ?? true}
 				disabled={!isHost}
 				onClick={(value: boolean): void => {
-					if (values) setValues({ ...values, isPrivate: !value });
+					if (values && values.isPrivate !== value) setValues({ ...values, isPrivate: !value });
 				}}
 			/>
 		</form>
