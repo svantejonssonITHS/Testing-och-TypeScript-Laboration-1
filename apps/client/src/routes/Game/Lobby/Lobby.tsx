@@ -28,7 +28,8 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 	const [options, setOptions] = useState({} as Options);
 	const [isHost, setIsHost] = useState(false);
 	const [isReady, setIsReady] = useState(false);
-	const [isGameReady, setIsGameReady] = useState(false);
+	const [questionsReady, setQuestionsReady] = useState(false);
+	const [playersReady, setPlayersReady] = useState(false);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -53,29 +54,25 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 		setIsHost(game.host.id === user.sub);
 
 		// Check if the numberOfQuestions is the same as questionCount
-		const questionsReady: boolean = game.numberOfQuestions === game.options.questionCount;
-
-		if (!questionsReady) {
-			toast.info(
-				'Not enough questions could be found for the selected options. Please change the options and try again.'
-			);
-		}
+		setQuestionsReady(game.numberOfQuestions === game.options.questionCount);
 
 		// Check if all players are ready
-		const playersReady: boolean = game.players.every((player: Player) => player.isReady);
-
-		if (questionsReady && playersReady) {
-			setIsGameReady(true);
-		} else {
-			setIsGameReady(false);
-		}
+		setPlayersReady(game.players.every((player: Player) => player.isReady));
 	}, [game, user]);
 
 	useEffect(() => {
-		if (!isGameReady) false;
+		if (!game || !user) return;
 
-		toast.info('All players and questions are ready. Press start game to begin!');
-	}, [isGameReady]);
+		if (questionsReady && !playersReady) {
+			toast.info('Questions are ready, waiting for players to be ready');
+		} else if (questionsReady && playersReady) {
+			toast.success('All players are ready, start whenever you want');
+		} else {
+			toast.error(
+				'Not enough questions could be found for the selected options. Please change the options and try again.'
+			);
+		}
+	}, [questionsReady, playersReady]);
 
 	useEffect(() => {
 		// Navigate when game stage changes
@@ -122,7 +119,7 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 							}
 						}}
 						variant={ButtonVariant.FILL}
-						disabled={isHost && !isGameReady}
+						disabled={isHost && (!questionsReady || !playersReady)}
 					>
 						{isHost ? 'Start game' : isReady ? 'Unready' : 'Ready'}
 					</Button>

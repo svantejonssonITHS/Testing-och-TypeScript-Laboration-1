@@ -14,7 +14,11 @@ import Background from './components/Background/Background';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
-		<ToastContainer />
+		<ToastContainer
+			pauseOnFocusLoss={false}
+			pauseOnHover={false}
+			autoClose={2500}
+		/>
 		<Auth0Provider
 			domain={AUTH0_DOMAIN}
 			clientId={AUTH0_CLIENT_ID}

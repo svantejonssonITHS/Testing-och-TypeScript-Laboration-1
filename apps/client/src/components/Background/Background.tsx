@@ -37,18 +37,16 @@ export default function Background({ children }: BackgroundProps): JSX.Element {
 			className={style['background']}
 			ref={backgroundRef}
 		>
-			<RedBlob />
-			<OrangeBlob />
-			<PinkBlob />
-			<YellowBlob />
-			<BlueBlob />
-			<GreenBlob />
-			<RedBlob />
-			<OrangeBlob />
-			<PinkBlob />
-			<YellowBlob />
-			<BlueBlob />
-			<GreenBlob />
+			{[...Array(5)].map(() => (
+				<>
+					<RedBlob />
+					<OrangeBlob />
+					<PinkBlob />
+					<YellowBlob />
+					<BlueBlob />
+					<GreenBlob />
+				</>
+			))}
 			<div className={style['content-container']}>{children}</div>
 		</div>
 	);
