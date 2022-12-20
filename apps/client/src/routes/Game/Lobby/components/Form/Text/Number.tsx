@@ -2,13 +2,16 @@ import style from './Number.module.css';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useState, useRef } from 'react';
 
-interface TextProps {
+interface NumberProps {
 	label: string;
 	value: number | undefined;
+	min: number;
+	max: number;
+	disabled?: boolean;
 	onChange: (value: number | undefined) => void;
 }
 
-export default function Number({ label, value, onChange }: TextProps): JSX.Element {
+export default function Number({ label, value, min, max, disabled, onChange }: NumberProps): JSX.Element {
 	const inputRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 	const [isFocused, setIsFocused]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
 	const selectId: string = Math.random().toString(36).substring(2, 9);
@@ -35,9 +38,19 @@ export default function Number({ label, value, onChange }: TextProps): JSX.Eleme
 					id={selectId}
 					type='number'
 					value={value}
+					min={min}
+					max={max}
+					disabled={disabled}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
 						// Remove any non-numeric characters
 						const value: string = event.target.value.replace(/\D/g, '');
+
+						// If the value is empty, set it to the minimum value
+						if (value === '') {
+							onChange(min);
+							return;
+						}
+
 						onChange(value !== undefined ? parseInt(value) : undefined);
 					}}
 					onClick={(): void => setIsFocused(true)}
