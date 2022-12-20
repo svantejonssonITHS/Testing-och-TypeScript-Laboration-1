@@ -110,11 +110,7 @@ export class GameService {
 
 			if (isHost) player.isReady = true;
 
-			console.log(game.players);
-
 			game.players.push(player);
-
-			console.log(game.players);
 
 			const returnGame: Game = {
 				...game,
@@ -301,6 +297,7 @@ export class GameService {
 
 			setTimeout(() => {
 				const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
+
 				// Update game stage
 				gameAfterRound.stage = GameStage.LEADERBOARD;
 

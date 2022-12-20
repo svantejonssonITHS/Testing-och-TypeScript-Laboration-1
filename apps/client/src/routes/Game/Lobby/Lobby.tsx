@@ -13,7 +13,7 @@ import Button from '$src/components/Button/Button';
 import { ButtonVariant } from '$src/enums';
 import Sharecard from './components/ShareCard/ShareCard';
 import { getGameExists } from '$src/utils/api/game';
-import { Event, Options } from '_packages/shared/types/src';
+import { Event, Options, Player } from '_packages/shared/types/src';
 import { getOptions } from '$src/utils/api/options';
 import { useSocket } from '$src/hooks/useSocket';
 
@@ -25,6 +25,8 @@ export default function Lobby(): JSX.Element {
 	const [gameExists, setGameExists] = useState(false);
 	const [options, setOptions] = useState({} as Options);
 	const [isHost, setIsHost] = useState(false);
+	const [isReady, setIsReady] = useState(false);
+	const [isGameReady, setIsGameReady] = useState(false);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -58,6 +60,18 @@ export default function Lobby(): JSX.Element {
 	useEffect(() => {
 		if (!game || !user) return;
 		setIsHost(game.host.id === user.sub);
+
+		// Check if the numberOfQuestions is the same as questionCount
+		const questionsReady: boolean = game.numberOfQuestions === game.options.questionCount;
+
+		// Check if all players are ready
+		const playersReady: boolean = game.players.every((player: Player) => player.isReady);
+
+		if (questionsReady && playersReady) {
+			setIsGameReady(true);
+		} else {
+			setIsGameReady(false);
+		}
 	}, [game, user]);
 
 	return (
@@ -76,16 +90,35 @@ export default function Lobby(): JSX.Element {
 					</div>
 					<div className={style['row']}>
 						<Button
-							onClick={(): void => {}}
+							onClick={(): void => navigate('/')}
 							variant={ButtonVariant.OUTLINE}
 						>
 							Go back
 						</Button>
 						<Button
-							onClick={(): void => {}}
+							onClick={(): void => {
+								if (isHost) {
+									emit('event', {
+										gameId: gameId,
+										type: 'startRound'
+									} as Event);
+								} else {
+									console.log('ready');
+
+									setIsReady(!isReady);
+									emit('event', {
+										gameId: gameId,
+										type: 'changePlayerStatus',
+										data: {
+											isReady: !isReady
+										}
+									} as Event);
+								}
+							}}
 							variant={ButtonVariant.FILL}
+							disabled={isHost && !isGameReady}
 						>
-							Start Game
+							{isHost ? 'Start game' : isReady ? 'Unready' : 'Ready'}
 						</Button>
 					</div>
 				</div>
