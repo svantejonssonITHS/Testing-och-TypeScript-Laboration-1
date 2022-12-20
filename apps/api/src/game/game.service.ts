@@ -70,9 +70,12 @@ export class GameService {
 		try {
 			const player: Player = await getAuth0User(authorization);
 
-			// Check if the game exists and if it is private, check if the player is the host
+			// Check if the game exists and if it is private, check if the player is the host. If it is not in the lobby stage, no one can join
 			return _games.some(
-				(game: Game) => game.id === gameId && (game.options.isPrivate ? game.host.id === player.id : true)
+				(game: Game) =>
+					game.id === gameId &&
+					(game.options.isPrivate ? game.host.id === player.id : true) &&
+					game.stage === GameStage.LOBBY
 			);
 		} catch (error) {
 			return false;
@@ -177,9 +180,15 @@ export class GameService {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
-			// Remove the player from all games they are in
+			// Remove the player from all games they are in. If the player is the host, set the next player as the host
 			for (const game of _games) {
-				game.players = game.players.filter((gamePlayer: Player) => gamePlayer.id !== player.id);
+				if (game.players.some((gamePlayer: Player) => gamePlayer.id === player.id)) {
+					game.players = game.players.filter((gamePlayer: Player) => gamePlayer.id !== player.id);
+
+					if (game.host.id === player.id && game.players.length > 0) {
+						game.host = game.players[0];
+					}
+				}
 			}
 
 			// Remove all games that have no players
