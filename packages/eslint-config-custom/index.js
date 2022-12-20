@@ -23,5 +23,14 @@ module.exports = {
 			}
 		],
 		'@typescript-eslint/explicit-function-return-type': 'error'
-	}
+	},
+	overrides: [
+		{
+			files: ['*.spec.*', '*.e2e-spec.*'],
+			rules: {
+				'@typescript-eslint/no-empty-function': 'off',
+				'@typescript-eslint/explicit-function-return-type': 'off'
+			}
+		}
+	]
 };

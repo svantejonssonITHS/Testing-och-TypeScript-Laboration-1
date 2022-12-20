@@ -2,7 +2,7 @@
 import { useOnClickOutside } from 'usehooks-ts';
 import { useState, useRef } from 'react';
 
-//
+// Internal dependencies
 import style from './Number.module.css';
 
 interface NumberProps {

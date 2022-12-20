@@ -1,12 +1,13 @@
-import { useEffect, useRef } from 'react';
+// External dependencies
+import { Fragment, useEffect, useRef } from 'react';
 
+// Internal dependencies
 import RedBlob from '$src/assets/blobs/red.svg';
 import OrangeBlob from '$src/assets/blobs/orange.svg';
 import YellowBlob from '$src/assets/blobs/yellow.svg';
 import GreenBlob from '$src/assets/blobs/green.svg';
 import BlueBlob from '$src/assets/blobs/blue.svg';
 import PinkBlob from '$src/assets/blobs/pink.svg';
-
 import style from './Background.module.css';
 
 interface BackgroundProps {
@@ -32,20 +33,22 @@ export default function Background({ children }: BackgroundProps): JSX.Element {
 		});
 	}, [backgroundRef]);
 
+	if (!children) throw new Error('Background component requires children');
+
 	return (
 		<div
 			className={style['background']}
 			ref={backgroundRef}
 		>
-			{[...Array(5)].map(() => (
-				<>
+			{[...Array(5)].map((_: unknown, index: number) => (
+				<Fragment key={index}>
 					<RedBlob />
 					<OrangeBlob />
 					<PinkBlob />
 					<YellowBlob />
 					<BlueBlob />
 					<GreenBlob />
-				</>
+				</Fragment>
 			))}
 			<div className={style['content-container']}>{children}</div>
 		</div>

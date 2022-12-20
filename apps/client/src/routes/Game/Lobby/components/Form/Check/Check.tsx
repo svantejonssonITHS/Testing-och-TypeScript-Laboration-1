@@ -11,8 +11,12 @@ export default function Check({ label, checked, disabled, onClick }: CheckProps)
 	const selectId: string = Math.random().toString(36).substring(2, 9);
 
 	return (
-		<div className={style['container']}>
+		<div
+			data-testid='check-container'
+			className={style['container']}
+		>
 			<button
+				data-testid='check-button'
 				className={style['check']}
 				type='button'
 				tabIndex={0}
@@ -23,6 +27,7 @@ export default function Check({ label, checked, disabled, onClick }: CheckProps)
 				{checked && <span className='material-symbols-outlined'>gesture</span>}
 			</button>
 			<label
+				data-testid='check-label'
 				htmlFor={selectId}
 				className={style['label']}
 			>

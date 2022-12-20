@@ -21,17 +21,23 @@ export default function Select({ label, options, selectedValue, disabled, onChan
 	});
 	return (
 		<div
+			data-testid='container'
 			className={style['container']}
 			ref={selectRef}
 		>
-			<div className={style['select-container']}>
+			<div
+				data-testid='select-container'
+				className={style['select-container']}
+			>
 				<label
+					data-testid='label'
 					htmlFor={selectId}
 					className={style[selectedValue ? 'selected' : '']}
 				>
 					{label}
 				</label>
 				<input
+					data-testid='value-input'
 					className={[style['value-input'], style[selectedValue ? 'selected' : '']].join(' ')}
 					id={selectId}
 					type='button'
@@ -42,6 +48,7 @@ export default function Select({ label, options, selectedValue, disabled, onChan
 					<>
 						{selectedValue && (
 							<button
+								data-testid='clear-button'
 								className={style['clear-button']}
 								type='button'
 								disabled={disabled}
@@ -50,7 +57,10 @@ export default function Select({ label, options, selectedValue, disabled, onChan
 								<span className='material-symbols-outlined'>close</span>
 							</button>
 						)}
-						<div className={style['expand-icon-container']}>
+						<div
+							data-testid='expand-icon-container'
+							className={style['expand-icon-container']}
+						>
 							<span
 								className={['material-symbols-outlined', style[showOptions ? 'expanded' : '']].join(
 									' '
@@ -63,7 +73,10 @@ export default function Select({ label, options, selectedValue, disabled, onChan
 				)}
 			</div>
 			{showOptions && !disabled && (
-				<div className={style['options']}>
+				<div
+					data-testid='options'
+					className={style['options']}
+				>
 					{options ? (
 						options.map(
 							(option: Item): JSX.Element => (

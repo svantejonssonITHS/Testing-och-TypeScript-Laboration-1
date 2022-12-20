@@ -12,15 +12,34 @@ interface PlayerProps {
 export default function Player({ player, gameStage, status, position }: PlayerProps): JSX.Element {
 	return (
 		<div className={style['card']}>
-			{gameStage === GameStage.LOBBY && <div className={[style['status'], style[status ?? '']].join(' ')} />}
-			{gameStage === GameStage.LEADERBOARD && <p className={style['position']}>{position}.</p>}
+			{gameStage === GameStage.LOBBY && (
+				<div
+					className={[style['status'], style[status ?? '']].join(' ')}
+					data-testid='status'
+				/>
+			)}
+			{gameStage === GameStage.LEADERBOARD && (
+				<p
+					className={style['position']}
+					data-testid='position'
+				>
+					{position}.
+				</p>
+			)}
 			<img
 				className={style['image']}
 				src={player.profilePicture}
 				alt={`Profile picture of ${player.name}`}
 			/>
 			<div className={style['name']}>{player.name}</div>
-			{gameStage === GameStage.LEADERBOARD && <div className={style['score']}>{player.score}</div>}
+			{gameStage === GameStage.LEADERBOARD && (
+				<div
+					className={style['score']}
+					data-testid='score'
+				>
+					{player.score}
+				</div>
+			)}
 		</div>
 	);
 }

@@ -1,5 +1,5 @@
 // External dependencies
-import { createContext, Dispatch, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 // Internal dependencies
@@ -15,6 +15,8 @@ interface SocketProviderProps {
 
 export const SocketProvider = ({ token, children }: SocketProviderProps): JSX.Element => {
 	if (!token) throw new Error('Token not found');
+
+	console.log('TJOMME');
 
 	const socket: Socket = io(API_URL, {
 		extraHeaders: {

@@ -126,7 +126,7 @@ export default function Lobby({ game }: LobbyProps): JSX.Element {
 				</div>
 			</div>
 			<Sharecard
-				gamePin={gameId}
+				gamePin={gameId as string}
 				show
 			/>
 		</div>

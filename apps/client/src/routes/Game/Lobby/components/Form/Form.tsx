@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 // Internal dependencies
 import Select from './Select/Select';
-import Number from './Text/Number';
+import Number from './Number/Number';
 import Check from './Check/Check';
 import Title from '../Title/Title';
 import { GameOptions, Options } from '_packages/shared/types/src';

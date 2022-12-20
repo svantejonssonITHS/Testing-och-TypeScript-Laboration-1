@@ -1,12 +1,15 @@
-import style from './ShareCard.module.css';
+// External dependencies
 import { toast } from 'react-toastify';
+
+// Internal dependencies
+import style from './ShareCard.module.css';
 
 interface ShareCardProps {
 	gamePin: string;
 	show: boolean;
 }
 
-export default function Sharecard({ gamePin, show }): JSX.Element {
+export default function Sharecard({ gamePin, show }: ShareCardProps): JSX.Element {
 	return (
 		<div className={[style['share-card'], style[show ? 'show' : '']].join(' ')}>
 			<h1>Invite your friends!</h1>
