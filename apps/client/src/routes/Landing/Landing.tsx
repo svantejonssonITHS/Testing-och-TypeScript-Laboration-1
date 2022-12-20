@@ -40,8 +40,6 @@ export default function Landing(): JSX.Element {
 		(async (): Promise<void> => {
 			if (!gamePinSubmitted || !gamePin) return;
 
-			console.log(gamePin);
-
 			const gameExists: boolean = await getGameExists(gamePin);
 
 			if (gameExists) {

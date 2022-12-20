@@ -6,8 +6,6 @@ import { Game } from '_packages/shared/types/src';
 import api from '.';
 
 async function getGameExists(gameId: string): Promise<boolean> {
-	console.log('gameId BURH', gameId);
-
 	const response: AxiosResponse = await api.get(`/game?gameId=${gameId}`);
 
 	if (response?.status === 200) {

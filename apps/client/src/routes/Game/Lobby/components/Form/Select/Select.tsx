@@ -1,7 +1,10 @@
-import { Item } from '_packages/shared/types/src';
+// External dependencies
 import { useState, useRef } from 'react';
-import style from './Select.module.css';
 import { useOnClickOutside } from 'usehooks-ts';
+
+// Internal dependencies
+import { Item } from '_packages/shared/types/src';
+import style from './Select.module.css';
 interface SelectProps {
 	label: string;
 	options: Item[];

@@ -14,7 +14,7 @@ export class OptionsService {
 
 		const categories: Item[] = [];
 
-		if (triviaCategories.data) {
+		if (triviaCategories?.data) {
 			for (const category in triviaCategories.data) {
 				categories.push({
 					label: category,
@@ -27,7 +27,7 @@ export class OptionsService {
 
 		const tags: Item[] = [];
 
-		if (triviaTags.data) {
+		if (triviaTags?.data) {
 			triviaTags.data.forEach((tag: string) => {
 				tags.push({
 					label: tag

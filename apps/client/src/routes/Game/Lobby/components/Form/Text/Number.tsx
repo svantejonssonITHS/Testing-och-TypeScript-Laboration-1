@@ -1,6 +1,9 @@
-import style from './Number.module.css';
+// External dependencies
 import { useOnClickOutside } from 'usehooks-ts';
 import { useState, useRef } from 'react';
+
+//
+import style from './Number.module.css';
 
 interface NumberProps {
 	label: string;

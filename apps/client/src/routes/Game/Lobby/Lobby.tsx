@@ -1,4 +1,10 @@
+// External dependencies
 import { useParams, useNavigate, NavigateFunction } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { toast } from 'react-toastify';
+
+// Internal dependencies
 import style from './Lobby.module.css';
 import Background from '$src/components/Background/Background';
 import Form from './components/Form/Form';
@@ -6,18 +12,20 @@ import PlayerList from './components/PlayerList/PlayerList';
 import Button from '$src/components/Button/Button';
 import { ButtonVariant } from '$src/enums';
 import Sharecard from './components/ShareCard/ShareCard';
-import { useEffect, useState } from 'react';
 import { getGameExists } from '$src/utils/api/game';
-import { toast } from 'react-toastify';
 import { Event, Options } from '_packages/shared/types/src';
 import { getOptions } from '$src/utils/api/options';
 import { useSocket } from '$src/hooks/useSocket';
+
 export default function Lobby(): JSX.Element {
 	const { gameId } = useParams();
+	const { user } = useAuth0();
 	const { emit, on, game } = useSocket();
 	const navigate: NavigateFunction = useNavigate();
 	const [gameExists, setGameExists] = useState(false);
 	const [options, setOptions] = useState({} as Options);
+	const [isHost, setIsHost] = useState(false);
+
 	useEffect(() => {
 		(async (): Promise<void> => {
 			if (!gameId) return navigate('/');
@@ -35,6 +43,7 @@ export default function Lobby(): JSX.Element {
 			setOptions(gameOptions);
 		})();
 	}, [gameId]);
+
 	useEffect(() => {
 		if (!gameExists) return;
 
@@ -47,8 +56,9 @@ export default function Lobby(): JSX.Element {
 	}, [gameExists]);
 
 	useEffect(() => {
-		console.log(game);
-	}, [game]);
+		if (!game || !user) return;
+		setIsHost(game.host.id === user.sub);
+	}, [game, user]);
 
 	return (
 		<Background>
@@ -57,7 +67,8 @@ export default function Lobby(): JSX.Element {
 					<div className={style['column']}>
 						<Form
 							options={options}
-							values={game?.options}
+							gameValues={game?.options}
+							isHost={isHost}
 						/>
 					</div>
 					<div className={style['column']}>

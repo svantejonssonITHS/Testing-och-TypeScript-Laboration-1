@@ -96,7 +96,7 @@ export class GameService {
 				throw new Error('Game is in progress');
 			}
 
-			const playerExists: boolean = game.players.some((player: Player) => player.id === player.id);
+			const playerExists: boolean = game.players.some((gamePlayer: Player) => gamePlayer.id === player.id);
 
 			if (playerExists) {
 				throw new Error('Player is already in game');
@@ -110,7 +110,11 @@ export class GameService {
 
 			if (isHost) player.isReady = true;
 
+			console.log(game.players);
+
 			game.players.push(player);
+
+			console.log(game.players);
 
 			const returnGame: Game = {
 				...game,
@@ -119,6 +123,7 @@ export class GameService {
 			};
 
 			client.emit(game.id, returnGame);
+			client.broadcast.emit(game.id, returnGame);
 
 			return returnGame;
 		} catch (error) {
@@ -161,6 +166,7 @@ export class GameService {
 			};
 
 			client.emit(game.id, returnGame);
+			client.broadcast.emit(game.id, returnGame);
 
 			return returnGame;
 		} catch (error) {
@@ -230,6 +236,7 @@ export class GameService {
 			};
 
 			client.emit(game.id, returnGame);
+			client.broadcast.emit(game.id, returnGame);
 
 			return returnGame;
 		} catch (error) {
@@ -290,6 +297,7 @@ export class GameService {
 			};
 
 			client.emit(game.id, gameAtRoundStart);
+			client.broadcast.emit(game.id, gameAtRoundStart);
 
 			setTimeout(() => {
 				const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
@@ -297,6 +305,11 @@ export class GameService {
 				gameAfterRound.stage = GameStage.LEADERBOARD;
 
 				client.emit(gameAfterRound.id, {
+					...gameAfterRound,
+					// Remove the questions from the game object, as we do not want to send them to the client
+					questions: []
+				});
+				client.broadcast.emit(gameAfterRound.id, {
 					...gameAfterRound,
 					// Remove the questions from the game object, as we do not want to send them to the client
 					questions: []
