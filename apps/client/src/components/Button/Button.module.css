@@ -6,6 +6,11 @@
 	font-weight: 700;
 }
 
+.button:disabled {
+	cursor: not-allowed;
+	filter: grayscale(100%);
+}
+
 .fill {
 	background-color: var(--color-primary);
 	color: var(--color-text-light);
