@@ -6,23 +6,24 @@ import { toast } from 'react-toastify';
 
 // Internal dependencies
 import style from './Lobby.module.css';
-import Background from '$src/components/Background/Background';
 import Form from './components/Form/Form';
 import PlayerList from './components/PlayerList/PlayerList';
 import Button from '$src/components/Button/Button';
 import { ButtonVariant } from '$src/enums';
 import Sharecard from './components/ShareCard/ShareCard';
-import { getGameExists } from '$src/utils/api/game';
-import { Event, Options, Player } from '_packages/shared/types/src';
+import { Event, Game, Options, Player } from '_packages/shared/types/src';
 import { getOptions } from '$src/utils/api/options';
 import { useSocket } from '$src/hooks/useSocket';
 
-export default function Lobby(): JSX.Element {
+interface LobbyProps {
+	game: Game | undefined;
+}
+
+export default function Lobby({ game }: LobbyProps): JSX.Element {
 	const { gameId } = useParams();
 	const { user } = useAuth0();
-	const { emit, on, game } = useSocket();
+	const { emit } = useSocket();
 	const navigate: NavigateFunction = useNavigate();
-	const [gameExists, setGameExists] = useState(false);
 	const [options, setOptions] = useState({} as Options);
 	const [isHost, setIsHost] = useState(false);
 	const [isReady, setIsReady] = useState(false);
@@ -30,32 +31,21 @@ export default function Lobby(): JSX.Element {
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			if (!gameId) return navigate('/');
-			const exists: boolean = await getGameExists(gameId);
-			if (!exists) {
-				toast.error(`Game with pin ${gameId} does not exist`);
-				return navigate('/');
-			}
 			const gameOptions: Options = await getOptions();
 			if (!gameOptions) {
 				toast.error(`Could not get options for game with pin ${gameId}`);
 				return navigate('/');
 			}
-			setGameExists(exists);
 			setOptions(gameOptions);
 		})();
 	}, [gameId]);
 
 	useEffect(() => {
-		if (!gameExists) return;
-
-		on(gameId as string);
-
 		emit('event', {
 			gameId: gameId,
 			type: 'join'
 		} as Event);
-	}, [gameExists]);
+	}, [gameId]);
 
 	useEffect(() => {
 		if (!game || !user) return;
@@ -75,58 +65,57 @@ export default function Lobby(): JSX.Element {
 	}, [game, user]);
 
 	return (
-		<Background>
-			<div className={style['lobby']}>
-				<div className={style['contianer']}>
-					<div className={style['column']}>
-						<Form
-							options={options}
-							gameValues={game?.options}
-							isHost={isHost}
-						/>
-					</div>
-					<div className={style['column']}>
-						<PlayerList game={game} />
-					</div>
-					<div className={style['row']}>
-						<Button
-							onClick={(): void => navigate('/')}
-							variant={ButtonVariant.OUTLINE}
-						>
-							Go back
-						</Button>
-						<Button
-							onClick={(): void => {
-								if (isHost) {
-									emit('event', {
-										gameId: gameId,
-										type: 'startRound'
-									} as Event);
-								} else {
-									console.log('ready');
-
-									setIsReady(!isReady);
-									emit('event', {
-										gameId: gameId,
-										type: 'changePlayerStatus',
-										data: {
-											isReady: !isReady
-										}
-									} as Event);
-								}
-							}}
-							variant={ButtonVariant.FILL}
-							disabled={isHost && !isGameReady}
-						>
-							{isHost ? 'Start game' : isReady ? 'Unready' : 'Ready'}
-						</Button>
-					</div>
+		<div className={style['lobby']}>
+			<div className={style['contianer']}>
+				<div className={style['column']}>
+					<Form
+						options={options}
+						gameValues={game?.options}
+						isHost={isHost}
+					/>
 				</div>
-				<Sharecard
-					gamePin={gameId}
-					show
-				/>
+				<div className={style['column']}>
+					<PlayerList game={game} />
+				</div>
+				<div className={style['row']}>
+					<Button
+						onClick={(): void => navigate('/')}
+						variant={ButtonVariant.OUTLINE}
+					>
+						Go back
+					</Button>
+					<Button
+						onClick={(): void => {
+							if (isHost) {
+								emit('event', {
+									gameId: gameId,
+									type: 'startRound'
+								} as Event);
+								navigate(`./question`);
+							} else {
+								console.log('ready');
+
+								setIsReady(!isReady);
+								emit('event', {
+									gameId: gameId,
+									type: 'changePlayerStatus',
+									data: {
+										isReady: !isReady
+									}
+								} as Event);
+							}
+						}}
+						variant={ButtonVariant.FILL}
+						disabled={isHost && !isGameReady}
+					>
+						{isHost ? 'Start game' : isReady ? 'Unready' : 'Ready'}
+					</Button>
+				</div>
 			</div>
-		</Background>
+			<Sharecard
+				gamePin={gameId}
+				show
+			/>
+		</div>
 	);
 }

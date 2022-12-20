@@ -276,7 +276,7 @@ export class GameService {
 			}
 
 			game.activeQuestion = game.questions.shift();
-			game.activeQuestion.sentAt = Date.now() + QUESTION_INTRO_DURATION * 1000;
+			game.activeQuestion.sentAt = Date.now();
 
 			// Update game stage
 			game.stage = GameStage.QUESTION;
@@ -300,6 +300,8 @@ export class GameService {
 
 				// Update game stage
 				gameAfterRound.stage = GameStage.LEADERBOARD;
+
+				console.log('Leaderboard stage started');
 
 				client.emit(gameAfterRound.id, {
 					...gameAfterRound,
@@ -333,7 +335,10 @@ export class GameService {
 				throw new Error('Player is not in game');
 			}
 
-			if (game.stage !== GameStage.QUESTION || game.activeQuestion.sentAt > Date.now()) {
+			if (
+				game.stage !== GameStage.QUESTION ||
+				game.activeQuestion.sentAt + QUESTION_INTRO_DURATION * 1000 > Date.now()
+			) {
 				throw new Error('Round is not active');
 			}
 

@@ -1,0 +1,13 @@
+.timer {
+	height: 1.5rem;
+	width: 100%;
+	background-color: var(--color-primary-light);
+	border-radius: var(--border-radius-small);
+	overflow: hidden;
+}
+
+.progress {
+	height: 100%;
+	background-color: var(--color-primary);
+	transition: width 100ms linear;
+}

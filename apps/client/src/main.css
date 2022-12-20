@@ -9,8 +9,13 @@
 	--color-primary: #187498;
 	--color-primary-light: #bad6e1;
 	--color-error: #eb5353;
+	--color-error-light: #f9cccc;
 	--color-success: #36ae7c;
+	--color-success-light: #c3e7d8;
 	--color-host: #f9d923;
+	--color-host-light: #fef4bd;
+	--color-other: #e956da;
+	--color-other-light: #f9cdf4;
 
 	--color-text-light: #fff;
 	--color-text-dark: #000;

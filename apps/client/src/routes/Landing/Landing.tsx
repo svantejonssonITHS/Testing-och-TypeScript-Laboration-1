@@ -1,11 +1,10 @@
 // External dependencies
 import { useEffect, useState } from 'react';
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // Internal dependencies
 import style from './Landing.module.css';
-import Background from '$src/components/Background/Background';
 import HeroText from './components/HeroText/HeroText';
 import GamePinInput from '$src/routes/Landing/components/GamePinInput/GamePinInput';
 import { getHealth } from '$src/utils/api/health';
@@ -53,43 +52,41 @@ export default function Landing(): JSX.Element {
 	}, [gamePinSubmitted]);
 
 	return (
-		<Background>
-			<div className={style['layout']}>
-				<div className={style['container']}>
-					<HeroText text='Domanda!' />
-					<div>
-						<GamePinInput
-							value={gamePin}
-							setValue={setGamePin}
-							onSubmit={(): void => setGamePinSubmitted(true)}
-							disabled={!apiHealthy && apiCheckComplete}
-						/>
-						<p className={style['alternative']}>
-							or{' '}
-							<button
-								type='button'
-								onClick={async (): Promise<void> => {
-									if (!apiHealthy && apiCheckComplete) return;
+		<div className={style['layout']}>
+			<div className={style['container']}>
+				<HeroText text='Domanda!' />
+				<div>
+					<GamePinInput
+						value={gamePin}
+						setValue={setGamePin}
+						onSubmit={(): void => setGamePinSubmitted(true)}
+						disabled={!apiHealthy && apiCheckComplete}
+					/>
+					<p className={style['alternative']}>
+						or{' '}
+						<button
+							type='button'
+							onClick={async (): Promise<void> => {
+								if (!apiHealthy && apiCheckComplete) return;
 
-									try {
-										const game: Game = await createGame();
+								try {
+									const game: Game = await createGame();
 
-										navigate(`/game/${game.id}`);
-									} catch (error) {
-										toast.error('Something went wrong');
-									}
-								}}
-								className={[
-									!apiHealthy && apiCheckComplete ? style['link-disabled'] : '',
-									style['link']
-								].join(' ')}
-							>
-								create your own game
-							</button>
-						</p>
-					</div>
+									navigate(`/game/${game.id}`);
+								} catch (error) {
+									toast.error('Something went wrong');
+								}
+							}}
+							className={[
+								!apiHealthy && apiCheckComplete ? style['link-disabled'] : '',
+								style['link']
+							].join(' ')}
+						>
+							create your own game
+						</button>
+					</p>
 				</div>
 			</div>
-		</Background>
+		</div>
 	);
 }

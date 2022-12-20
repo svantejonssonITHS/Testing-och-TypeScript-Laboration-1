@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './main.css';
 import Routes from './routes';
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '$src/utils/env';
+import Background from './components/Background/Background';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
@@ -21,9 +22,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 			offline_access={true}
 			cacheLocation='localstorage'
 		>
-			<BrowserRouter>
-				<Routes />
-			</BrowserRouter>
+			<Background>
+				<BrowserRouter>
+					<Routes />
+				</BrowserRouter>
+			</Background>
 		</Auth0Provider>
 	</React.StrictMode>
 );
