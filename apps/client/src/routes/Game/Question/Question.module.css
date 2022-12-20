@@ -1,4 +1,7 @@
 .question {
+	--default-answer-background: #fff;
+	--default-answer-border-color: #ccc;
+
 	width: 100%;
 	height: 100%;
 	display: flex;
@@ -48,41 +51,68 @@
 	border-radius: var(--border-radius-small);
 	padding: 1rem;
 	font-weight: 700;
+	color: var(--color-text-dark);
+	transition: all 0.2s ease-in-out;
 
 	/* Default colors */
-	border: 2px solid #ccc;
-	background: #fff;
-	color: #000;
-	transition: all 0.2s ease-in-out;
+	border: 2px solid var(--default-answer-border-color);
+	background: var(--default-answer-background);
 }
 
-.answer:nth-child(1) {
+.answer.available:nth-child(1) {
 	grid-area: 1 / 1 / 1 / 1;
 	border-color: var(--color-error);
 	background: var(--color-error-light);
 }
 
-.answer:nth-child(2) {
+.answer.available:nth-child(2) {
 	grid-area: 1 / 2 / 1 / 2;
 	border-color: var(--color-success);
 	background: var(--color-success-light);
 }
 
-.answer:nth-child(3) {
+.answer.available:nth-child(3) {
 	grid-area: 2 / 1 / 2 / 1;
 	border-color: var(--color-host);
 	background: var(--color-host-light);
 }
 
-.answer:nth-child(4) {
+.answer.available:nth-child(4) {
 	grid-area: 2 / 2 / 2 / 2;
 	border-color: var(--color-other);
 	background: var(--color-other-light);
 }
 
-.answer:disabled {
-	cursor: not-allowed;
-	border-color: #ccc;
-	background: #fff;
-	color: #000;
+.answer.selected,
+.answer.not-selected {
+	background: var(--default-answer-background) !important;
+}
+
+.answer.not-selected {
+	border-color: var(--default-answer-border-color) !important;
+}
+
+.answer.correct:nth-child(1) {
+	border-color: var(--color-error) !important;
+	background: var(--color-error-light) !important;
+}
+
+.answer.correct:nth-child(2) {
+	border-color: var(--color-success) !important;
+	background: var(--color-success-light) !important;
+}
+
+.answer.correct:nth-child(3) {
+	border-color: var(--color-host) !important;
+	background: var(--color-host-light) !important;
+}
+
+.answer.correct:nth-child(4) {
+	border-color: var(--color-other) !important;
+	background: var(--color-other-light) !important;
+}
+
+.answer.incorrect {
+	border-color: var(--default-answer-border-color) !important;
+	background: var(--default-answer-background) !important;
 }

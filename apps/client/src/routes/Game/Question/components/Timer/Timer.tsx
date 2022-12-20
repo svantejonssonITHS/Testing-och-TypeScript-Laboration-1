@@ -5,9 +5,10 @@ import style from './Timer.module.css';
 interface TimerProps {
 	countUp: number;
 	countDown: number;
+	onCountUpEnd: () => void;
 }
 
-export default function Timer({ countUp, countDown }: TimerProps): JSX.Element {
+export default function Timer({ countUp, countDown, onCountUpEnd }: TimerProps): JSX.Element {
 	const [timer, setTimer]: [number, React.Dispatch<React.SetStateAction<number>>] = useState(0);
 	const [startCountdown, setStartCountdown]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
 		useState(false);
@@ -18,7 +19,6 @@ export default function Timer({ countUp, countDown }: TimerProps): JSX.Element {
 		const endTime: number = Date.now() + countUp * 1000;
 
 		const interval: NodeJS.Timer = setInterval(() => {
-			// Count up from 0 to 100 in the time from now to countUp (s). use the calculated endTime to calculate the progress
 			const progress: number = 100 - Math.round(((endTime - Date.now()) / (countUp * 1000)) * 100);
 
 			setTimer(progress);
@@ -50,6 +50,10 @@ export default function Timer({ countUp, countDown }: TimerProps): JSX.Element {
 
 		return () => clearInterval(interval);
 	}, [startCountdown, countDown]);
+
+	useEffect(() => {
+		if (startCountdown) onCountUpEnd();
+	}, [startCountdown]);
 
 	return (
 		<div className={style['timer']}>
