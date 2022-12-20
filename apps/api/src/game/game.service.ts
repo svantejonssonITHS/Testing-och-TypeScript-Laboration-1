@@ -61,7 +61,8 @@ export class GameService {
 		return {
 			...game,
 			// Remove the questions from the game object, as we do not want to send them to the client
-			questions: []
+			questions: [],
+			questionTimeout: undefined
 		};
 	}
 
@@ -112,16 +113,17 @@ export class GameService {
 
 			game.players.push(player);
 
-			const returnGame: Game = {
+			const returnGame: string = JSON.stringify({
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
-				questions: []
-			};
+				questions: [],
+				questionTimeout: undefined
+			});
 
 			client.emit(game.id, returnGame);
 			client.broadcast.emit(game.id, returnGame);
 
-			return returnGame;
+			return JSON.parse(returnGame);
 		} catch (error) {
 			console.log(error);
 		}
@@ -155,16 +157,17 @@ export class GameService {
 				return gamePlayer;
 			});
 
-			const returnGame: Game = {
+			const returnGame: string = JSON.stringify({
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
-				questions: []
-			};
+				questions: [],
+				questionTimeout: undefined
+			});
 
 			client.emit(game.id, returnGame);
 			client.broadcast.emit(game.id, returnGame);
 
-			return returnGame;
+			return JSON.parse(returnGame);
 		} catch (error) {
 			console.log(error);
 		}
@@ -225,16 +228,17 @@ export class GameService {
 			game.questions = questions;
 			game.numberOfQuestions = questions.length;
 
-			const returnGame: Game = {
+			const returnGame: string = JSON.stringify({
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
-				questions: []
-			};
+				questions: [],
+				questionTimeout: undefined
+			});
 
 			client.emit(game.id, returnGame);
 			client.broadcast.emit(game.id, returnGame);
 
-			return returnGame;
+			return JSON.parse(returnGame);
 		} catch (error) {
 			console.log(error);
 		}
@@ -281,7 +285,7 @@ export class GameService {
 			// Update game stage
 			game.stage = GameStage.QUESTION;
 
-			const gameAtRoundStart: Game = {
+			const gameAtRoundStart: string = JSON.stringify({
 				...game,
 				// Remove the questions from the game object, as we do not want to send them to the client
 				questions: [],
@@ -289,33 +293,18 @@ export class GameService {
 				activeQuestion: {
 					...game.activeQuestion,
 					correctAnswer: undefined
-				}
-			};
+				},
+				questionTimeout: undefined
+			});
 
 			client.emit(game.id, gameAtRoundStart);
 			client.broadcast.emit(game.id, gameAtRoundStart);
 
-			setTimeout(() => {
-				const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
-
-				// Update game stage
-				gameAfterRound.stage = GameStage.LEADERBOARD;
-
-				console.log('Leaderboard stage started');
-
-				client.emit(gameAfterRound.id, {
-					...gameAfterRound,
-					// Remove the questions from the game object, as we do not want to send them to the client
-					questions: []
-				});
-				client.broadcast.emit(gameAfterRound.id, {
-					...gameAfterRound,
-					// Remove the questions from the game object, as we do not want to send them to the client
-					questions: []
-				});
+			game.questionTimeout = setTimeout(() => {
+				emitLeaderboard(client, payload);
 			}, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000);
 
-			return gameAtRoundStart;
+			return JSON.parse(gameAtRoundStart);
 		} catch (error) {
 			console.log(error);
 		}
@@ -361,22 +350,48 @@ export class GameService {
 
 			const playerIndex: number = game.players.findIndex((gamePlayer: Player) => gamePlayer.id === player.id);
 
-			if (!playerAnswer.isCorrect) {
+			if (playerAnswer.isCorrect) {
 				game.players[playerIndex].streak = 0;
-				throw new Error('Player answered incorrectly');
+
+				game.players[playerIndex].streak++;
+
+				const timeTillAnswer: number = (playerAnswer.sentAt - game.activeQuestion.sentAt) / 1000;
+
+				game.players[playerIndex].score += calculateScore(
+					game.options.questionTime,
+					timeTillAnswer,
+					game.players[playerIndex].streak >= 3 ? game.players[playerIndex].streak : undefined
+				);
+			} else {
+				game.players[playerIndex].streak = 0;
 			}
 
-			game.players[playerIndex].streak++;
+			// If all players have answered, emit the leaderboard
+			if (game.activeQuestion.playerAnswers.length === game.players.length) {
+				console.log('All players answered, emitting leaderboard');
 
-			const timeTillAnswer: number = (playerAnswer.sentAt - game.activeQuestion.sentAt) / 1000;
-
-			game.players[playerIndex].score += calculateScore(
-				game.options.questionTime,
-				timeTillAnswer,
-				game.players[playerIndex].streak >= 3 ? game.players[playerIndex].streak : undefined
-			);
+				clearTimeout(game.questionTimeout);
+				emitLeaderboard(client, payload);
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	}
 }
+
+const emitLeaderboard = (client: Socket, payload: Event): void => {
+	const gameAfterRound: Game = _games.find((game: Game) => game.id === payload.gameId);
+
+	// Update game stage
+	gameAfterRound.stage = GameStage.LEADERBOARD;
+
+	const returnGame: string = JSON.stringify({
+		...gameAfterRound,
+		// Remove the questions from the game object, as we do not want to send them to the client
+		questions: [],
+		questTimeout: undefined
+	});
+
+	client.emit(gameAfterRound.id, returnGame);
+	client.broadcast.emit(gameAfterRound.id, returnGame);
+};

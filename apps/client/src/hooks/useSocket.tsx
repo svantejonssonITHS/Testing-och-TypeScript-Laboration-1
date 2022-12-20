@@ -42,8 +42,8 @@ export const useSocket = (): UseSocket => {
 	};
 
 	const on = (event: string): void => {
-		socket.on(event, (data: Game) => {
-			setGame(data);
+		socket.on(event, (data: string) => {
+			setGame(JSON.parse(data) as Game);
 		});
 	};
 

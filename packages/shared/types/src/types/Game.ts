@@ -10,6 +10,7 @@ type Game = {
 	previousQuestions: Question[];
 	players: Player[];
 	host: Player;
+	questionTimeout?: NodeJS.Timeout;
 };
 
 type GameOptions = {
