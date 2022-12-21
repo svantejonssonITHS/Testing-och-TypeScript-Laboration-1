@@ -38,7 +38,7 @@ You have now created your Auth0 account and a new `tenant` is created for you au
 
 ### 2. Create an SPA application
 
-Now its time to create the SPA (Single page application) we will need to run our project! Press on the `Create Application` button to get started.
+Now its time to create the SPA (Single page application) we will need to run our project! Press the `Create Application` button to get started.
 
 <details>
   <summary>Image example</summary>
