@@ -33,3 +33,19 @@ You have now created your Auth0 account and a new `tenant` is created for you au
   <summary>Image example</summary>
   <img alt="Dashboard intro" src="./images/4-dashboard-intro.png" />
 </details>
+
+### 2. Create an SPA application
+
+Now its time to create the SPA (Single page application) we will need to run our project! Press on the `Create Application` button to get started.
+
+<details>
+  <summary>Image example</summary>
+  <img alt="Dashboard start page" src="./images/5-dashboard-start-page.png" />
+</details>
+
+Here you can choose whatever name you want for the application. But more importantly we can choose the `Application type` and we want `Single Page Web Applications`. Then press `Create`.
+
+<details>
+  <summary>Image example</summary>
+  <img alt="Create SPA" src="./images/6-create-spa.png" />
+</details>
