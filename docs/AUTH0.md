@@ -106,3 +106,5 @@ AUTH0_TEST_PASSWORD=<YOUR_TEST_PASSWORD>
   <summary>Image example</summary>
   <img alt="Create new user" src="./images/12-create-new-user.png" />
 </details>
+
+Now is the Auth0 configuration complete 🥳
