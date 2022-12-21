@@ -80,3 +80,29 @@ Continuing from the last step, just above the `Save Changes` button you will see
   <summary>Image example</summary>
   <img alt="SPA advanced settings" src="./images/9-spa-advanced-settings.png" />
 </details>
+
+Now we move over to the general settings by pressing the `Settings` button in the sidebar. Then we scroll down to the section called `API Authorization Settings`. Here we want to set the `Default Directory` option to `Username-Password-Authentication` by typing and then click `Save`.
+
+<details>
+  <summary>Image example</summary>
+  <img alt="API authorization settings" src="./images/10-settings-api-authorization.png" />
+</details>
+
+Then we want to navigate to `User Managment` in the sidebar and then press the `Create User` button.
+
+<details>
+  <summary>Image example</summary>
+  <img alt="User Managment page" src="./images/11-user-managment-start-page.png" />
+</details>
+
+Lastly we input a username and password for our test user. This user will be used in certain tests of the app. Whatever values you choose should be saved in the `.env` file after the user has been created!
+
+```sh
+AUTH0_TEST_USERNAME=<YOUR_TEST_USERNAME>
+AUTH0_TEST_PASSWORD=<YOUR_TEST_PASSWORD>
+```
+
+<details>
+  <summary>Image example</summary>
+  <img alt="Create new user" src="./images/12-create-new-user.png" />
+</details>
