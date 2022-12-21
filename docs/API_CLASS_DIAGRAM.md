@@ -1,4 +1,4 @@
-[← Go back](../readme.md)
+[← Go back](../README.md)
 
 # API Class Diagram
 
