@@ -10,7 +10,7 @@
 		"dev": "npm run prebuild && nest start --watch",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-		"test": "jest && jest --config ./test/jest-e2e.ts --runInBand"
+		"test": "jest --config ./test/jest-e2e.ts --runInBand"
 	},
 	"dependencies": {
 		"@golevelup/ts-jest": "^0.3.4",

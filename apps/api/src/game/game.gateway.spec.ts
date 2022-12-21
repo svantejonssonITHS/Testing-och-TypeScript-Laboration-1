@@ -34,7 +34,8 @@ describe('GameGateway', () => {
 		// Create a client
 		client = {
 			handshake: { headers: { authorization: `Bearer ${token}` } },
-			emit: () => true
+			emit: () => true,
+			broadcast: { emit: () => true }
 		} as unknown as Socket;
 	});
 
@@ -123,7 +124,6 @@ describe('GameGateway', () => {
 		expect(game.activeQuestion).toHaveProperty('id');
 		expect(game.activeQuestion).toHaveProperty('question');
 		expect(game.activeQuestion).toHaveProperty('answers');
-		expect(game.activeQuestion).toHaveProperty('correctAnswer', undefined);
 		expect(game.activeQuestion).toHaveProperty('sentAt');
 
 		// Wait for the question to end
@@ -133,18 +133,5 @@ describe('GameGateway', () => {
 		await new Promise((resolve: any) =>
 			setTimeout(resolve, (game.options.questionTime + QUESTION_INTRO_DURATION) * 1000)
 		);
-	});
-
-	it('host should be able to leave their game', async () => {
-		const game: Game | void = await gateway.handleEvent(client, { gameId, type: 'leave' });
-
-		expect(game).toBeDefined();
-		// In case the game is undefined, the test will fail but typescript doesn't know that
-		if (!game) return;
-
-		expect(game).toHaveProperty('id', gameId);
-		expect(game).toHaveProperty('players');
-		// Since the host left, there should be no players
-		expect(game.players).toHaveLength(0);
 	});
 });

@@ -36,7 +36,7 @@ describe('GameGateway (e2e)', () => {
 	jest.setTimeout(30 * 1000);
 	let socket: Socket;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		socket = io(`http://localhost:${JEST_TEST_PORT}`, {
 			extraHeaders: {
 				authorization: `Bearer ${await getAuth0AccessToken()}`
@@ -44,7 +44,7 @@ describe('GameGateway (e2e)', () => {
 		});
 	});
 
-	afterEach(() => {
+	afterAll(() => {
 		socket.disconnect();
 	});
 
@@ -54,11 +54,13 @@ describe('GameGateway (e2e)', () => {
 			type: 'join'
 		});
 
-		socket.on(_gameId, (data: Game) => {
-			expect(data).toBeDefined();
-			expect(data.id).toBe(_gameId);
-			expect(data.players).toHaveLength(1);
-			expect(data.players[0].id).toBeDefined();
+		socket.on(_gameId, (data: string) => {
+			const game: Game = JSON.parse(data);
+
+			expect(game).toBeDefined();
+			expect(game.id).toBe(_gameId);
+			expect(game.players).toHaveLength(1);
+			expect(game.players[0].id).toBeDefined();
 
 			done();
 		});
@@ -83,10 +85,12 @@ describe('GameGateway (e2e)', () => {
 			}
 		});
 
-		socket.on(_gameId, (data: Game) => {
-			expect(data).toBeDefined();
-			expect(data.id).toBe(_gameId);
-			expect(data.options).toEqual(options);
+		socket.on(_gameId, (data: string) => {
+			const game: Game = JSON.parse(data);
+
+			expect(game).toBeDefined();
+			expect(game.id).toBe(_gameId);
+			expect(game.options).toEqual(options);
 
 			done();
 		});
@@ -98,48 +102,50 @@ describe('GameGateway (e2e)', () => {
 			type: 'startRound'
 		});
 
-		socket.on(_gameId, (data: Game) => {
-			expect(data).toBeDefined();
-			expect(data).toHaveProperty('id');
-			expect(data.id).toBe(_gameId);
-			expect(data).toHaveProperty('stage');
-			expect(data).toHaveProperty('activeQuestion');
-			expect(data.activeQuestion).toHaveProperty('question');
-			expect(data.activeQuestion).toHaveProperty('answers');
-			expect(data.activeQuestion).toHaveProperty('sentAt');
-			expect(data).toHaveProperty('options');
-			expect(data.options).toHaveProperty('questionTime');
+		socket.on(_gameId, (data: string) => {
+			const game: Game = JSON.parse(data);
 
-			if (data.stage === GameStage.QUESTION) {
+			expect(game).toBeDefined();
+			expect(game).toHaveProperty('id');
+			expect(game.id).toBe(_gameId);
+			expect(game).toHaveProperty('stage');
+			expect(game).toHaveProperty('activeQuestion');
+			expect(game.activeQuestion).toHaveProperty('question');
+			expect(game.activeQuestion).toHaveProperty('answers');
+			expect(game.activeQuestion).toHaveProperty('sentAt');
+			expect(game).toHaveProperty('options');
+			expect(game.options).toHaveProperty('questionTime');
+
+			if (game.stage === GameStage.QUESTION) {
 				setTimeout(() => {
 					socket.emit('event', {
 						gameId: _gameId,
 						type: 'playerAnswer',
 						data: {
-							answer: data.activeQuestion.answers[0]
+							answer: game.activeQuestion.answers[0]
 						}
 					});
 					return;
-				}, (QUESTION_INTRO_DURATION + data.options.questionTime - 1) * 1000);
-			} else if (data.stage === GameStage.LEADERBOARD) {
-				expect(data.activeQuestion).toHaveProperty('playerAnswers');
-				expect(data.activeQuestion.playerAnswers).toHaveLength(1);
-				expect(data.activeQuestion.playerAnswers[0]).toHaveProperty('isCorrect');
-				expect(data.activeQuestion.playerAnswers[0]);
-				expect(data).toHaveProperty('players');
-				expect(data.players).toHaveLength(1);
-				expect(data.players[0]).toHaveProperty('score');
+				}, (QUESTION_INTRO_DURATION + game.options.questionTime - 1) * 1000);
+			} else if (game.stage === GameStage.LEADERBOARD) {
+				expect(game.activeQuestion).toHaveProperty('playerAnswers');
+				expect(game.activeQuestion.playerAnswers).toHaveLength(1);
+				expect(game.activeQuestion.playerAnswers[0]).toHaveProperty('isCorrect');
+				expect(game.activeQuestion.playerAnswers[0]);
+				expect(game).toHaveProperty('players');
+				expect(game.players).toHaveLength(1);
+				expect(game.players[0]).toHaveProperty('score');
 
-				if (data.activeQuestion.playerAnswers[0].isCorrect) {
-					expect(data.players[0].score).toBeGreaterThan(0);
-				} else if (data.previousQuestions.length === 0) {
-					expect(data.players[0].score).toBe(0);
+				if (game.activeQuestion.playerAnswers[0].isCorrect) {
+					expect(game.players[0].score).toBeGreaterThan(0);
+				} else if (game.previousQuestions.length === 0) {
+					expect(game.players[0].score).toBe(0);
 				}
 
-				expect(data).toHaveProperty('previousQuestions');
-				expect(data).toHaveProperty('numberOfQuestions');
+				expect(game).toHaveProperty('previousQuestions');
+				expect(game).toHaveProperty('numberOfQuestions');
 
-				if (data.previousQuestions.length + 1 === data.numberOfQuestions) {
+				if (game.previousQuestions.length + 1 === game.numberOfQuestions) {
 					done();
 				} else {
 					socket.emit('event', {
@@ -148,21 +154,6 @@ describe('GameGateway (e2e)', () => {
 					});
 				}
 			}
-		});
-	});
-
-	it('should be able to leave the game', (done: jest.DoneCallback) => {
-		socket.emit('event', {
-			gameId: _gameId,
-			type: 'leave'
-		});
-
-		socket.on(_gameId, (data: Game) => {
-			expect(data).toBeDefined();
-			expect(data.id).toBe(_gameId);
-			expect(data.players).toHaveLength(0);
-
-			done();
 		});
 	});
 });
