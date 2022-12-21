@@ -12,7 +12,7 @@ export default defineConfig({
 		AUTH0_DOMAIN: process.env.PUBLIC_AUTH0_DOMAIN
 	},
 	e2e: {
-		specPattern: ['cypress/e2e/*', 'cypress/integrations/*'],
+		specPattern: ['cypress/e2e/*', 'cypress/integration/*'],
 		setupNodeEvents(on) {
 			on(
 				'file:preprocessor',

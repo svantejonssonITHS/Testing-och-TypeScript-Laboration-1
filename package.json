@@ -11,8 +11,8 @@
 		"lint": "turbo run lint",
 		"format": "turbo run format",
 		"dev": "turbo run dev --parallel",
-		"cypress:open": "cypress open",
-		"cypress:run": "cypress run"
+		"cypress:run": "cypress run",
+		"cypress:open": "cypress open"
 	},
 	"devDependencies": {
 		"@types/cypress-cucumber-preprocessor": "^4.0.1",
@@ -32,10 +32,14 @@
 	"author": "Svante Jonsson",
 	"license": "MIT",
 	"dependencies": {
+		"@badeball/cypress-cucumber-preprocessor": "^15.0.0",
 		"cypress": "^12.2.0",
 		"cypress-cucumber-preprocessor": "^4.3.1",
 		"dotenv": "^16.0.3",
 		"socket.io-client": "^4.5.4",
 		"ts-jest": "^29.0.3"
+	},
+	"cypress-cucumber-preprocessor": {
+		"nonGlobalStepDefinitions": true
 	}
 }

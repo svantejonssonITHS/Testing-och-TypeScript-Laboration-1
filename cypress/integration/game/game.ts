@@ -1,6 +1,6 @@
-import './game.feature';
-import { QUESTION_INTRO_DURATION } from '../../packages/shared/constants/src';
-import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import '../game.feature';
+import { QUESTION_INTRO_DURATION } from '../../../packages/shared/constants/src';
+import { Given, Then, When, And } from 'cypress-cucumber-preprocessor/steps';
 
 Given(`I visit the page and login with Auth0`, () => {
 	cy.log('Visit the page and login with Auth0');
@@ -8,12 +8,12 @@ Given(`I visit the page and login with Auth0`, () => {
 	cy.loginViaAuth0(Cypress.env('AUTH0_USERNAME'), Cypress.env('AUTH0_PASSWORD'));
 });
 
-Given(`I create a new game`, () => {
+And(`I create a new game`, () => {
 	cy.log('Create a new game');
 	cy.get('button').contains('create your own game').click();
 });
 
-Given(`I update the question time and question count, then start the game`, () => {
+And(`I update the question time and question count, then start the game`, () => {
 	cy.log('Update question time and question count, then start the game');
 	const numberOfQuestions = 2;
 
