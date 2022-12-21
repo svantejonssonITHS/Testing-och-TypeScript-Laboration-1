@@ -28,6 +28,14 @@ npm install
 
 This command will install all of the dependencies listed in the `package.json` files in the repository.
 
+## 4. Env creation
+
+This app utilizes environment variables with the use of a `.env` file located in the root directory.
+
+In the root directory there should be a file called `.env.example`. This file contains all variables that are needed to run and test the app. Notice that some of them already have values? That means that they have default values and you won't need to set/change them  yourself 😄
+
+In the same directory (project root) create a file called `.env` and paste the contents of `.env.example` there.
+
 ## 4. Setup an Auth0 tenant
 
-Instructions for setting up an Auth0 tenant can be found [here](./BASE_AUTH0.md).
+Instructions for setting up an Auth0 tenant (and updating the `.env` accordingly) can be found [here](./BASE_AUTH0.md).
