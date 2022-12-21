@@ -38,4 +38,4 @@ In the same directory (project root) create a file called `.env` and paste the c
 
 ## 4. Setup an Auth0 tenant
 
-Instructions for setting up an Auth0 tenant (and updating the `.env` accordingly) can be found [here](./BASE_AUTH0.md).
+Instructions for setting up an Auth0 tenant (and updating the `.env` accordingly) can be found [here](./AUTH0.md).
