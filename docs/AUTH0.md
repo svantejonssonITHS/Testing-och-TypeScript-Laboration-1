@@ -1,3 +1,5 @@
+[← Go back](./SETUP.md)
+
 # Auht0 setup
 
 ## Setup an Auth0 tenant
