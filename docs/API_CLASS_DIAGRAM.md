@@ -1,3 +1,7 @@
+[Go back to the README][../readme.md]
+
+# API Class Diagram
+
 ```mermaid
 classDiagram
 class Main {
