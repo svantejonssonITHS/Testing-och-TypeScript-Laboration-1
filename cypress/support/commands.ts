@@ -11,7 +11,7 @@ function loginViaAuth0(username: string, password: string) {
 	cy.url().should('equal', Cypress.env('CLIENT_URL') + '/');
 }
 
-Cypress.Commands.add('loginToAuth0', (username: string, password: string) => {
+Cypress.Commands.add('loginViaAuth0', (username: string, password: string) => {
 	const log = Cypress.log({
 		displayName: 'AUTH0 LOGIN',
 		message: [`Authenticating: ${username}`],

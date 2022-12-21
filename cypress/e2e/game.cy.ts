@@ -4,7 +4,7 @@ describe('Domanda E2E', () => {
 	it('Play a round of the game', () => {
 		cy.log('Visit the page and login with Auth0');
 		cy.visit(Cypress.env('CLIENT_URL'));
-		cy.loginToAuth0(Cypress.env('AUTH0_USERNAME'), Cypress.env('AUTH0_PASSWORD'));
+		cy.loginViaAuth0(Cypress.env('AUTH0_USERNAME'), Cypress.env('AUTH0_PASSWORD'));
 
 		cy.log('Create a new game');
 		cy.get('button').contains('create your own game').click();
@@ -17,7 +17,7 @@ describe('Domanda E2E', () => {
 		cy.get('button').contains('Start game').click();
 
 		for (let i = 0; i < numberOfQuestions; i++) {
-			cy.log('Answer the question, and then move on to the next one');
+			cy.log('Answer the question, and then move on to the next one until the game is over');
 			cy.wait((QUESTION_INTRO_DURATION + 1) * 1000);
 			cy.get('button')
 				.should('not.be.disabled')
