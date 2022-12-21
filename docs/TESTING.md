@@ -52,3 +52,5 @@ To run `bdd` and cypress `e2e` tests:
 ```sh
 npm run cypress:run
 ```
+
+**NOTE:** All tests related to cypress require the project to be running simultaneously since it tests the connection between the client and api (and all related services). If you have followed the setup guide and have the project running in another terminal all should work 🤞
