@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Internal dependencies
 import './main.css';
 import Routes from './routes';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '$src/utils/env';
+import { CLIENT_URL, AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '$src/utils/env';
 import Background from './components/Background/Background';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 		<Auth0Provider
 			domain={AUTH0_DOMAIN}
 			clientId={AUTH0_CLIENT_ID}
-			redirectUri={window.location.origin}
+			redirectUri={CLIENT_URL}
 			offline_access={true}
 			cacheLocation='localstorage'
 		>
