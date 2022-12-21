@@ -17,7 +17,7 @@ interface NumberProps {
 export default function Number({ label, value, min, max, disabled, onChange }: NumberProps): JSX.Element {
 	const inputRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 	const [isFocused, setIsFocused]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false);
-	const selectId: string = Math.random().toString(36).substring(2, 9);
+	const inputId: string = Math.random().toString(36).substring(2, 9);
 
 	useOnClickOutside(inputRef, () => {
 		setIsFocused(false);
@@ -30,7 +30,7 @@ export default function Number({ label, value, min, max, disabled, onChange }: N
 		>
 			<div className={style['select-container']}>
 				<label
-					htmlFor={selectId}
+					htmlFor={inputId}
 					className={[style['label'], style[value !== undefined || isFocused ? 'has-value' : '']].join(' ')}
 				>
 					{label}
@@ -38,7 +38,7 @@ export default function Number({ label, value, min, max, disabled, onChange }: N
 				<input
 					tabIndex={0}
 					className={[style['value-input'], style[value !== undefined ? 'has-value' : '']].join(' ')}
-					id={selectId}
+					id={inputId}
 					type='number'
 					value={value !== undefined ? value : min}
 					min={min}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { QUESTION_INTRO_DURATION } from '_packages/shared/constants/src';
 import style from './Timer.module.css';
 
 interface TimerProps {
