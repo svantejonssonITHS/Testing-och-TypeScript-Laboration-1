@@ -27,3 +27,7 @@ npm install
 ```
 
 This command will install all of the dependencies listed in the `package.json` files in the repository.
+
+## 4. Setup an Auth0 tenant
+
+Instructions for setting up an Auth0 tenant can be found [here](./BASE_AUTH0.md).
