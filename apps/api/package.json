@@ -10,8 +10,8 @@
 		"dev": "npm run prebuild && nest start --watch",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-		"test:unit": "jest",
-		"test:e2e": "jest --config ./test/jest-e2e.ts --runInBand",
+		"test:unit": "jest --silent",
+		"test:e2e": "jest --silent --config ./test/jest-e2e.ts --runInBand",
 		"test": "npm run test:unit && npm run test:e2e"
 	},
 	"dependencies": {

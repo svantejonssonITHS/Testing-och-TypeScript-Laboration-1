@@ -8,6 +8,7 @@
 	"scripts": {
 		"build": "turbo run build",
 		"test": "turbo run test",
+		"test:unit": "turbo run test:unit",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
 		"dev": "turbo run dev --parallel",
