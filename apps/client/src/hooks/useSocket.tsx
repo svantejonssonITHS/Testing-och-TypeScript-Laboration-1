@@ -16,8 +16,6 @@ interface SocketProviderProps {
 export const SocketProvider = ({ token, children }: SocketProviderProps): JSX.Element => {
 	if (!token) throw new Error('Token not found');
 
-	console.log('TJOMME');
-
 	const socket: Socket = io(API_URL, {
 		extraHeaders: {
 			Authorization: `Bearer ${token}`
