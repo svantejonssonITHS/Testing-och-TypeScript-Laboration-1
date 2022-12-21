@@ -29,6 +29,10 @@ For a quick overview of the Client structure, view its class diagram [here](./do
 
 For a quick overview of the app flow, view its sequence diagram [here](./docs/APP_SEQUENCE_DIAGRAM.md).
 
+## Testing 🧪
+
+This project has been extensively tested and related documentation can be found [here](./docs/TESTING.md).
+
 ## License 📃
 
 `Domanda` is free and open-source software licensed under the <a href="./LICENSE">`MIT License`</a>.
