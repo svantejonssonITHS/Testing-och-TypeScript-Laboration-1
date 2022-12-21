@@ -39,3 +39,11 @@ In the same directory (project root) create a file called `.env` and paste the c
 ## 4. Setup an Auth0 tenant
 
 Instructions for setting up an Auth0 tenant (and updating the `.env` accordingly) can be found [here](./AUTH0.md).
+
+## 5. Running the app
+
+Running the app is pretty straight forward. In a terminal navigate to the project root and run:
+
+```sh
+npm run dev
+```
