@@ -1,0 +1,43 @@
+.background {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+}
+
+.content-container {
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.background > svg {
+	position: absolute;
+	z-index: -1;
+	animation: rotate 60s linear;
+}
+
+@keyframes rotate {
+	0% {
+		rotate: 0deg;
+	}
+	50% {
+		rotate: 360deg;
+	}
+	100% {
+		rotate: 0deg;
+	}
+}
+
+/* Alternate the svg animation direction */
+.background > svg:nth-child(2) {
+	animation-direction: reverse;
+}
+
+.background > svg:nth-child(3) {
+	animation-direction: reverse;
+}
+
+.background > svg:nth-child(4) {
+	animation-direction: reverse;
+}

@@ -1,0 +1,64 @@
+.container {
+	--padding: 0.1rem;
+	--font-size: 1rem;
+
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: calc(var(--font-size) * 1.5);
+}
+
+.select-container {
+	position: relative;
+	display: flex;
+	border-bottom: var(--input-border-width) solid var(--color-primary);
+}
+
+.select-container > label,
+.select-container > input {
+	font-size: var(--font-size);
+}
+
+.select-container > label {
+	pointer-events: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: all 0.2s ease-in-out;
+}
+
+.select-container > label.has-value {
+	font-size: calc(var(--font-size) * 0.75);
+	top: calc((var(--font-size) * 0.55) * -1);
+}
+
+.select-container > input {
+	appearance: none;
+	border: none;
+	background: none;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	font-family: inherit;
+	color: inherit;
+	padding: var(--padding);
+	transition: all 0.2s ease-in-out;
+	transition-delay: 0.1s;
+}
+
+.select-container > input.value-input {
+	opacity: 0;
+	flex-grow: 1;
+	text-align: left;
+	font-family: var(--font-cursive);
+	font-size: calc(var(--font-size) * 1.5);
+}
+
+.select-container > input.has-value {
+	opacity: 1;
+}
+
+.select-container > input:focus {
+	opacity: 1;
+}

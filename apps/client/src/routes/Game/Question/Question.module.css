@@ -1,0 +1,118 @@
+.question {
+	--default-answer-background: #fff;
+	--default-answer-border-color: #ccc;
+
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+}
+
+.container {
+	width: 95vw;
+	max-width: 700px;
+	background-color: var(--color-background);
+	border-radius: var(--border-radius-medium);
+	box-shadow: var(--box-shadow);
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	background-color: var(--color-background);
+}
+
+.question-title,
+.question-title > span {
+	text-align: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.question-title > span {
+	color: var(--color-primary);
+	font-size: 2rem;
+}
+
+.answer-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 1rem;
+	width: 100%;
+}
+
+.answer {
+	cursor: pointer;
+	border-radius: var(--border-radius-small);
+	padding: 1rem;
+	font-weight: 700;
+	color: var(--color-text-dark);
+	transition: all 0.2s ease-in-out;
+
+	/* Default colors */
+	border: 2px solid var(--default-answer-border-color);
+	background: var(--default-answer-background);
+}
+
+.answer.available:nth-child(1) {
+	grid-area: 1 / 1 / 1 / 1;
+	border-color: var(--color-error);
+	background: var(--color-error-light);
+}
+
+.answer.available:nth-child(2) {
+	grid-area: 1 / 2 / 1 / 2;
+	border-color: var(--color-success);
+	background: var(--color-success-light);
+}
+
+.answer.available:nth-child(3) {
+	grid-area: 2 / 1 / 2 / 1;
+	border-color: var(--color-host);
+	background: var(--color-host-light);
+}
+
+.answer.available:nth-child(4) {
+	grid-area: 2 / 2 / 2 / 2;
+	border-color: var(--color-other);
+	background: var(--color-other-light);
+}
+
+.answer.selected,
+.answer.not-selected {
+	background: var(--default-answer-background) !important;
+}
+
+.answer.not-selected {
+	border-color: var(--default-answer-border-color) !important;
+}
+
+.answer.correct:nth-child(1) {
+	border-color: var(--color-error) !important;
+	background: var(--color-error-light) !important;
+}
+
+.answer.correct:nth-child(2) {
+	border-color: var(--color-success) !important;
+	background: var(--color-success-light) !important;
+}
+
+.answer.correct:nth-child(3) {
+	border-color: var(--color-host) !important;
+	background: var(--color-host-light) !important;
+}
+
+.answer.correct:nth-child(4) {
+	border-color: var(--color-other) !important;
+	background: var(--color-other-light) !important;
+}
+
+.answer.incorrect {
+	border-color: var(--default-answer-border-color) !important;
+	background: var(--default-answer-background) !important;
+}
