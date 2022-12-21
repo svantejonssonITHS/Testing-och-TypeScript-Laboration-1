@@ -176,7 +176,7 @@ export class GameService {
 		}
 	}
 
-	async handleDisconnect(client: Socket): Promise<Game | void> {
+	async handleDisconnect(client: Socket): Promise<void> {
 		try {
 			const player: Player = await getAuth0User(client.handshake.headers.authorization);
 
