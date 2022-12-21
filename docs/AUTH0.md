@@ -49,3 +49,34 @@ Here you can choose whatever name you want for the application. But more importa
   <summary>Image example</summary>
   <img alt="Create SPA" src="./images/6-create-spa.png" />
 </details>
+
+Once the application is created switch to the `Settings` tab. Here you will find your applications `Domain`, `Client ID` and `Client Secret` which we need. In your `.env` update the related variables with the info you have found.
+
+```sh
+PUBLIC_AUTH0_DOMAIN=<YOUR_AUTH0_DOMAIN>
+PUBLIC_AUTH0_CLIENT_ID=<YOUR_AUTH0_CLIENT_ID>
+AUTH0_CLIENT_SECRET=<YOUT_AUTH0_CLIENT_SECRET>
+```
+
+<details>
+  <summary>Image example</summary>
+  <img alt="SPA settings page" src="./images/7-spa-settings-page-secrets.png" />
+</details>
+
+Then we will need to scroll down until the `Application URIs` section. Here we need to input our clients url from the `.env` file. Unless you have changed it from the default, use `http://127.0.0.1:3000`. Then scroll down to the bottom and press `Save Changes`.
+
+<details>
+  <summary>Image example</summary>
+  <img alt="SPA application uris" src="./images/8-spa-settings-application-uris.png" />
+</details>
+
+### 3. Configure Auth0 for testing (Advanced)
+
+All configuration from now assumes you have done the earlier steps and is only needed if you want to run certain tests for the app.
+
+Continuing from the last step, just above the `Save Changes` button you will see a section called `Advanced settings`. Press it and open the tab `Grant Types`. Here you want to enable the `Password` grant type and the save your changes again (by pressing the `Save Changes` button).
+
+<details>
+  <summary>Image example</summary>
+  <img alt="SPA advanced settings" src="./images/9-spa-advanced-settings.png" />
+</details>
