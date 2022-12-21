@@ -9,6 +9,7 @@ Domanda is a simple quiz site created for my course in `TypeScript` and `Test dr
     -   <a href="#api-class-diagram">API class diagram</a>
     -   <a href="#client-class-diagram">Client class diagram</a>
     -   <a href="#app-sequence-diagram">App sequence diagram</a>
+-   <a href="#testing-">Testing</a>
 -   <a href="#license-">License</a>
 
 ## Setup guide ⚙️
