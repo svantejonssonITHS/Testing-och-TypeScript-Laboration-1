@@ -10,29 +10,37 @@ import Game from './Game/Game';
 import { SocketProvider } from '$src/hooks/useSocket';
 
 export default function index(): JSX.Element {
-	const { getIdTokenClaims, loginWithPopup } = useAuth0();
+	const { isLoading, getIdTokenClaims, loginWithRedirect } = useAuth0();
 	const [token, setToken]: [string, React.Dispatch<React.SetStateAction<string>>] = useState('');
 
-	const checkAuth: () => Promise<void> = async () => {
-		const tokenClaims: IdToken | undefined = await getIdTokenClaims();
+	const checkAuth: () => Promise<boolean> = async () => {
+		try {
+			const tokenClaims: IdToken | undefined = await getIdTokenClaims();
 
-		const idToken: string | undefined = tokenClaims?.__raw;
+			const idToken: string | undefined = tokenClaims?.__raw;
 
-		if (idToken) {
-			setToken(idToken);
-			api.defaults.headers.common.Authorization = `Bearer ${idToken}`;
-		} else {
-			setToken('');
+			if (idToken) {
+				setToken(idToken);
+				api.defaults.headers.common.Authorization = `Bearer ${idToken}`;
+				return true;
+			} else {
+				setToken('');
+				return false;
+			}
+		} catch (error) {
+			return false;
 		}
 	};
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			if (token.length) return;
-			await loginWithPopup();
-			checkAuth();
+			if (isLoading) return;
+			if (await checkAuth()) return;
+			await loginWithRedirect({
+				prompt: 'login'
+			});
 		})();
-	}, [token]);
+	}, [token, isLoading]);
 
 	if (token.length) {
 		return (
