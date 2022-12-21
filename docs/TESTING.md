@@ -4,7 +4,7 @@
 
 The project has many different tests, most functions and components have been tested using a few different strategies.
 
-To try out some of the tests you have to had finished the setup guide first!
+To try the tests you have had to finish the setup guide first!
 
 ## Backend
 
