@@ -29,7 +29,7 @@ npm run test:e2e -w api
 
 The frontend (client) also use `jest` as its main testing framework but also uses `react testing library` for the component tests.
 
-To run all frontend test:
+To run all frontend tests:
 ```sh
 npm run test -w client
 ```
