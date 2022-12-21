@@ -10,7 +10,8 @@
 		"test": "turbo run test",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
-		"dev": "turbo run dev --parallel"
+		"dev": "turbo run dev --parallel",
+		"cypress:open": "cypress open"
 	},
 	"devDependencies": {
 		"axios": "^1.2.1",
@@ -27,6 +28,7 @@
 	"author": "Svante Jonsson",
 	"license": "MIT",
 	"dependencies": {
+		"cypress": "^12.2.0",
 		"dotenv": "^16.0.3",
 		"socket.io-client": "^4.5.4",
 		"ts-jest": "^29.0.3"
