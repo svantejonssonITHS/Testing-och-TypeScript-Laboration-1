@@ -4,25 +4,39 @@ Domanda is a simple quiz site created for my course in `TypeScript` and `Test dr
 
 ## Table of contents 📖
 
-- <a href="#setup-and-running-%EF%B8%8F">Setup and running</a>
-  - <a href="#manually-%EF%B8%8F">Manually</a>
-  - <a href="#docker-">Docker </a>
-- <a href="#documentation-">Documentation</a> 
+- <a href="#setup-guide-%EF%B8%8F">Setup guide</a>
+  - <a href="#base-setup">Base setup</a>
+  - <a href="#advanced-setup">Advanced setup</a>
+- <a href="#documentation-">Documentation</a>
+  - <a href="#api-class-diagram">API class diagram</a>
+  - <a href="#client-class-diagram">Client class diagram</a>
+  - <a href="#app-sequence-diagram">App sequence diagram</a>
 - <a href="#license-">License</a>
 
-## Setup and running ⚙️
+## Setup guide ⚙️
 
-blablabla
+### Base setup
 
-### Manually 🛠️
+The initial configuration and installation of the necessary dependencies and services required to run the software on a local development machine. For a detailed guide, [click here](./docs/BASE_SETUP.md).
 
-blablabla
+### Advanced setup
 
-### Docker 🐋
+Additional configuration and setup tasks that are required to run test of the software, such as end-to-end (e2e) tests or behavior-driven development (BDD) tests. For a detailed guide. [click here](./docs/ADVANCED_SETUP.md).
 
-blablabla
 
 ## Documentation 📚
+
+### API class diagram
+
+For a quick overview of the API structure, view its class diagram [here](./docs/API_CLASS_DIAGRAM.md).
+
+### Client class diagram
+
+For a quick overview of the Client structure, view its class diagram [here](./docs/CLIENT_CLASS_DIAGRAM.md).
+
+### App sequence diagram
+
+For a quick overview of the app flow, view its sequence diagram [here](./docs/APP_SEQUENCE_DIAGRAM.md).
 
 ## License 📃
 
