@@ -1,6 +1,6 @@
 [← Go back](../README.md)
 
-# API Class Diagram
+# API class Diagram
 
 ```mermaid
 classDiagram
