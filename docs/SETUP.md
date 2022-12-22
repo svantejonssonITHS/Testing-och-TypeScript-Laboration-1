@@ -7,7 +7,7 @@
 First, make sure that you have git installed on your machine. If you do not have git, you can download and install it from the [official website](https://git-scm.com/). Then you can use the following command to clone the repository:
 
 ```sh
-git clone https://github.com/[username]/[repository].git
+git clone https://github.com/svantejonssonITHS/svante-jonsson-testing-typescript-quiz-app.git
 ```
 
 ## 2. Navigate to the repo on your machine
@@ -15,7 +15,7 @@ git clone https://github.com/[username]/[repository].git
 In the terminal from the last step use the cd command to navigate to the directory where you cloned the repository. For example:
 
 ```sh
-cd path/to/repository
+cd svante-jonsson-testing-typescript-quiz-app/
 ```
 
 ## 3. Install all needed npm dependencies
