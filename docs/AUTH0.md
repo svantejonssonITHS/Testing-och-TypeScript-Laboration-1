@@ -88,7 +88,7 @@ Now we move over to the general settings by pressing the `Settings` button in th
   <img alt="API authorization settings" src="./images/10-settings-api-authorization.png" />
 </details>
 
-Then we want to navigate to `User Managment` in the sidebar and then press the `Create User` button.
+Then we want to navigate to `User Managment > Users` in the sidebar and then press the `Create User` button.
 
 <details>
   <summary>Image example</summary>
