@@ -1,6 +1,6 @@
 [← Go back](./SETUP.md)
 
-# Setup an Auth0 tenant
+# Setup an Auth0 application
 
 ### 1. Create Auth0 account
 
