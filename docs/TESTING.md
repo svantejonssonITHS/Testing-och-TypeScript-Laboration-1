@@ -36,7 +36,7 @@ npm run test -w client
 
 ## Application
 
-All application wide tests use `cypress` as the testing framework and `cucumber` as the preprocessor.
+All application wide tests use `cypress` as the testing framework and `cucumber` as the preprocessor. The `bdd` and cypress `e2e` test might not work unless you have made an initial manual login attempt with the test user in the applications UI.
 
 To run all tests application wide (not including `bdd` and cypress `e2e`):
 ```sh
