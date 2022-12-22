@@ -36,7 +36,7 @@ In the root directory there should be a file called `.env.example`. This file co
 
 In the same directory (project root) create a file called `.env` and paste the contents of `.env.example` there.
 
-## 4. Setup Auth0 application
+## 4. Setup an Auth0 application
 
 Instructions for setting up an Auth0 tenant and application (and updating the `.env` accordingly) can be found [here](./AUTH0.md).
 
